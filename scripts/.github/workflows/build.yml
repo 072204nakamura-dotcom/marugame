@@ -1,0 +1,37 @@
+name: build-data
+
+# いつ動かすか
+on:
+  schedule:
+    - cron: "0 22 * * *"    # 毎日 UTC22:00 = 日本時間 翌朝7:00 に自動実行
+  workflow_dispatch:          # 「Run workflow」ボタンで手動実行もできる
+
+# データCSVをリポジトリに書き戻すための権限
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: リポジトリを取得
+        uses: actions/checkout@v4
+
+      - name: Python を準備
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 必要なライブラリを入れる（LZH解凍用）
+        run: pip install lhafile
+
+      - name: データを集計する（build.py を実行）
+        run: python scripts/build.py
+
+      - name: 結果(CSV)をコミットして保存
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          git diff --staged --quiet || git commit -m "update data $(date +%F)"
+          git push
