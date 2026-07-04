@@ -26,7 +26,9 @@ jobs:
         run: pip install lhafile
 
       - name: データを集約する（build.pyを実行）
-        run: python scripts/build.py
+        run: |
+          python scripts/build.py
+          python scripts/racecard.py
 
       - name: 結果(CSV)をコミットして保存
         run: |
