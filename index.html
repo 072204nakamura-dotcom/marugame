@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>丸亀 穴党ツール</title>
+<style>
+  :root{
+    --bg:#0f1420; --card:#1a2130; --line:#2a3348; --tx:#e8ecf4; --sub:#9aa7bd;
+    --red:#ff5d6c; --blue:#4da3ff; --yel:#ffd166; --grn:#3ddc97; --pur:#c792ea;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--tx);
+       font-family:"Hiragino Sans","Yu Gothic",Meiryo,sans-serif;font-size:15px}
+  .wrap{max-width:720px;margin:0 auto;padding:12px}
+  h1{font-size:19px;margin:6px 0 2px}
+  .sub{color:var(--sub);font-size:12px;margin-bottom:10px}
+  .tabs{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+  .tab{background:var(--card);border:1px solid var(--line);color:var(--tx);
+       border-radius:8px;padding:8px 10px;cursor:pointer;font-size:14px}
+  .tab.on{background:#2b4a86;border-color:#4da3ff}
+  .day-banner{background:#3a2b12;border:1px solid #7a5a1e;color:var(--yel);
+       border-radius:10px;padding:10px 12px;margin:10px 0;font-size:14px}
+  .day-banner.calm{background:#12283a;border-color:#1e4a7a;color:#9fd0ff}
+  .boat{display:flex;align-items:flex-start;gap:10px;background:var(--card);
+        border:1px solid var(--line);border-radius:10px;padding:10px;margin:8px 0}
+  .lane{flex:0 0 34px;height:34px;border-radius:8px;display:flex;align-items:center;
+        justify-content:center;font-weight:700;font-size:17px}
+  .l1{background:#f5f5f5;color:#111}.l2{background:#111;color:#fff;border:1px solid #555}
+  .l3{background:#d63a3a;color:#fff}.l4{background:#2b6fd6;color:#fff}
+  .l5{background:#e8c81e;color:#111}.l6{background:#2ba55b;color:#fff}
+  .binfo{flex:1;min-width:0}
+  .bname{font-weight:700;font-size:16px}
+  .bname .kyu{font-size:12px;color:var(--sub);margin-left:6px}
+  .stline{color:var(--sub);font-size:12.5px;margin-top:2px}
+  .badges{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+  .bd{font-size:12px;border-radius:6px;padding:2px 7px;border:1px solid}
+  .bd.red{color:var(--red);border-color:var(--red)}
+  .bd.blue{color:var(--blue);border-color:var(--blue)}
+  .bd.yel{color:var(--yel);border-color:var(--yel)}
+  .bd.grn{color:var(--grn);border-color:var(--grn)}
+  .bd.pur{color:var(--pur);border-color:var(--pur)}
+  .verdict{background:#241a2e;border:1px solid #5a3a7a;border-radius:12px;
+           padding:12px;margin:12px 0}
+  .verdict h2{font-size:16px;margin:0 0 6px}
+  .score{font-size:14px;margin-bottom:6px}
+  .vline{font-size:14px;margin:4px 0;color:#e8dcf4}
+  .note{color:var(--sub);font-size:12px;margin-top:14px;line-height:1.7}
+  .err{background:#3a1212;border:1px solid #7a1e1e;color:#ffb3b3;
+       border-radius:10px;padding:12px;margin:10px 0}
+  .loading{color:var(--sub);padding:30px 0;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>丸亀 穴党ツール</h1>
+  <div class="sub" id="updated">読み込み中...</div>
+  <div id="app" class="loading">データを読み込んでいます...</div>
+  <div class="note">
+    ・進入は枠なり仮定（1-3コース=スロー、4-6=ダッシュのSTで判定）<br>
+    ・風（シグナル⑧）はデータに含まれません。直前情報で6m以上 or 北・北西風なら崩れ筋を上乗せ<br>
+    ・ST/まくり/残しは当地優先＋全国補完（12か月）、F持ちは当期ライブ<br>
+    ・毎朝7時に自動更新
+  </div>
+</div>
+<script>
+const FILES = {
+  card: 'data/marugame_racecard.json',
+  st:   'data/丸亀_最終ST表.csv',
+  f:    'data/丸亀_当期F持ち表.csv',
+  mk:   'data/丸亀_まくり表.csv',
+  nk:   'data/丸亀_残し表.csv',
+};
+let DB = {};
+let CARD = null;
+
+function csvToMap(text){
+  const rows = text.replace(/^\uFEFF/,'').split(/\r?\n/).filter(r=>r.trim()!=='');
+  const head = rows[0].split(',');
+  const map = new Map();
+  for(let i=1;i<rows.length;i++){
+    const c = rows[i].split(',');
+    map.set(c[0], c);
+  }
+  return {head, map};
+}
+function num(v){ const x=parseFloat(v); return isNaN(x)?null:x; }
+
+async function loadAll(){
+  try{
+    const [cardR, stR, fR, mkR, nkR] = await Promise.all(
+      [FILES.card, FILES.st, FILES.f, FILES.mk, FILES.nk].map(p=>fetch(encodeURI(p)))
+    );
+    if(!cardR.ok) throw new Error('出走表JSONが見つかりません');
+    CARD = await cardR.json();
+    DB.st = csvToMap(await stR.text());
+    DB.f  = csvToMap(await fR.text());
+    DB.mk = csvToMap(await mkR.text());
+    DB.nk = csvToMap(await nkR.text());
+    document.getElementById('updated').textContent = 'データ更新: ' + (CARD.updated||'-');
+    render();
+  }catch(e){
+    document.getElementById('app').innerHTML =
+      '<div class="err">読み込みエラー: '+e.message+'<br>GitHub Actionsの実行が終わっているか確認してください。</div>';
+  }
+}
+
+function racerInfo(tb, lane){
+  const st = DB.st.map.get(tb);
+  const f  = DB.f.map.get(tb);
+  const mk = DB.mk.map.get(tb);
+  const nk = DB.nk.map.get(tb);
+  const slow = st? num(st[5]) : null;
+  const dash = st? num(st[6]) : null;
+  const useST = lane<=3 ? slow : dash;
+  return {
+    src: st? st[3] : '',
+    useST,
+    stLate: useST!==null && useST>0.18,
+    stAce:  useST!==null && useST<=0.13,
+    fcnt: f? (num(f[4])||0) : 0,
+    frate: f? f[5] : '',
+    fA: f? f[7]==='●' : false,
+    makuri: mk? mk[8]==='●' : false,
+    mkRate: mk? mk[7] : '',
+    type1: nk? nk[6] : '',
+    r2: nk? nk[5] : '',
+    outer: nk? num(nk[11]) : null,
+    c62: nk? num(nk[13]) : null,
+    c63: nk? num(nk[14]) : null,
+  };
+}
+function render(){
+  const app = document.getElementById('app');
+  if(!CARD.cards || CARD.cards.length===0){
+    app.innerHTML = '<div class="err">本日の丸亀開催はありません。<br>開催日の朝に自動で出走表が表示されます。</div>';
+    return;
+  }
+  app.innerHTML = '<div id="dateArea"></div><div id="raceArea"></div><div id="body"></div>';
+  selDate(0);
+}
+let CUR_D=0, CUR_R=0;
+function selDate(i){
+  CUR_D=i;
+  const c = CARD.cards[i];
+  const da = document.getElementById('dateArea');
+  da.innerHTML = '<div class="tabs">' +
+    CARD.cards.map((cc,j)=>`<button class="tab ${j===i?'on':''}" onclick="selDate(${j})">${cc.date}（第${cc.day}日）</button>`).join('') +
+    '</div>' + dayBanner(c.day);
+  const ra = document.getElementById('raceArea');
+  ra.innerHTML = '<div class="tabs">' +
+    c.races.map((r,k)=>`<button class="tab ${k===0?'on':''}" id="rt${k}" onclick="selRace(${k})">${r.r}R<br><span style="font-size:11px;color:var(--sub)">${r.close}</span></button>`).join('') +
+    '</div>';
+  selRace(0);
+}
+function dayBanner(day){
+  if(day===1) return '<div class="day-banner">⑨ 初日：インが実力以上に飛ぶ日（勝率残差−5pt）＝<b>穴狙いDAY</b></div>';
+  if(day>=5) return '<div class="day-banner calm">⑨ 第'+day+'日（節終盤）：準優・優勝戦日はイン信頼度が上がる（+4〜6pt）＝穴は控えめに</div>';
+  return '<div class="day-banner calm">⑨ 第'+day+'日（中盤予選）：番組効果は中立〜やや穴寄り（−2pt）</div>';
+}
+function selRace(k){
+  CUR_R=k;
+  const c = CARD.cards[CUR_D];
+  c.races.forEach((_,j)=>{
+    const b=document.getElementById('rt'+j);
+    if(b) b.className = 'tab '+(j===k?'on':'');
+  });
+  const race = c.races[k];
+  let html = '';
+  const infos = race.racers.map(x=>({x, i: racerInfo(x.tb, x.lane)}));
+
+  const b1 = infos.find(o=>o.x.lane===1);
+  let score=0; const why=[];
+  if(b1 && b1.i.stLate){score++; why.push('① 1号艇のST遅れ（'+b1.i.useST+'）');}
+  if(b1 && b1.i.fcnt>=2){score+=2; why.push('⑩ 1号艇がF2持ち（自重MAX）');}
+  else if(b1 && b1.i.fcnt===1){score++; why.push('⑩ 1号艇がF1持ち');}
+  const mkboat = infos.filter(o=>(o.x.lane===3||o.x.lane===4)&&o.i.makuri);
+  if(mkboat.length){score++; why.push('④ '+mkboat.map(o=>o.x.lane+'号艇'+o.x.name).join('・')+'が絞りまくり型');}
+  if(c.day===1){score++; why.push('⑨ 初日');}
+  const label = score>=3?'🔥 崩れ筋 濃厚':(score===2?'⚠️ 崩れ気配':'－ 平常（本命寄り）');
+
+  let guide=[];
+  if(b1){
+    if(b1.i.type1==='飛ぶ') guide.push('⑥ 1号艇「'+b1.x.name+'」は負けたら消える<b>飛ぶ型</b>（負け時2着率'+Math.round(num(b1.i.r2)*100)+'%）→ 崩れ筋なら<b>頭ごと切り</b>');
+    else if(b1.i.type1==='残す') guide.push('⑥ 1号艇「'+b1.x.name+'」は負けても<b>残す型</b>（負け時2着率'+Math.round(num(b1.i.r2)*100)+'%）→ 崩すなら<b>2着固定</b>（◯-1-流し）');
+    if(b1.i.fA) guide.push('⑩ 1号艇はA級F持ち＝<b>過剰人気の本命</b>（勝率−2〜6pt・2/3着はもっと低下）');
+  }
+  const himo = infos.filter(o=>o.x.lane>=4 && o.i.outer!==null && o.i.outer>=0.35)
+                    .map(o=>o.x.lane+'号艇'+o.x.name+'（残し'+Math.round(o.i.outer*100)+'%）');
+  if(himo.length) guide.push('⑤ 3着ヒモ候補: '+himo.join('、'));
+  const six = infos.find(o=>o.x.lane===6);
+  if(six && six.i.c62!==null && six.i.c62>=0.10) guide.push('⑦ 6号艇「'+six.x.name+'」は6コ<b>2着型</b>（'+Math.round(six.i.c62*100)+'%）＝2着に入れると万舟筋');
+  else if(six && six.i.c63!==null && six.i.c63>=0.20) guide.push('⑦ 6号艇「'+six.x.name+'」は6コ<b>3着型</b>（'+Math.round(six.i.c63*100)+'%）＝3着に添えると配当UP');
+
+  html += '<div class="verdict"><h2>'+race.r+'R（締切'+race.close+'）判定: '+label+'</h2>'
+        + '<div class="score">崩れ筋スコア: '+score+'</div>'
+        + why.map(w=>'<div class="vline">・'+w+'</div>').join('')
+        + (guide.length? '<hr style="border-color:#5a3a7a">'+guide.map(g=>'<div class="vline">'+g+'</div>').join('') : '')
+        + '<div class="vline" style="color:var(--sub);font-size:12px">⑧風は直前確認：6m以上 or 北・北西でスコア+1</div>'
+        + '</div>';
+
+  infos.forEach(o=>{
+    const x=o.x, i=o.i;
+    let bd=[];
+    if(i.stLate) bd.push('<span class="bd red">ST遅れ警戒 '+i.useST+'</span>');
+    if(i.stAce)  bd.push('<span class="bd blue">スタート巧者 '+i.useST+'</span>');
+    if(i.makuri) bd.push('<span class="bd yel">絞りまくり型 '+Math.round(num(i.mkRate)*100)+'%</span>');
+    if(i.fcnt>=2) bd.push('<span class="bd red">F2持ち以上（自重MAX）</span>');
+    else if(i.fcnt===1) bd.push('<span class="bd red">F1持ち</span>');
+    if(i.fA) bd.push('<span class="bd pur">A級F持ち警戒</span>');
+    if(x.lane===1 && i.type1) bd.push('<span class="bd '+(i.type1==='残す'?'grn':(i.type1==='飛ぶ'?'red':'yel'))+'">1号艇'+i.type1+'型</span>');
+    if(x.lane>=4 && i.outer!==null && i.outer>=0.35) bd.push('<span class="bd grn">外3着残し '+Math.round(i.outer*100)+'%</span>');
+    if(x.lane===6 && i.c62!==null && i.c62>=0.10) bd.push('<span class="bd grn">6コ2着型</span>');
+    if(x.lane===6 && i.c63!==null && i.c63>=0.20) bd.push('<span class="bd grn">6コ3着型</span>');
+    html += '<div class="boat"><div class="lane l'+x.lane+'">'+x.lane+'</div>'
+          + '<div class="binfo"><div class="bname">'+x.name+'<span class="kyu">'+x.kyu+'</span></div>'
+          + '<div class="stline">'+(x.lane<=3?'スロー':'ダッシュ')+'平均ST '+(i.useST===null?'—':i.useST)
+          + (i.src?'（'+i.src+'）':'')
+          + (i.fcnt>0?'　当期F'+i.fcnt+'本・事故率'+i.frate:'')
+          + '</div><div class="badges">'+bd.join('')+'</div></div></div>';
+  });
+  document.getElementById('body').innerHTML = html;
+}
+loadAll();
+</script>
+</body>
+</html>
