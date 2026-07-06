@@ -70,8 +70,9 @@ const FILES = {
   f:    'data/丸亀_当期F持ち表.csv',
   mk:   'data/丸亀_まくり表.csv',
   nk:   'data/丸亀_残し表.csv',
+  wall: 'data/丸亀_壁表.csv',
 };
-let DB = {};
+let DB = {};   // 登番 -> {st:{},f:{},mk:{},nk:{}}
 let CARD = null;
 
 function csvToMap(text){
@@ -88,8 +89,8 @@ function num(v){ const x=parseFloat(v); return isNaN(x)?null:x; }
 
 async function loadAll(){
   try{
-    const [cardR, stR, fR, mkR, nkR] = await Promise.all(
-      [FILES.card, FILES.st, FILES.f, FILES.mk, FILES.nk].map(p=>fetch(encodeURI(p)))
+    const [cardR, stR, fR, mkR, nkR, wallR] = await Promise.all(
+      [FILES.card, FILES.st, FILES.f, FILES.mk, FILES.nk, FILES.wall].map(p=>fetch(encodeURI(p)))
     );
     if(!cardR.ok) throw new Error('出走表JSONが見つかりません');
     CARD = await cardR.json();
@@ -97,6 +98,7 @@ async function loadAll(){
     DB.f  = csvToMap(await fR.text());
     DB.mk = csvToMap(await mkR.text());
     DB.nk = csvToMap(await nkR.text());
+    DB.wall = csvToMap(await wallR.text());
     document.getElementById('updated').textContent = 'データ更新: ' + (CARD.updated||'-');
     render();
   }catch(e){
@@ -110,6 +112,7 @@ function racerInfo(tb, lane){
   const f  = DB.f.map.get(tb);
   const mk = DB.mk.map.get(tb);
   const nk = DB.nk.map.get(tb);
+  const wl = DB.wall ? DB.wall.map.get(tb) : null;
   const slow = st? num(st[5]) : null;
   const dash = st? num(st[6]) : null;
   const useST = lane<=3 ? slow : dash;
@@ -128,14 +131,24 @@ function racerInfo(tb, lane){
     outer: nk? num(nk[11]) : null,
     c62: nk? num(nk[13]) : null,
     c63: nk? num(nk[14]) : null,
+    wallF: wl? num(wl[4]) : null,
+    wallType: wl? wl[7] : '',
+    wallEval: wl? wl[8] : '',
   };
 }
+
 function render(){
   const app = document.getElementById('app');
   if(!CARD.cards || CARD.cards.length===0){
     app.innerHTML = '<div class="err">本日の丸亀開催はありません。<br>開催日の朝に自動で出走表が表示されます。</div>';
     return;
   }
+  let html = '';
+  CARD.cards.forEach((c,ci)=>{
+    html += '<div class="tabs" data-kind="date">' +
+      CARD.cards.map((cc,i)=>`<button class="tab ${i===ci?'':''}" onclick="selDate(${i})">${cc.date}（第${cc.day}日）</button>`).join('') +
+      '</div>';
+  });
   app.innerHTML = '<div id="dateArea"></div><div id="raceArea"></div><div id="body"></div>';
   selDate(0);
 }
@@ -169,6 +182,7 @@ function selRace(k){
   let html = '';
   const infos = race.racers.map(x=>({x, i: racerInfo(x.tb, x.lane)}));
 
+  // ---- 崩れ筋スコア ----
   const b1 = infos.find(o=>o.x.lane===1);
   let score=0; const why=[];
   if(b1 && b1.i.stLate){score++; why.push('① 1号艇のST遅れ（'+b1.i.useST+'）');}
@@ -176,6 +190,8 @@ function selRace(k){
   else if(b1 && b1.i.fcnt===1){score++; why.push('⑩ 1号艇がF1持ち');}
   const mkboat = infos.filter(o=>(o.x.lane===3||o.x.lane===4)&&o.i.makuri);
   if(mkboat.length){score++; why.push('④ '+mkboat.map(o=>o.x.lane+'号艇'+o.x.name).join('・')+'が絞りまくり型');}
+  const b2 = infos.find(o=>o.x.lane===2);
+  if(b2 && b2.i.wallEval==='壁弱●'){score++; why.push('⑫ 2号艇「'+b2.x.name+'」が壁弱'+(b2.i.wallType?'（'+b2.i.wallType+'）':''));}
   if(c.day===1){score++; why.push('⑨ 初日');}
   const label = score>=3?'🔥 崩れ筋 濃厚':(score===2?'⚠️ 崩れ気配':'－ 平常（本命寄り）');
 
@@ -188,6 +204,12 @@ function selRace(k){
   const himo = infos.filter(o=>o.x.lane>=4 && o.i.outer!==null && o.i.outer>=0.35)
                     .map(o=>o.x.lane+'号艇'+o.x.name+'（残し'+Math.round(o.i.outer*100)+'%）');
   if(himo.length) guide.push('⑤ 3着ヒモ候補: '+himo.join('、'));
+  if(b2 && b2.i.wallEval==='壁弱●'){
+    if(b2.i.wallType==='自分が食う型') guide.push('⑫ 2号艇「'+b2.x.name+'」は<b>自分が食う型</b>（1号艇を自分で倒す）→ <b>2号艇アタマ</b>（2-1-流し等）の筋');
+    else if(b2.i.wallType==='素通し型') guide.push('⑫ 2号艇「'+b2.x.name+'」は<b>素通し型</b>（まくりを通す）→ 決まれば<b>1-2もろとも消える</b>＝まくり艇アタマの万舟筋'+(mkboat.length?'（④まくり型あり＝最凶の組み合わせ）':''));
+    else guide.push('⑫ 2号艇「'+b2.x.name+'」は壁弱（混合型）→ 1号艇の逃げ信頼度を下げる');
+  }
+  if(b2 && b2.i.wallEval==='壁強●') guide.push('⑫ 2号艇「'+b2.x.name+'」は<b>壁強</b>（1号艇を逃がす）→ 崩れ筋を割引');
   const six = infos.find(o=>o.x.lane===6);
   if(six && six.i.c62!==null && six.i.c62>=0.10) guide.push('⑦ 6号艇「'+six.x.name+'」は6コ<b>2着型</b>（'+Math.round(six.i.c62*100)+'%）＝2着に入れると万舟筋');
   else if(six && six.i.c63!==null && six.i.c63>=0.20) guide.push('⑦ 6号艇「'+six.x.name+'」は6コ<b>3着型</b>（'+Math.round(six.i.c63*100)+'%）＝3着に添えると配当UP');
@@ -199,6 +221,7 @@ function selRace(k){
         + '<div class="vline" style="color:var(--sub);font-size:12px">⑧風は直前確認：6m以上 or 北・北西でスコア+1</div>'
         + '</div>';
 
+  // ---- 各艇 ----
   infos.forEach(o=>{
     const x=o.x, i=o.i;
     let bd=[];
@@ -209,6 +232,8 @@ function selRace(k){
     else if(i.fcnt===1) bd.push('<span class="bd red">F1持ち</span>');
     if(i.fA) bd.push('<span class="bd pur">A級F持ち警戒</span>');
     if(x.lane===1 && i.type1) bd.push('<span class="bd '+(i.type1==='残す'?'grn':(i.type1==='飛ぶ'?'red':'yel'))+'">1号艇'+i.type1+'型</span>');
+    if(x.lane===2 && i.wallEval==='壁強●') bd.push('<span class="bd grn">壁強（1号艇を逃がす）</span>');
+    if(x.lane===2 && i.wallEval==='壁弱●') bd.push('<span class="bd red">壁弱'+(i.wallType?'・'+i.wallType:'')+'</span>');
     if(x.lane>=4 && i.outer!==null && i.outer>=0.35) bd.push('<span class="bd grn">外3着残し '+Math.round(i.outer*100)+'%</span>');
     if(x.lane===6 && i.c62!==null && i.c62>=0.10) bd.push('<span class="bd grn">6コ2着型</span>');
     if(x.lane===6 && i.c63!==null && i.c63>=0.20) bd.push('<span class="bd grn">6コ3着型</span>');
