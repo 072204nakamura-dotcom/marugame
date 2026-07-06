@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="sky" cx="50%" cy="35%" r="80%">
+      <stop offset="0%" stop-color="#16294a"/>
+      <stop offset="100%" stop-color="#0b1526"/>
+    </radialGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1d4d8f"/>
+      <stop offset="100%" stop-color="#123059"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 夜空（ナイター） -->
+  <rect width="512" height="512" fill="url(#sky)"/>
+  <circle cx="88" cy="86" r="4" fill="#ffffff" opacity="0.7"/>
+  <circle cx="150" cy="52" r="3" fill="#ffffff" opacity="0.5"/>
+  <circle cx="430" cy="130" r="3" fill="#ffffff" opacity="0.5"/>
+  <circle cx="372" cy="60" r="4" fill="#ffffff" opacity="0.6"/>
+  <!-- 月 -->
+  <circle cx="418" cy="84" r="34" fill="#ffd166"/>
+  <circle cx="432" cy="72" r="30" fill="#0e1c34"/>
+
+  <!-- 水面 -->
+  <path d="M0 356 Q64 336 128 356 T256 356 T384 356 T512 356 V512 H0 Z" fill="url(#sea)"/>
+  <path d="M0 368 Q64 350 128 368 T256 368 T384 368 T512 368" stroke="#4da3ff" stroke-width="7" fill="none" opacity="0.65"/>
+  <path d="M20 412 Q84 396 148 412 T276 412 T404 412 T512 412" stroke="#ffffff" stroke-width="6" fill="none" opacity="0.35"/>
+  <path d="M0 456 Q64 442 128 456 T256 456 T384 456 T512 456" stroke="#ffffff" stroke-width="5" fill="none" opacity="0.2"/>
+
+  <!-- 亀（上から見た丸い亀＝「丸」＋「亀」） -->
+  <g>
+    <!-- 前ヒレ -->
+    <ellipse cx="146" cy="172" rx="44" ry="24" fill="#2fbf83" transform="rotate(-38 146 172)"/>
+    <ellipse cx="366" cy="172" rx="44" ry="24" fill="#2fbf83" transform="rotate(38 366 172)"/>
+    <!-- 後ヒレ -->
+    <ellipse cx="152" cy="300" rx="40" ry="22" fill="#2fbf83" transform="rotate(32 152 300)"/>
+    <ellipse cx="360" cy="300" rx="40" ry="22" fill="#2fbf83" transform="rotate(-32 360 300)"/>
+    <!-- しっぽ -->
+    <path d="M256 340 L244 366 L268 366 Z" fill="#2fbf83"/>
+    <!-- 頭（月に向かって前進） -->
+    <circle cx="256" cy="118" r="40" fill="#35cc8e"/>
+    <circle cx="242" cy="108" r="6.5" fill="#0e1c34"/>
+    <circle cx="270" cy="108" r="6.5" fill="#0e1c34"/>
+    <!-- 甲羅＝丸 -->
+    <circle cx="256" cy="236" r="118" fill="#3ddc97" stroke="#177a4f" stroke-width="12"/>
+    <!-- 甲羅もよう -->
+    <circle cx="256" cy="236" r="76" fill="none" stroke="#177a4f" stroke-width="8"/>
+    <path d="M256 160 L256 312 M190 198 L322 274 M322 198 L190 274" stroke="#177a4f" stroke-width="8" stroke-linecap="round"/>
+    <polygon points="256,206 282,221 282,251 256,266 230,251 230,221" fill="#2fbf83" stroke="#177a4f" stroke-width="7"/>
+  </g>
+</svg>
