@@ -1,0 +1,113 @@
+# -*- coding: utf-8 -*-
+"""
+丸亀 穴党ツール – 確定オッズ収集スクリプト
+
+毎朝の自動実行で、昨日（と一昨日、取りこぼし対策）の丸亀の
+3連単・確定オッズ（全120通り）を公式サイトから回収し、
+data/odds/YYYY-MM-DD.csv に保存します。
+
+・丸亀の開催がなかった日は何もしません
+・既に保存済みの日はスキップ（二重取得しない）
+・1年分でも約8MBと小さいので容量の心配はありません
+・将来のEV（期待値）検証用のデータ蓄積が目的です
+"""
+
+import os
+import re
+import csv
+import time
+import datetime
+import urllib.request
+
+OUT_DIR = "data/odds"
+JCD = "15"   # 丸亀
+UA = {"User-Agent": "Mozilla/5.0 (marugame-tool)"}
+
+
+def jst_today():
+    return (datetime.datetime.utcnow() + datetime.timedelta(hours=9)).date()
+
+
+def fetch(url):
+    for i in range(4):
+        try:
+            req = urllib.request.Request(url, headers=UA)
+            return urllib.request.urlopen(req, timeout=30).read().decode("utf-8", errors="replace")
+        except Exception:
+            time.sleep(2 + i * 2)   # 少し待って再挑戦（2,4,6秒）
+    return None
+
+
+def parse_odds3t(html):
+    """3連単オッズページから {(1着,2着,3着): オッズ} を返す。取れなければ None。"""
+    if not html:
+        return None
+    vals = re.findall(r'class="oddsPoint\s*">([^<]*)<', html)
+    if len(vals) != 120:
+        return None
+    out = {}
+    for i, v in enumerate(vals):
+        r, hidx = divmod(i, 6)          # 行(0-19)、列=1着(0-5)
+        head = hidx + 1
+        others = [b for b in range(1, 7) if b != head]
+        second = others[r // 4]
+        thirds = [b for b in range(1, 7) if b != head and b != second]
+        third = thirds[r % 4]
+        v = v.strip()
+        try:
+            out[(head, second, third)] = float(v)
+        except ValueError:
+            out[(head, second, third)] = None   # 欠場など
+    return out
+
+
+def collect_day(d):
+    """1日ぶん（12レース）の確定オッズを取ってCSV保存。開催なしなら False。"""
+    ds = d.strftime("%Y-%m-%d")
+    path = os.path.join(OUT_DIR, ds + ".csv")
+    if os.path.exists(path):
+        print("既に保存済み:", ds)
+        return True
+    hd = d.strftime("%Y%m%d")
+    # 1Rで開催チェック
+    html = fetch("https://www.boatrace.jp/owpc/pc/race/odds3t?rno=1&jcd=%s&hd=%s" % (JCD, hd))
+    first = parse_odds3t(html)
+    if first is None:
+        print("開催なし/未確定:", ds)
+        return False
+    os.makedirs(OUT_DIR, exist_ok=True)
+    rows = []
+    for rno in range(1, 13):
+        if rno == 1:
+            odds = first
+        else:
+            time.sleep(3)   # 公式サイトへの配慮
+            url = "https://www.boatrace.jp/owpc/pc/race/odds3t?rno=%d&jcd=%s&hd=%s" % (rno, JCD, hd)
+            odds = parse_odds3t(fetch(url))
+            if odds is None:          # 一時的に弾かれた場合は待ってもう一度だけ
+                time.sleep(20)
+                odds = parse_odds3t(fetch(url))
+        if odds is None:
+            print("  %dR: 取得できず（中止等の可能性）" % rno)
+            continue
+        for (h, s, t), v in sorted(odds.items()):
+            rows.append([ds, rno, "%d-%d-%d" % (h, s, t), v if v is not None else ""])
+    with open(path, "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["date", "race", "combo", "odds"])
+        w.writerows(rows)
+    print("保存:", path, "(%d行)" % len(rows))
+    return True
+
+
+def main():
+    today = jst_today()
+    for back in (1, 2):   # 昨日と一昨日（取りこぼし対策）
+        collect_day(today - datetime.timedelta(days=back))
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as e:
+        print("odds.py エラー（無視して続行）:", e)
