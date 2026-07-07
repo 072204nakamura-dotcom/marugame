@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-丸亀 穴党ツール – 確定オッズ収集スクリプト
+穴党ツール – 確定オッズ収集スクリプト（複数場対応）
 
-毎朝の自動実行で、昨日（と一昨日、取りこぼし対策）の丸亀の
+毎朝の自動実行で、昨日（と一昨日、取りこぼし対策）の対象場の
 3連単・確定オッズ（全120通り）を公式サイトから回収し、
-data/odds/YYYY-MM-DD.csv に保存します。
+data/odds/場コード/YYYY-MM-DD.csv に保存します。
 
-・丸亀の開催がなかった日は何もしません
+・対象場：丸亀(15)・江戸川(03)・福岡(22)  ※VENUESで増減可
+・開催がなかった日は何もしません
 ・既に保存済みの日はスキップ（二重取得しない）
-・1年分でも約8MBと小さいので容量の心配はありません
+・1場1年で約8MBと小さいので容量の心配はありません
 ・将来のEV（期待値）検証用のデータ蓄積が目的です
 """
 
@@ -20,7 +21,7 @@ import datetime
 import urllib.request
 
 OUT_DIR = "data/odds"
-JCD = "15"   # 丸亀
+VENUES = ["15", "03", "22"]   # 丸亀・江戸川・福岡
 UA = {"User-Agent": "Mozilla/5.0 (marugame-tool)"}
 
 
@@ -64,25 +65,29 @@ def parse_odds3t(html):
 def collect_day(d):
     """1日ぶん（12レース）の確定オッズを取ってCSV保存。開催なしなら False。"""
     ds = d.strftime("%Y-%m-%d")
-    path = os.path.join(OUT_DIR, ds + ".csv")
+def collect_day(d, jcd):
+    """1場・1日ぶん（12レース）の確定オッズを取ってCSV保存。開催なしなら False。"""
+    ds = d.strftime("%Y-%m-%d")
+    vdir = os.path.join(OUT_DIR, jcd)
+    path = os.path.join(vdir, ds + ".csv")
     if os.path.exists(path):
-        print("既に保存済み:", ds)
+        print("既に保存済み:", jcd, ds)
         return True
     hd = d.strftime("%Y%m%d")
     # 1Rで開催チェック
-    html = fetch("https://www.boatrace.jp/owpc/pc/race/odds3t?rno=1&jcd=%s&hd=%s" % (JCD, hd))
+    html = fetch("https://www.boatrace.jp/owpc/pc/race/odds3t?rno=1&jcd=%s&hd=%s" % (jcd, hd))
     first = parse_odds3t(html)
     if first is None:
-        print("開催なし/未確定:", ds)
+        print("開催なし/未確定:", jcd, ds)
         return False
-    os.makedirs(OUT_DIR, exist_ok=True)
+    os.makedirs(vdir, exist_ok=True)
     rows = []
     for rno in range(1, 13):
         if rno == 1:
             odds = first
         else:
             time.sleep(3)   # 公式サイトへの配慮
-            url = "https://www.boatrace.jp/owpc/pc/race/odds3t?rno=%d&jcd=%s&hd=%s" % (rno, JCD, hd)
+            url = "https://www.boatrace.jp/owpc/pc/race/odds3t?rno=%d&jcd=%s&hd=%s" % (rno, jcd, hd)
             odds = parse_odds3t(fetch(url))
             if odds is None:          # 一時的に弾かれた場合は待ってもう一度だけ
                 time.sleep(20)
@@ -102,8 +107,10 @@ def collect_day(d):
 
 def main():
     today = jst_today()
-    for back in (1, 2):   # 昨日と一昨日（取りこぼし対策）
-        collect_day(today - datetime.timedelta(days=back))
+    for jcd in VENUES:
+        for back in (1, 2):   # 昨日と一昨日（取りこぼし対策）
+            collect_day(today - datetime.timedelta(days=back), jcd)
+        time.sleep(3)
 
 
 if __name__ == "__main__":
