@@ -145,6 +145,8 @@ def parse_all(k_items):
         "moe": defaultdict(int), "mot3": defaultdict(int),
         "c6e": defaultdict(int), "c6_2": defaultdict(int), "c6_3": defaultdict(int),
         "wall": [],
+        "b5n": defaultdict(int), "b5t": defaultdict(int),
+        "b6n": defaultdict(int), "b6t": defaultdict(int),
     }
     for ymd, text in k_items:
         in_period = ymd >= PS
@@ -169,6 +171,15 @@ def parse_all(k_items):
                     k = int(ch) if fin else 0
                     win_makuri = (ch == "01" and kim in ("まくり", "まくり差し"))
                     cur[co] = (tb, k)
+                    boat = int(s[6])
+                    if boat == 5:
+                        A["b5n"][tb] += 1
+                        if fin and k <= 3:
+                            A["b5t"][tb] += 1
+                    elif boat == 6:
+                        A["b6n"][tb] += 1
+                        if fin and k <= 3:
+                            A["b6t"][tb] += 1
 
                     if jcd == VENUE:
                         A["mg_total"][tb] += 1
@@ -293,8 +304,9 @@ def write_all(A, fan):
         w = csv.writer(f)
         w.writerow(["登番", "名前", "級", "1コ進入", "1コ負け", "1コ負け時2着率", "(6)型",
                     "外進入(全国)", "外3着残し率(全国)", "丸亀外進入", "丸亀外3着残し率", "(5)採用値",
-                    "6コ進入", "6コ2着率", "6コ3着率"])
-        allt = set(A["c1e"]) | set(A["oe"]) | set(A["c6e"])
+                    "6コ進入", "6コ2着率", "6コ3着率",
+                    "艇番5乗艇", "艇番5_3連対率", "艇番6乗艇", "艇番6_3連対率"])
+        allt = set(A["c1e"]) | set(A["oe"]) | set(A["c6e"]) | set(A["b5n"]) | set(A["b6n"])
         for tb in allt:
             if A["c1e"][tb] >= 40 and A["c1lose"][tb] >= 20:
                 r2 = A["c1_2"][tb] / A["c1lose"][tb]
@@ -307,11 +319,14 @@ def write_all(A, fan):
             adopt = m_loc if m_loc != "" else o_nat
             s62 = round(A["c6_2"][tb] / A["c6e"][tb], 3) if A["c6e"][tb] >= 40 else ""
             s63 = round(A["c6_3"][tb] / A["c6e"][tb], 3) if A["c6e"][tb] >= 40 else ""
-            if r2s == "" and o_nat == "" and m_loc == "" and s62 == "":
+            b5r = round(A["b5t"][tb] / A["b5n"][tb], 3) if A["b5n"][tb] >= 15 else ""
+            b6r = round(A["b6t"][tb] / A["b6n"][tb], 3) if A["b6n"][tb] >= 15 else ""
+            if r2s == "" and o_nat == "" and m_loc == "" and s62 == "" and b5r == "" and b6r == "":
                 continue
             w.writerow([tb, name(tb), kyu(tb), A["c1e"][tb], A["c1lose"][tb], r2s, typ,
                         A["oe"][tb], o_nat, A["moe"][tb], m_loc, adopt,
-                        A["c6e"][tb], s62, s63])
+                        A["c6e"][tb], s62, s63,
+                        A["b5n"][tb], b5r, A["b6n"][tb], b6r])
 
     # --- (12) 壁表 ---
     c1n = defaultdict(int); c1w = defaultdict(int)

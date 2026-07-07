@@ -136,6 +136,8 @@ function racerInfo(tb, lane){
     outer: nk? num(nk[11]) : null,
     c62: nk? num(nk[13]) : null,
     c63: nk? num(nk[14]) : null,
+    b5r: nk? num(nk[16]) : null,
+    b6r: nk? num(nk[18]) : null,
     wallF: wl? num(wl[4]) : null,
     wallType: wl? wl[7] : '',
     wallEval: wl? wl[8] : '',
@@ -216,7 +218,8 @@ function selRace(k){
   }
   if(b2 && b2.i.wallEval==='壁強●') guide.push('⑫ 2号艇「'+b2.x.name+'」は<b>壁強</b>（1号艇を逃がす）→ 崩れ筋を割引');
   const six = infos.find(o=>o.x.lane===6);
-  if(six && six.i.c62!==null && six.i.c62>=0.10) guide.push('⑦ 6号艇「'+six.x.name+'」は6コ<b>2着型</b>（'+Math.round(six.i.c62*100)+'%）＝2着に入れると万舟筋');
+  if(six && six.i.b6r!==null && six.i.b6r<0.25) guide.push('⑦ 6号艇「'+six.x.name+'」は艇番6の3連対率'+Math.round(six.i.b6r*100)+'%と低率 → <b>ヒモから外す</b>（3着流しの相手にしない＝点数圧縮）');
+  else if(six && six.i.c62!==null && six.i.c62>=0.10) guide.push('⑦ 6号艇「'+six.x.name+'」は6コ<b>2着型</b>（'+Math.round(six.i.c62*100)+'%）＝2着に入れると万舟筋');
   else if(six && six.i.c63!==null && six.i.c63>=0.20) guide.push('⑦ 6号艇「'+six.x.name+'」は6コ<b>3着型</b>（'+Math.round(six.i.c63*100)+'%）＝3着に添えると配当UP');
 
   html += '<div class="verdict"><h2>'+race.r+'R（締切'+race.close+'）判定: '+label+'</h2>'
@@ -242,6 +245,8 @@ function selRace(k){
     if(x.lane>=4 && i.outer!==null && i.outer>=0.35) bd.push('<span class="bd grn">外3着残し '+Math.round(i.outer*100)+'%</span>');
     if(x.lane===6 && i.c62!==null && i.c62>=0.10) bd.push('<span class="bd grn">6コ2着型</span>');
     if(x.lane===6 && i.c63!==null && i.c63>=0.20) bd.push('<span class="bd grn">6コ3着型</span>');
+    if(x.lane===6 && i.b6r!==null && i.b6r<0.25) bd.push('<span class="bd red">6ヒモ外し候補 '+Math.round(i.b6r*100)+'%</span>');
+    if(x.lane===5 && i.b5r!==null && i.b5r<0.25) bd.push('<span class="bd yel">艇番5低率 '+Math.round(i.b5r*100)+'%</span>');
     html += '<div class="boat"><div class="lane l'+x.lane+'">'+x.lane+'</div>'
           + '<div class="binfo"><div class="bname">'+x.name+'<span class="kyu">'+x.kyu+'</span></div>'
           + '<div class="stline">'+(x.lane<=3?'スロー':'ダッシュ')+'平均ST '+(i.useST===null?'—':i.useST)
