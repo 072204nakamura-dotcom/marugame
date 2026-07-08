@@ -43,7 +43,7 @@ def parse_odds3t(html):
     """3連単オッズページから {(1着,2着,3着): オッズ} を返す。取れなければ None。"""
     if not html:
         return None
-    vals = re.findall(r'class="oddsPoint\s*">([^<]*)<', html)
+    vals = re.findall(r'class="oddsPoint[^"]*">([^<]*)<', html)
     if len(vals) != 120:
         return None
     out = {}
