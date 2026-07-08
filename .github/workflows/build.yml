@@ -6,9 +6,10 @@ on:
     - cron: "0 22 * * *"   # 毎日 UTC22:00 = 日本時間 翌朝7:00 に自動実行
   workflow_dispatch:        # 「Run workflow」ボタンで手動実行もできる
 
-# データCSVをリポジトリに書き戻すための権限
+# データCSVの書き戻しと、通知Issueを作るための権限
 permissions:
   contents: write
+  issues: write
 
 jobs:
   build:
@@ -25,10 +26,11 @@ jobs:
       - name: 必要なライブラリを入れる（LZH解凍用）
         run: pip install lhafile
 
-      - name: データを集約する（build.pyを実行）
+      - name: データを集約する
         run: |
           python scripts/build.py
           python scripts/racecard.py
+          python scripts/odds.py
 
       - name: 結果(CSV)をコミットして保存
         run: |
@@ -39,3 +41,8 @@ jobs:
           git commit -m "update data $(date +%F)"
           git pull --rebase --autostash
           git push
+
+      - name: スコア2以上の日は通知Issueを作る
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/notify.py
