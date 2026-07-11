@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>鳴門 穴党ツール</title>
+<style>
+:root{
+  --ai-tetsu:#17263b;   /* 藍鉄: ヘッダー */
+  --koiai:#1f3a5f;      /* 濃藍: 見出し文字 */
+  --aijiro:#e9eef2;     /* 藍白: 背景 */
+  --asagi:#3d7ea6;      /* 浅葱: 堅め */
+  --shu:#c04a37;        /* 朱: 穴・警告 */
+  --kincha:#b8862e;     /* 金茶: 二択・注意 */
+  --sumi:#2b2f36;
+  --paper:#ffffff;
+  --line:#cdd6de;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic Medium","Noto Sans JP",sans-serif;
+  background:var(--aijiro); color:var(--sumi); font-size:14px; line-height:1.55;
+  font-feature-settings:"palt";
+}
+.wrap{max-width:660px;margin:0 auto;padding-bottom:60px}
+
+/* ===== ヘッダー ===== */
+header{background:var(--ai-tetsu);color:#e8eef5;padding:14px 16px 10px}
+header .brand{display:flex;align-items:baseline;gap:10px}
+header h1{font-size:19px;font-weight:800;letter-spacing:.06em}
+header h1 .uzu{color:#7fb6d9}
+header .datebox{font-size:12px;opacity:.85;margin-left:auto;text-align:right;font-variant-numeric:tabular-nums}
+header .meet{font-size:12px;margin-top:4px;opacity:.9}
+header .meet b{color:#ffd98a;font-weight:700}
+.venues{display:flex;gap:6px;margin-top:9px}
+.venues a,.venues .on{font-size:12px;font-weight:800;padding:4px 14px;border-radius:99px;text-decoration:none;letter-spacing:.04em}
+.venues a{color:#bcd0e0;border:1px solid #3d5573;background:transparent}
+.venues a:active{background:#24384f}
+.venues .on{background:#e8eef5;color:var(--ai-tetsu)}
+
+/* ===== イン率地形図（シグネチャ） ===== */
+.terrain{background:var(--ai-tetsu);padding:2px 16px 14px}
+.terrain .cap{font-size:10px;color:#8fa8bf;letter-spacing:.12em;margin-bottom:4px}
+.tbars{display:flex;align-items:flex-end;gap:3px;height:64px}
+.tbar{flex:1;display:flex;flex-direction:column;justify-content:flex-end;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.tbar .col{border-radius:2px 2px 0 0;min-height:4px;transition:height .5s ease}
+.tbar .num{font-size:9px;text-align:center;color:#9db4c8;margin-top:3px;font-variant-numeric:tabular-nums}
+.tbar .pct{font-size:8px;text-align:center;color:#6d8299;font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion: reduce){.tbar .col{transition:none}}
+
+/* ===== レースカード ===== */
+main{padding:12px 10px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:10px;margin-bottom:12px;overflow:hidden;scroll-margin-top:8px}
+.card-head{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--line)}
+.rno{font-size:26px;font-weight:900;color:var(--koiai);min-width:52px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.rno small{font-size:13px;font-weight:700}
+.rmeta{flex:1;min-width:0}
+.rname{font-size:14px;font-weight:800;color:var(--koiai)}
+.deadline{font-size:11px;color:#6b7683;font-variant-numeric:tabular-nums}
+.label{font-size:11px;font-weight:800;padding:3px 9px;border-radius:99px;white-space:nowrap;color:#fff}
+.label.ana{background:var(--shu)}
+.label.katame{background:var(--asagi)}
+.label.nitaku{background:var(--kincha)}
+.label.chukan{background:#7a8794}
+.base{display:flex;gap:14px;padding:7px 12px;background:#f2f5f8;font-size:12px;color:#4a5560;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.base b{color:var(--koiai);font-weight:800}
+.base .man b{color:var(--shu)}
+.score{margin-left:auto;font-weight:800;color:var(--shu)}
+
+/* 艇テーブル */
+table{width:100%;border-collapse:collapse}
+td{padding:5px 8px;border-bottom:1px dashed #e3e9ee;vertical-align:middle;font-size:13px}
+tr:last-child td{border-bottom:none}
+.bn{width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;
+    font-weight:900;font-size:14px;font-variant-numeric:tabular-nums}
+.b1{background:#fff;color:#222;border:1.5px solid #999}
+.b2{background:#222;color:#fff}
+.b3{background:#c8352b;color:#fff}
+.b4{background:#1e58c8;color:#fff}
+.b5{background:#f2c500;color:#333}
+.b6{background:#1f9e50;color:#fff}
+.pname{font-weight:700}
+.grade{font-size:10px;font-weight:800;padding:1px 5px;border-radius:3px;margin-left:5px;vertical-align:1px}
+.gA1{background:#fbe3c9;color:#9a5b12}
+.gA2{background:#fdf1de;color:#a97c2f}
+.gB1,.gB2{background:#eef1f4;color:#7a8590}
+.sub{font-size:10.5px;color:#7c8794;font-variant-numeric:tabular-nums}
+.badge{display:inline-block;font-size:10px;font-weight:800;padding:1.5px 6px;border-radius:4px;margin:1px 3px 1px 0}
+.bg-f{background:#fbe0db;color:#a1301f}
+.bg-st{background:#fdeccc;color:#8f6410}
+.bg-mk{background:#e2ecf7;color:#245a9e}
+.bg-out{background:#2b2f36;color:#ffd98a}
+.bg-low{background:#eef1f4;color:#5b6672;border:1px solid #d5dce2}
+
+.policy{padding:9px 12px;background:#fbf8f0;border-top:1px solid #ece4cf;font-size:12.5px;color:#5a4d2e}
+.policy::before{content:"方針 ";font-weight:900;color:var(--kincha);letter-spacing:.08em}
+
+/* 開催なし・注意書き */
+.nokaisai{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:28px 16px;text-align:center;color:#5a6572}
+.nokaisai b{display:block;font-size:16px;color:var(--koiai);margin-bottom:6px}
+.notes{margin:18px 4px 0;font-size:11px;color:#6b7683;line-height:1.7}
+.notes b{color:var(--shu)}
+footer{padding:14px;text-align:center;font-size:10px;color:#93a1ad}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="brand">
+    <h1>鳴門 <span class="uzu">渦</span> 穴党ツール</h1>
+    <div class="datebox" id="hd-date"></div>
+  </div>
+  <div class="meet" id="hd-meet"></div>
+  <nav class="venues">
+    <a href="../">丸亀</a>
+    <span class="on">鳴門</span>
+  </nav>
+</header>
+<div class="terrain">
+  <div class="cap">イン率地形図（直近12か月・レース番号別）— 谷が穴場</div>
+  <div class="tbars" id="terrain"></div>
+</div>
+<main id="main"></main>
+<div class="notes">
+  <div><b>直前確認（このページには出ない情報）</b>：風速6m以上でイン37%まで低下。強風の日は全レースでイン割引。</div>
+  <div>スコアは丸亀で識別力実証済みの信号（ST遅れ・F持ち・まくり型）の鳴門移植版＝<b>鳴門では未バックテスト（暫定）</b>。</div>
+  <div>機械買いは全系統が控除の壁の内側。スコアと地形図は「候補レースを絞る」用途。オッズの歪みは締切前に人間が判断。</div>
+</div>
+<footer id="ft"></footer>
+</div>
+<script>
+const LBL = {'鉄板企画':'katame','イン堅め':'katame','穴の巣':'ana','イン受難ゾーン':'ana','堅いか万舟':'nitaku','中間':'chukan'};
+const BADGE = b => {
+  if(b.startsWith('F')) return 'bg-f';
+  if(b.startsWith('ST')) return 'bg-st';
+  if(b.startsWith('まくり')) return 'bg-mk';
+  if(b.includes('外し')) return 'bg-out';
+  return 'bg-low';
+};
+fetch('data.json?t=' + Date.now()).then(r=>r.json()).then(d=>{
+  document.getElementById('hd-date').textContent = d.date + (d.kaisai ? '' : '（開催なし）');
+  document.getElementById('ft').textContent = '更新: ' + d.updated;
+  if(d.kaisai){
+    document.getElementById('hd-meet').innerHTML =
+      (d.title||'') + (d.nichime ? ' <b>第'+d.nichime+'日</b>' : '');
+  }
+  // 地形図
+  const terr = document.getElementById('terrain');
+  const tbl = d.rno_table || [];
+  const max = Math.max(...tbl.map(r=>r.in1), 1);
+  tbl.forEach(r=>{
+    const el = document.createElement('div'); el.className='tbar';
+    const col = document.createElement('div'); col.className='col';
+    col.style.height = Math.round(r.in1/max*52)+'px';
+    col.style.background = r.in1 < 40 ? '#d96a55' : (r.in1 >= 58 ? '#5b93bd' : '#41608a');
+    const num = document.createElement('div'); num.className='num'; num.textContent = r.rno;
+    const pct = document.createElement('div'); pct.className='pct'; pct.textContent = Math.round(r.in1);
+    el.append(col,num,pct);
+    el.onclick = ()=>{const c=document.getElementById('race'+r.rno); if(c) c.scrollIntoView({behavior:'smooth'});};
+    terr.appendChild(el);
+  });
+  // レースカード
+  const main = document.getElementById('main');
+  if(!d.kaisai){
+    main.innerHTML = '<div class="nokaisai"><b>本日、鳴門の開催はありません</b>地形図は直近12か月の基礎率です。次回開催日にまた自動更新されます。</div>';
+    return;
+  }
+  d.races.forEach(r=>{
+    const card = document.createElement('div'); card.className='card'; card.id='race'+r.rno;
+    const flags = (r.score>0) ? '<span class="score">崩れ筋 +'+r.score+'</span>' : '';
+    let html = `
+      <div class="card-head">
+        <div class="rno">${r.rno}<small>R</small></div>
+        <div class="rmeta">
+          <div class="rname">${r.rname||''}</div>
+          <div class="deadline">締切 ${r.deadline}</div>
+        </div>
+        <span class="label ${LBL[r.label]||'chukan'}">${r.label}</span>
+      </div>
+      <div class="base">
+        <span>基礎イン率 <b>${r.base_in1!=null?Math.round(r.base_in1)+'%':'—'}</b></span>
+        <span class="man">万舟の住処度 <b>${manRate(r,d)}</b></span>
+        ${flags}
+      </div><table>`;
+    r.boats.forEach(b=>{
+      const badges = (b.badges||[]).map(x=>`<span class="badge ${BADGE(x)}">${x}</span>`).join('');
+      const subs = [];
+      if(b.jiriki!=null) subs.push('全国逃げ率'+b.jiriki+'%');
+      if(b.st_avg) subs.push('平均ST '+b.st_avg);
+      if(b.teiban_rate!=null) subs.push('艇番'+b.teiban+'率 '+b.teiban_rate+'%');
+      if(b.motor2) subs.push('M2率 '+b.motor2);
+      html += `<tr>
+        <td style="width:34px"><div class="bn b${b.teiban}">${b.teiban}</div></td>
+        <td><span class="pname">${b.name}</span><span class="grade g${b.grade}">${b.grade}</span><br>
+            <span class="sub">${subs.join(' ／ ')}</span></td>
+        <td style="text-align:right">${badges}</td>
+      </tr>`;
+    });
+    html += `</table><div class="policy">${r.policy}</div>`;
+    card.innerHTML = html;
+    main.appendChild(card);
+  });
+  function manRate(r, d){
+    const k = d.kikaku_table && d.kikaku_table[r.rname];
+    if(k) return Math.round(k.man)+'%';
+    const row = (d.rno_table||[]).find(x=>x.rno===r.rno);
+    return row ? Math.round(row.man)+'%' : '—';
+  }
+}).catch(e=>{
+  document.getElementById('main').innerHTML =
+    '<div class="nokaisai"><b>データを読み込めませんでした</b>naruto/data.json がまだ生成されていない可能性があります。GitHub Actionsの実行結果を確認してください。</div>';
+});
+</script>
+</body>
+</html>
