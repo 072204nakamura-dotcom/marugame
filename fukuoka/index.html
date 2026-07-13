@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>福岡 穴党ツール</title>
+<style>
+:root{
+  --kachi:#4a1520;      /* 勝色×茜: ヘッダー（博多献上） */
+  --akane:#8c2f39;      /* 茜: 見出し */
+  --kinari:#f4f0ea;     /* 生成: 背景 */
+  --asagi:#3d7ea6;      /* 浅葱: 堅め */
+  --shu:#c04a37;        /* 朱: 穴・警告 */
+  --kincha:#b8862e;     /* 金茶: 注意 */
+  --unami:#1f6f8b;      /* 海錆: 潮 */
+  --sumi:#2b2f36;
+  --paper:#ffffff;
+  --line:#d8d2c8;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic Medium","Noto Sans JP",sans-serif;
+  background:var(--kinari);color:var(--sumi);font-size:14px;line-height:1.55;font-feature-settings:"palt"}
+.wrap{max-width:660px;margin:0 auto;padding-bottom:60px}
+
+header{background:var(--kachi);color:#f2e8e4;padding:14px 16px 10px}
+header .brand{display:flex;align-items:baseline;gap:10px}
+header h1{font-size:19px;font-weight:800;letter-spacing:.06em}
+header h1 .nami{color:#e0a05e}
+header .datebox{font-size:12px;opacity:.85;margin-left:auto;text-align:right;font-variant-numeric:tabular-nums}
+header .meet{font-size:12px;margin-top:4px;opacity:.92}
+header .meet b{color:#ffd98a;font-weight:700}
+.venues{display:flex;gap:6px;margin-top:9px}
+.venues a,.venues .on{font-size:12px;font-weight:800;padding:4px 14px;border-radius:99px;text-decoration:none;letter-spacing:.04em}
+.venues a{color:#e0bcc0;border:1px solid #6e3540;background:transparent}
+.venues .on{background:#f2e8e4;color:var(--kachi)}
+.daybadge{display:inline-block;font-size:11px;font-weight:800;padding:3px 10px;border-radius:99px;margin-top:8px}
+.daybadge.katai{background:#3d7ea6;color:#fff}
+.daybadge.normal{background:#7a8794;color:#fff}
+.daynote{font-size:11px;opacity:.85;margin-top:5px}
+
+/* ===== 潮位カーブ（シグネチャ） ===== */
+.tidebox{background:var(--kachi);padding:4px 16px 14px}
+.tidebox .cap{font-size:10px;color:#caa3a8;letter-spacing:.12em;margin-bottom:2px;display:flex;justify-content:space-between}
+.tidebox svg{width:100%;height:86px;display:block}
+.unari-alert{background:linear-gradient(90deg,#8c2f39,#c04a37);color:#fff;font-size:12.5px;font-weight:800;
+  padding:8px 16px;text-align:center;letter-spacing:.05em}
+
+main{padding:12px 10px}
+.notice{background:#fdf6ec;border:1px solid #e6d3ac;border-radius:10px;padding:9px 12px;font-size:12px;color:#6b5a33;margin-bottom:12px}
+.notice b{color:#8a6a1f}
+
+.card{background:var(--paper);border:1px solid var(--line);border-radius:10px;margin-bottom:12px;overflow:hidden}
+.card.window{border:2px solid var(--shu)}
+.card-head{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--line)}
+.rno{font-size:26px;font-weight:900;color:var(--akane);min-width:52px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.rno small{font-size:13px;font-weight:700}
+.rmeta{flex:1;min-width:0}
+.rname{font-size:14px;font-weight:800;color:var(--akane)}
+.deadline{font-size:11px;color:#6b7683;font-variant-numeric:tabular-nums}
+.label{font-size:11px;font-weight:800;padding:3px 9px;border-radius:99px;white-space:nowrap;color:#fff}
+.label.unari{background:var(--shu)}
+.label.katame1{background:var(--asagi)}
+.label.katame3{background:var(--kincha)}
+.base{display:flex;gap:14px;padding:7px 12px;background:#f6f2ec;font-size:12px;color:#4a5560;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums;flex-wrap:wrap}
+.base b{color:var(--akane);font-weight:800}
+.score{margin-left:auto;font-weight:800;color:var(--shu)}
+.score.zero{color:#8a94a0}
+
+table{width:100%;border-collapse:collapse}
+td{padding:5px 8px;border-bottom:1px dashed #e8e2d8;vertical-align:middle;font-size:13px}
+tr:last-child td{border-bottom:none}
+.bn{width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;font-variant-numeric:tabular-nums}
+.b1{background:#fff;color:#222;border:1.5px solid #999}
+.b2{background:#222;color:#fff}
+.b3{background:#c8352b;color:#fff}
+.b4{background:#1e58c8;color:#fff}
+.b5{background:#d9b400;color:#222}
+.b6{background:#2e9c4f;color:#fff}
+.pname{font-weight:700}
+.pname small{font-weight:600;color:#7a8590;margin-left:5px}
+.mrate{font-size:11.5px;color:#5a6570;font-variant-numeric:tabular-nums;white-space:nowrap}
+.mrate .hi{color:var(--shu);font-weight:800}
+.mrate .lo{color:#8a94a0;font-weight:800}
+.chips{display:flex;flex-wrap:wrap;gap:3px}
+.chip{font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;white-space:nowrap}
+.chip.warn{background:#fbe6e0;color:#a53a28}
+.chip.safe{background:#e3eef6;color:#2c5f80}
+.chip.cut{background:#eee9e0;color:#6f675a;text-decoration:line-through}
+.chip.info{background:#f0ede6;color:#6b6355}
+.chip.hot{background:#fdf0d5;color:#9a6a12}
+.policy{padding:8px 12px;background:#fdf3f0;border-top:1px solid var(--line);font-size:12px;color:#7a3527;font-weight:700}
+.policy div+div{margin-top:3px}
+
+h2.sec{font-size:14px;font-weight:800;color:var(--akane);margin:18px 4px 8px;letter-spacing:.04em}
+.cal{background:var(--paper);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.cal .row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px dashed #e8e2d8;font-size:13px;font-variant-numeric:tabular-nums}
+.cal .row:last-child{border-bottom:none}
+.cal .row.today{background:#fdf3f0}
+.cal .d{font-weight:800;color:var(--akane);min-width:96px}
+.cal .h{color:#4a5560}
+.cal .p{margin-left:auto;font-weight:800;color:var(--unami)}
+.cal .p.big{color:var(--shu)}
+.legend{font-size:11px;color:#7a8590;margin-top:14px;padding:0 4px;line-height:1.9}
+footer{font-size:10.5px;color:#9aa3ad;text-align:center;margin-top:22px}
+.norace{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:26px 16px;text-align:center;color:#6b7683;font-weight:700}
+</style>
+</head>
+<body>
+<!-- 場切替タブはヘッダー内 .venues -->
+<div class="wrap">
+<header>
+  <div class="brand">
+    <h1>福岡 <span class="nami">穴党ツール</span></h1>
+    <div class="datebox" id="datebox">--</div>
+  </div>
+  <div class="meet" id="meet">読み込み中…</div>
+  <div class="venues">
+    <a href="../">丸亀</a><a href="../naruto/">鳴門</a><span class="on">福岡</span>
+  </div>
+  <div id="daytag"></div>
+</header>
+<div class="tidebox">
+  <div class="cap"><span>博多天文潮位（本日）× うねり窓170cm</span><span id="tidemax"></span></div>
+  <svg id="tidesvg" viewBox="0 0 660 86" preserveAspectRatio="none"></svg>
+</div>
+<div class="unari-alert" id="alert" style="display:none"></div>
+
+<main>
+  <div class="notice"><b>直前チェック（自動化不可）</b>：風向が<b>北東</b>ならイン信頼度−10pt級（2・3コース頭の中穴筋／万舟には転化しにくい）。北風は逆にイン堅め。</div>
+  <div id="races"></div>
+
+  <h2 class="sec">うねり窓カレンダー（今後90日・潮位170cm+の時間帯）</h2>
+  <div class="cal" id="cal"></div>
+
+  <div class="legend" id="legend">
+    <b>凡例</b>：うねり窓＝締切時の博多天文潮位170cm以上（万舟率23.5% vs 平常14.2%・検証済み）。窓の買い方＝2頭(差し系)本線・5頭押さえ・1頭ならヒモ広く・6ヒモ厚張り禁物。<br>
+    スコア＝崩れ筋の重ね合わせ：1号艇スローST>.18(+1)／1号艇F1(+1)F2+(+2)／3・4号艇絞りまくり(+1)／2号艇壁弱(+1)／1号艇モーター低▲(+1)。0-1=スルー、2=検討、3+=本気の日。<br>
+    機◎/低▲＝現行世代モーター2連率の上下20%。6ヒモ外し●＝艇番6の3連対率25%未満（全国）。カタメン１＝イン要塞(+12pt)・カタメン３＝イン受難(−7pt)。
+  </div>
+  <footer id="foot"></footer>
+</main>
+</div>
+
+<script>
+const KLABEL = {'カタメン1予':'katame1','カタメン1一':'katame1','カタメン3予':'katame3','カタメン3一':'katame3'};
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+
+function drawTide(vals, races){
+  const svg = document.getElementById('tidesvg');
+  if(!vals){svg.outerHTML='';return}
+  const W=660,H=86,minV=-20,maxV=240;
+  const y=v=>H-6-(v-minV)/(maxV-minV)*(H-14);
+  const x=h=>h/23*W;
+  let d='M';
+  vals.forEach((v,h)=>{d+=`${x(h).toFixed(1)},${y(v).toFixed(1)} `;if(h===0)d+='L'});
+  // 窓帯（170以上の区間を塗る）
+  let bands='';
+  for(let h=0;h<23;h++){
+    if(vals[h]>=170||vals[h+1]>=170){
+      bands+=`<rect x="${x(h)}" y="0" width="${x(h+1)-x(h)}" height="${H}" fill="#c04a37" opacity="0.18"/>`;
+    }
+  }
+  let marks='';
+  (races||[]).forEach(r=>{
+    const [hh,mm]=r.deadline.split(':').map(Number);
+    const px=x(Math.min(hh+mm/60,23));
+    const col=r.unari?'#ffd98a':'#8a6a70';
+    marks+=`<line x1="${px}" y1="${H-6}" x2="${px}" y2="${H-16}" stroke="${col}" stroke-width="${r.unari?2.5:1.5}"/>`;
+  });
+  svg.innerHTML=`
+    ${bands}
+    <line x1="0" y1="${y(170)}" x2="${W}" y2="${y(170)}" stroke="#e0a05e" stroke-width="1" stroke-dasharray="4 4"/>
+    <text x="4" y="${y(170)-4}" fill="#e0a05e" font-size="9">170cm うねり窓</text>
+    <path d="${d}" fill="none" stroke="#7fb6d9" stroke-width="2"/>
+    ${marks}
+    <text x="4" y="${H-2}" fill="#9a7c82" font-size="8">0時</text>
+    <text x="${x(12)}" y="${H-2}" fill="#9a7c82" font-size="8">12時</text>
+    <text x="${W-24}" y="${H-2}" fill="#9a7c82" font-size="8">23時</text>`;
+  document.getElementById('tidemax').textContent='本日最高 '+Math.max(...vals)+'cm';
+}
+
+function chipHtml(c){return `<span class="chip ${c.c}">${esc(c.t)}</span>`}
+
+function raceCard(r){
+  const lab = r.unari? `<span class="label unari">うねり窓 ${r.tide}cm</span>`
+            : KLABEL[r.rname]? `<span class="label ${KLABEL[r.rname]}">${esc(r.rname)}</span>` : '';
+  const rows=r.entries.map(e=>{
+    const mflag=e.motor_flag==='高●'?`<span class="hi">◎${e.motor_r2}%</span>`
+              :e.motor_flag==='低▲'?`<span class="lo">▲${e.motor_r2}%</span>`
+              :(e.motor_r2!=null?`${e.motor_r2}%`:'');
+    return `<tr>
+      <td style="width:34px"><div class="bn b${e.boat}">${e.boat}</div></td>
+      <td><span class="pname">${esc(e.name)}<small>${esc(e.klass||'')}</small></span></td>
+      <td class="mrate">M${e.motor??'-'} ${mflag}</td>
+      <td><div class="chips">${(e.chips||[]).map(chipHtml).join('')}</div></td>
+    </tr>`}).join('');
+  const pol=(r.policy&&r.policy.length)?`<div class="policy">${r.policy.map(p=>`<div>▶ ${esc(p)}</div>`).join('')}</div>`:'';
+  return `<div class="card ${r.unari?'window':''}">
+    <div class="card-head">
+      <div class="rno">${r.race}<small>R</small></div>
+      <div class="rmeta"><div class="rname">${esc(r.rname)}</div>
+      <div class="deadline">締切 ${r.deadline}　潮位 ${r.tide??'-'}cm</div></div>${lab}
+    </div>
+    <div class="base"><span>イン基準 <b>${r.in_base??'-'}%</b></span>
+      <span class="score ${r.score?'':'zero'}">崩れ筋スコア ${r.score}${r.parts.length?'（'+esc(r.parts.join('・'))+'）':''}</span></div>
+    <table>${rows}</table>${pol}</div>`;
+}
+
+fetch('data/racecard.json?'+Date.now()).then(r=>r.json()).then(D=>{
+  document.getElementById('datebox').textContent=D.date+(D.racing?`　第${D.day_n}日`:'');
+  drawTide(D.tide_today, D.races);
+  const windows=(D.races||[]).filter(r=>r.unari);
+  if(windows.length){
+    const a=document.getElementById('alert');
+    a.style.display='block';
+    a.textContent=`本日うねり窓 ${windows.length}レース（${windows.map(r=>r.race+'R').join('・')}）— 万舟警報`;
+  }
+  if(D.racing){
+    document.getElementById('meet').innerHTML=`<b>${esc(D.title)}</b>`;
+    const k=D.daytype==='優勝戦日'||D.daytype==='準優日'||D.daytype==='初日';
+    document.getElementById('daytag').innerHTML=
+      `<span class="daybadge ${D.daytype==='中盤予選'?'normal':'katai'}">${esc(D.daytype)}</span>
+       <div class="daynote">${esc(D.daynote||'')}</div>`;
+    document.getElementById('races').innerHTML=D.races.map(raceCard).join('');
+  }else{
+    document.getElementById('meet').textContent='本日は非開催';
+    document.getElementById('races').innerHTML='<div class="norace">本日、福岡は非開催です。<br>下のうねり窓カレンダーで次の窓をチェック。</div>';
+  }
+  const today=D.date;
+  document.getElementById('cal').innerHTML=(D.unari_cal||[]).map(c=>
+    `<div class="row ${c.date===today?'today':''}"><span class="d">${c.date.slice(5).replace('-','/')}${c.date===today?'（本日）':''}</span>
+     <span class="h">${c.start}時〜${c.end}時</span>
+     <span class="p ${c.peak>=200?'big':''}">最高${c.peak}cm</span></div>`).join('')
+    ||'<div class="row">今後90日に窓なし（冬場は昼の潮位が170cmに届きません）</div>';
+  document.getElementById('foot').textContent=
+    `更新 ${D.updated}｜モーター世代起点 ${D.gen_start}｜潮位=気象庁博多(QF)天文潮位｜検証: 福岡_うねり窓検証レポート`;
+}).catch(e=>{
+  document.getElementById('meet').textContent='データ読み込みエラー（初回ビルド前かも）';
+});
+</script>
+</body>
+</html>
