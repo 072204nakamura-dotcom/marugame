@@ -17,3 +17,37 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+
+        with:
+
+          python-version: '3.11'
+
+      - name: deps
+
+        run: pip install lhafile
+
+      - name: build
+
+        run: python tsu/tools/daily.py
+
+      - name: push
+
+        run: |
+
+          git config user.name "github-actions"
+
+          git config user.email "actions@github.com"
+
+          git add tsu/data.json
+
+          git diff --cached --quiet || git commit -m "tsu daily build"
+
+          git pull --rebase origin main || true
+
+          git push
