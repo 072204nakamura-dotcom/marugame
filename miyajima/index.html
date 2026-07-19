@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>宮島 穴党ツール</title>
+<style>
+:root{
+  --shu-fukai:#4a1f1a;   /* 深朱: ヘッダー（厳島の社殿の陰影） */
+  --shu:#b5432f;         /* 朱: 穴・大鳥居 */
+  --benigara:#8c3226;    /* 紅殻: 見出し */
+  --shironeri:#f3efe9;   /* 白練: 背景 */
+  --asagi:#3d7ea6;       /* 浅葱: 堅め */
+  --kincha:#b8862e;      /* 金茶: 二択 */
+  --sumi:#2b2b28;
+  --paper:#ffffff;
+  --line:#ddd4c8;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic Medium","Noto Sans JP",sans-serif;
+  background:var(--shironeri); color:var(--sumi); font-size:14px; line-height:1.55;
+  font-feature-settings:"palt";
+}
+.wrap{max-width:660px;margin:0 auto;padding-bottom:60px}
+
+header{background:var(--shu-fukai);color:#f4e8de;padding:14px 16px 10px}
+header .brand{display:flex;align-items:baseline;gap:10px}
+header h1{font-size:19px;font-weight:800;letter-spacing:.06em}
+header h1 .torii{color:#e8a088}
+header .datebox{font-size:12px;opacity:.85;margin-left:auto;text-align:right;font-variant-numeric:tabular-nums}
+header .meet{font-size:12px;margin-top:4px;opacity:.9}
+header .meet b{color:#ffd98a;font-weight:700}
+.venues{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap}
+.venues a,.venues .on{font-size:12px;font-weight:800;padding:4px 12px;border-radius:99px;text-decoration:none;letter-spacing:.04em}
+.venues a{color:#e0c2b5;border:1px solid #6e4038;background:transparent}
+.venues a:active{background:#5c2f28}
+.venues .on{background:#f4e8de;color:var(--shu-fukai)}
+
+.terrain{background:var(--shu-fukai);padding:2px 16px 14px}
+.terrain .cap{font-size:10px;color:#c99e8e;letter-spacing:.12em;margin-bottom:4px}
+.tbars{display:flex;align-items:flex-end;gap:3px;height:64px}
+.tbar{flex:1;display:flex;flex-direction:column;justify-content:flex-end;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.tbar .col{border-radius:2px 2px 0 0;min-height:4px;transition:height .5s ease}
+.tbar .num{font-size:9px;text-align:center;color:#d0aa99;margin-top:3px;font-variant-numeric:tabular-nums}
+.tbar .pct{font-size:8px;text-align:center;color:#9c7466;font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion: reduce){.tbar .col{transition:none}}
+
+main{padding:12px 10px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:10px;margin-bottom:12px;overflow:hidden;scroll-margin-top:8px}
+.card-head{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--line)}
+.rno{font-size:26px;font-weight:900;color:var(--benigara);min-width:52px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.rno small{font-size:13px;font-weight:700}
+.rmeta{flex:1;min-width:0}
+.rname{font-size:14px;font-weight:800;color:var(--benigara)}
+.deadline{font-size:11px;color:#6b7683;font-variant-numeric:tabular-nums}
+.label{font-size:11px;font-weight:800;padding:3px 9px;border-radius:99px;white-space:nowrap;color:#fff}
+.label.ana{background:var(--shu)}
+.label.katame{background:var(--asagi)}
+.label.nitaku{background:var(--kincha)}
+.label.chukan{background:#8a837a}
+.base{display:flex;gap:14px;padding:7px 12px;background:#f6f2ec;font-size:12px;color:#4a5560;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.base b{color:var(--benigara);font-weight:800}
+.base .man b{color:var(--shu)}
+.score{margin-left:auto;font-weight:800;color:var(--shu)}
+
+table{width:100%;border-collapse:collapse}
+td{padding:5px 8px;border-bottom:1px dashed #ece5da;vertical-align:middle;font-size:13px}
+tr:last-child td{border-bottom:none}
+.bn{width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;
+    font-weight:900;font-size:14px;font-variant-numeric:tabular-nums}
+.b1{background:#fff;color:#222;border:1.5px solid #999}
+.b2{background:#222;color:#fff}
+.b3{background:#c8352b;color:#fff}
+.b4{background:#1e58c8;color:#fff}
+.b5{background:#f2c500;color:#333}
+.b6{background:#1f9e50;color:#fff}
+.pname{font-weight:700}
+.grade{font-size:10px;font-weight:800;padding:1px 5px;border-radius:3px;margin-left:5px;vertical-align:1px}
+.gA1{background:#fbe3c9;color:#9a5b12}
+.gA2{background:#fdf1de;color:#a97c2f}
+.gB1,.gB2{background:#efece6;color:#7a8590}
+.sub{font-size:10.5px;color:#7c8794;font-variant-numeric:tabular-nums}
+.badge{display:inline-block;font-size:10px;font-weight:800;padding:1.5px 6px;border-radius:4px;margin:1px 3px 1px 0}
+.bg-f{background:#fbe0db;color:#a1301f}
+.bg-st{background:#fdeccc;color:#8f6410}
+.bg-mk{background:#e2ecf7;color:#245a9e}
+.bg-out{background:#2b2b28;color:#ffd98a}
+.bg-low{background:#efece6;color:#5b6672;border:1px solid #ddd4c8}
+
+.policy{padding:9px 12px;background:#fbf7ef;border-top:1px solid #ece0cd;font-size:12.5px;color:#5a4d2e}
+.policy::before{content:"方針 ";font-weight:900;color:var(--kincha);letter-spacing:.08em}
+
+.nokaisai{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:28px 16px;text-align:center;color:#5a6572}
+.nokaisai b{display:block;font-size:16px;color:var(--benigara);margin-bottom:6px}
+.notes{margin:18px 4px 0;font-size:11px;color:#6b7683;line-height:1.7}
+.notes b{color:var(--shu)}
+footer{padding:14px;text-align:center;font-size:10px;color:#a0968a}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="brand">
+    <h1>宮島 <span class="torii">⛩</span> 穴党ツール</h1>
+    <div class="datebox" id="hd-date"></div>
+  </div>
+  <div class="meet" id="hd-meet"></div>
+  <nav class="venues">
+    <a href="../">丸亀</a>
+    <a href="../edogawa/">江戸川</a>
+    <a href="../fukuoka/">福岡</a>
+    <a href="../toda/">戸田</a>
+    <a href="../naruto/">鳴門</a>
+    <span class="on">宮島</span>
+    <a href="../tsu/">津</a>
+    <a href="../heiwajima/">平和島</a>
+  </nav>
+</header>
+<div class="terrain">
+  <div class="cap">イン率地形図（直近12か月・レース番号別）— 谷が穴場。1Rは要塞</div>
+  <div class="tbars" id="terrain"></div>
+</div>
+<main id="main"></main>
+<div class="notes">
+  <div><b>直前確認（このページには出ない情報）</b>：<b>北東/東の風2m以上＝イン割引・穴加点</b>（実測−5.8pt・秋に頻発・暫定採用）。無風はイン信頼UP（+8.2pt）。</div>
+  <div>宮島は<b>6コースが残らない水面</b>（3連率20.6%＝全国以下）。崩れの受け皿は2-3-4。6を厚く買う他場フォームは持ち込まない。</div>
+  <div>優勝戦日はインが締まる（+5.5pt）。初日の荒れは宮島には無い。潮（干満・潮流）は検証済みで<b>無効</b>——見なくてよい。</div>
+  <div>スコアは候補レースの絞り込み用。機械買いは控除の壁の内側。オッズの歪みは締切前に人間が判断。</div>
+</div>
+<footer id="ft"></footer>
+</div>
+<script>
+const LBL = {'鉄板1R':'katame','イン堅め':'katame','穴の巣':'ana','堅いか万舟':'nitaku','中間':'chukan'};
+const BADGE = b => {
+  if(b.startsWith('F')) return 'bg-f';
+  if(b.startsWith('ST遅')) return 'bg-st';
+  if(b.startsWith('ST一')) return 'bg-mk';
+  if(b.includes('イン不安')) return 'bg-out';
+  if(b.includes('外に地力')) return 'bg-mk';
+  return 'bg-low';
+};
+fetch('data.json?t=' + Date.now()).then(r=>r.json()).then(d=>{
+  document.getElementById('hd-date').textContent = d.date + (d.kaisai ? '' : '（開催なし）');
+  document.getElementById('ft').textContent = '更新: ' + d.updated;
+  if(d.kaisai){
+    document.getElementById('hd-meet').innerHTML =
+      (d.title||'') + (d.nichime ? ' <b>第'+d.nichime+'日</b>' : '');
+  }
+  const terr = document.getElementById('terrain');
+  const tbl = d.rno_table || [];
+  const max = Math.max(...tbl.map(r=>r.in1), 1);
+  tbl.forEach(r=>{
+    const el = document.createElement('div'); el.className='tbar';
+    const col = document.createElement('div'); col.className='col';
+    col.style.height = Math.round(r.in1/max*52)+'px';
+    col.style.background = r.in1 < 50 ? '#d96a55' : (r.in1 >= 65 ? '#5b93bd' : '#8a5a4a');
+    const num = document.createElement('div'); num.className='num'; num.textContent = r.rno;
+    const pct = document.createElement('div'); pct.className='pct'; pct.textContent = Math.round(r.in1);
+    el.append(col,num,pct);
+    el.onclick = ()=>{const c=document.getElementById('race'+r.rno); if(c) c.scrollIntoView({behavior:'smooth'});};
+    terr.appendChild(el);
+  });
+  const main = document.getElementById('main');
+  if(!d.kaisai){
+    main.innerHTML = '<div class="nokaisai"><b>本日、宮島の開催はありません</b>地形図は直近12か月の基礎率です。次回開催日にまた自動更新されます。</div>';
+    return;
+  }
+  d.races.forEach(r=>{
+    const card = document.createElement('div'); card.className='card'; card.id='race'+r.rno;
+    const flags = (r.score>0) ? '<span class="score">崩れ筋 +'+r.score+'</span>' : '';
+    let html = `
+      <div class="card-head">
+        <div class="rno">${r.rno}<small>R</small></div>
+        <div class="rmeta">
+          <div class="rname">${r.rname||''}</div>
+          <div class="deadline">締切 ${r.deadline}</div>
+        </div>
+        <span class="label ${LBL[r.label]||'chukan'}">${r.label}</span>
+      </div>
+      <div class="base">
+        <span>基礎イン率 <b>${r.base_in1!=null?Math.round(r.base_in1)+'%':'—'}</b></span>
+        <span class="man">万舟の住処度 <b>${manRate(r,d)}</b></span>
+        ${flags}
+      </div><table>`;
+    r.boats.forEach(b=>{
+      const badges = (b.badges||[]).map(x=>`<span class="badge ${BADGE(x)}">${x}</span>`).join('');
+      const subs = [];
+      if(b.jiriki!=null) subs.push('全国逃げ率'+b.jiriki+'%');
+      if(b.st_avg) subs.push('平均ST '+b.st_avg.toFixed(2));
+      if(b.motor2!=null) subs.push('M2率 '+b.motor2);
+      html += `<tr>
+        <td style="width:34px"><div class="bn b${b.teiban}">${b.teiban}</div></td>
+        <td><span class="pname">${b.name}</span><span class="grade g${b.grade}">${b.grade}</span><br>
+            <span class="sub">${subs.join(' ／ ')}</span></td>
+        <td style="text-align:right">${badges}</td>
+      </tr>`;
+    });
+    html += `</table><div class="policy">${r.policy}</div>`;
+    card.innerHTML = html;
+    main.appendChild(card);
+  });
+  function manRate(r, d){
+    const row = (d.rno_table||[]).find(x=>x.rno===r.rno);
+    return row ? Math.round(row.man)+'%' : '—';
+  }
+}).catch(e=>{
+  document.getElementById('main').innerHTML =
+    '<div class="nokaisai"><b>データを読み込めませんでした</b>miyajima/data.json がまだ生成されていない可能性があります。GitHub Actionsの実行結果を確認してください。</div>';
+});
+</script>
+</body>
+</html>
