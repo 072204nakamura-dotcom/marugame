@@ -79,10 +79,10 @@ def main():
         if e['course'] == '4':
             c4[(e['date'], e['rno'])] = e['touban']
     # 仕様書には「まくり屋」の定義が2つある。
-    #   A) §5-1・指示書§6 … まくり力 >= +8（地力で補正した収縮値。アプリはこちらを実装）
-    #   B) §2-②          … 実まくり率 >= 20% かつ 全国4コース10走以上（効果61.2%・n=121の出典）
-    # どちらも効果は同方向・同程度だが、選ばれる選手集合が違うので数字は一致しない。
-    # 毎日この両方を出して、乖離が広がっていないか見えるようにしておく。
+    #   A) §5-1 … まくり力 >= +8（表の印。参考として毎日出す）
+    #   B) §2-② … 実まくり率 >= 20% かつ 全国4コース10走以上
+    #             （効果61.2%・n=121の出典。★アプリはこちらを判定に使う）
+    # 両方の数字を毎日出して、乖離が広がっていないか見えるようにしておく。
     rate4 = {r['登番']: (float(r['実4まくり率']), int(r['全国4走'])) for r in mak}
 
     def effect(sel):
@@ -98,16 +98,19 @@ def main():
         if e['course'] == '4':
             ent4[(e['date'], e['rno'])] = e
 
-    nA, mA, wA = effect(lambda tb: power.get(tb, -99) >= t.MAKURIYA_TH)
-    nB, mB, wB = effect(lambda tb: tb in rate4 and rate4[tb][0] >= 20 and rate4[tb][1] >= 10)
-    print('    A) まくり力>=+8（実装）        n=%3d まくり系%.1f%% 4コ勝率%.1f%%' % (nA, mA, wA))
-    print('    B) 実まくり率>=20%%（§2-②の出典）n=%3d まくり系%.1f%% 4コ勝率%.1f%%' % (nB, mB, wB))
-    lift = mA - base['makuri_kei']
+    nA, mA, wA = effect(lambda tb: power.get(tb, -99) >= t.MAKURIYA_POWER_TH)
+    nB, mB, wB = effect(lambda tb: tb in rate4
+                        and rate4[tb][0] >= t.MAKURIYA_RATE_TH
+                        and rate4[tb][1] >= t.MAKURIYA_MIN_N)
+    print('    A) まくり力>=+8（参考）          n=%3d まくり系%.1f%% 4コ勝率%.1f%%' % (nA, mA, wA))
+    print('    B) 実まくり率>=20%%（★判定に使用） n=%3d まくり系%.1f%% 4コ勝率%.1f%%' % (nB, mB, wB))
+    check('判定に使うn が仕様書の n=121 と近い', 90 <= nB <= 155, '実測 n=%d' % nB)
+    lift = mB - base['makuri_kei']
     check('まくり屋カド時のまくり系がベースを大きく上回る（+15pt以上）', lift >= 15,
           '実測 %.1f%% vs ベース%.1f%% ＝ +%.1fpt（n=%d）'
-          % (mA, base['makuri_kei'], lift, nA))
-    check('まくり屋カド時の4コース勝率 約30%（仕様書 13.4→30.1%）', 22 <= wA <= 40,
-          '実測 %.1f%%' % wA)
+          % (mB, base['makuri_kei'], lift, nB))
+    check('まくり屋カド時の4コース勝率 約30%（仕様書 13.4→30.1%）', 22 <= wB <= 42,
+          '実測 %.1f%%' % wB)
 
     print('=== 6. 採用シグナル②下側 カド消し（仕様書2-②: 4コース勝率6.7%） ===')
     low = [k for k, tb in c4.items() if power.get(tb, 99) <= t.KADOKESHI_TH]
@@ -133,9 +136,14 @@ def main():
           '実測 %.1f%%（n=%d）' % (r6l, len(low6)))
 
     print('=== 8. 判定ロジック（指示書§6 のフロー） ===')
-    T_MAK = {r['登番']: {'まくり力': float(r['まくり力'])} for r in mak}
+    T_MAK = {r['登番']: {'まくり力': float(r['まくり力']),
+                        '実4まくり率': float(r['実4まくり率']),
+                        '全国4走': int(r['全国4走'])} for r in mak}
     T_NOK = {r['登番']: {'残し残差': float(r['残し残差'])} for r in nok}
-    top_mak = mak[0]['登番']
+    # まくり屋の検体は判定に使う定義B（実まくり率>=20%・10走以上）を満たす選手から取る
+    top_mak = next(r['登番'] for r in mak
+                   if float(r['実4まくり率']) >= t.MAKURIYA_RATE_TH
+                   and int(r['全国4走']) >= t.MAKURIYA_MIN_N)
     low_mak = mak[-1]['登番']
     top_nok = nok[0]['登番']
     low_nok = nok[-1]['登番']
@@ -143,6 +151,7 @@ def main():
     nok_resid = {r['登番']: float(r['残し残差']) for r in nok}
     neutral = next(r['登番'] for r in mak
                    if abs(float(r['まくり力'])) < 1
+                   and float(r['実4まくり率']) < t.MAKURIYA_RATE_TH
                    and t.KIERU_TH < nok_resid.get(r['登番'], 0) < t.NOKOSHI_TH)
 
     def mk(regnos):

@@ -48,8 +48,16 @@ DATA = os.environ.get('TODA_DATA', 'data/toda')
 OUT_JSON = os.environ.get('TODA_OUT', 'toda/data.json')
 KCACHE = os.environ.get('TODA_KCACHE', os.path.join(tempfile.gettempdir(), 'toda_k'))
 
-MAKURIYA_TH = 8.0          # まくり力 +8以上 → まくり屋カド（仕様書 5-1）
-KADOKESHI_TH = -4.0        # まくり力 −4以下 → まくらない型＝カド消し
+# まくり屋カドの判定は仕様書§2-②の定義を使う。
+#   「4コースの選手の全国4コース・まくり系1着率が20%以上（全国4コース10走以上）」
+#   → まくり系決着 38.3%→61.2%（n=121・z=+5.18）はこの定義で測られた値。
+# 仕様書5-1の「まくり力+8以上」は表の印としては残すが、フラグ判定には使わない
+# （両定義は選ぶ選手集合が違い、n=121を再現するのは実まくり率のほう）。
+MAKURIYA_RATE_TH = 20.0    # 実4コースまくり系1着率がこれ以上 → まくり屋カド
+MAKURIYA_MIN_N = 10        # 同上・全国4コースの最低走数
+MAKURIYA_POWER_TH = 8.0    # 表の「まくり屋」印（表示・集計用。判定には使わない）
+KADOKESHI_TH = -4.0        # まくり力 −4以下 → まくらない型＝カド消し（下側は§2-②が
+                           #                    まくり力で定義しているのでこちらを使う）
 NOKOSHI_TH = 6.0           # 残し残差 +6以上 → 6残す（仕様書 5-2）
 KIERU_TH = -6.0            # 残し残差 −6以下 → 6切り
 MIN_C4 = 15                # 全国4コース15走未満は表から除外
@@ -540,8 +548,9 @@ def judge_race(r, T_MAK, T_NOK):
         row = T_MAK.get(b4['regno'])
         if row:
             p = float(row['まくり力'])
-            subs[4].append('まくり力 %+.1f' % p)
-            if p >= MAKURIYA_TH:
+            rate, n4 = float(row['実4まくり率']), int(row['全国4走'])
+            subs[4].append('4コースまくり率 %.1f%%（%d走・まくり力 %+.1f）' % (rate, n4, p))
+            if rate >= MAKURIYA_RATE_TH and n4 >= MAKURIYA_MIN_N:
                 score += 2
                 kado = 'makuriya'
                 flags.append('まくり屋カド')
@@ -697,19 +706,23 @@ def main():
     mak, nok = build_tables(counts, names)
     write_table(os.path.join(DATA, 'toda_makuriya.csv'), mak, MAK_COLS)
     write_table(os.path.join(DATA, 'toda_nokoshi6.csv'), nok, NOK_COLS)
-    n_my = sum(1 for r in mak if r['power'] >= MAKURIYA_TH)
+    n_my = sum(1 for r in mak
+               if r['rate4'] >= MAKURIYA_RATE_TH and r['n4'] >= MAKURIYA_MIN_N)
+    n_pw = sum(1 for r in mak if r['power'] >= MAKURIYA_POWER_TH)
     n_kk = sum(1 for r in mak if r['power'] <= KADOKESHI_TH)
     n_nk = sum(1 for r in nok if r['resid'] >= NOKOSHI_TH)
     n_ki = sum(1 for r in nok if r['resid'] <= KIERU_TH)
-    print('  選手表: まくり屋表%d人（まくり屋%d/カド消し%d） 残し表%d人（残す%d/消える%d）'
-          % (len(mak), n_my, n_kk, len(nok), n_nk, n_ki))
+    print('  選手表: まくり屋表%d人（まくり屋%d［参考:まくり力+8は%d］/カド消し%d）'
+          ' 残し表%d人（残す%d/消える%d）'
+          % (len(mak), n_my, n_pw, n_kk, len(nok), n_nk, n_ki))
 
     base = base_stats(races, ents)
     if base:
         print('  当地ベース: %d日 %dレース イン%.1f%% 万舟%.1f%% まくり系%.1f%%'
               % (base['days'], base['races'], base['in1'], base['man'], base['makuri_kei']))
 
-    T_MAK = {r['touban']: {'まくり力': r['power']} for r in mak}
+    T_MAK = {r['touban']: {'まくり力': r['power'], '実4まくり率': r['rate4'],
+                           '全国4走': r['n4']} for r in mak}
     T_NOK = {r['touban']: {'残し残差': r['resid']} for r in nok}
 
     data = dict(date=TODAY.isoformat(),
