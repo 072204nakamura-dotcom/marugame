@@ -1,0 +1,48 @@
+name: toda-daily
+
+# 戸田(02) 穴党ツール — 毎朝のレースカード生成
+#
+# cron は既存会場と重ならない枠を使う:
+#   22:00 build(丸亀) / 22:00 naruto / 22:20 fukuoka / 22:30 tsu / 22:40 heiwajima / 22:50 ← ここ
+# UTC 22:50 = 日本時間 翌朝 7:50。
+#
+# 前日ぶんのKファイルだけを差分で取り込むので、毎朝の所要は数十秒で済む
+# （data/toda/cursor.txt が前回処理日を覚えている）。
+on:
+  schedule:
+    - cron: '50 22 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30      # 欠測が続いて差分が溜まった場合の取り直しに余裕を持たせる
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: deps
+        run: pip install lhafile
+
+      - name: build
+        run: python scripts/toda/toda_daily.py
+
+      # 採点仕様と受け入れ基準の回帰テスト。生成後のデータに対して走らせる。
+      - name: test
+        run: python scripts/toda/test_toda.py
+
+      - name: push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add toda/data.json data/toda
+          git diff --cached --quiet || git commit -m "toda daily build $(date +%F)"
+          git pull --rebase origin main || true
+          git push
