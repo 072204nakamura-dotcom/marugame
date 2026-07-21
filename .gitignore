@@ -1,0 +1,6 @@
+# Python の実行時キャッシュ（環境ごとに変わるので共有しない）
+__pycache__/
+*.py[cod]
+
+# ビルドスクリプトが使う一時フォルダ（scripts/build.py の TMP_DIR）
+_tmp/
