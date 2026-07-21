@@ -20,6 +20,12 @@
   .wrap{max-width:720px;margin:0 auto;padding:12px}
   h1{font-size:19px;margin:6px 0 2px}
   .sub{color:var(--sub);font-size:12px;margin-bottom:10px}
+  .venues{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 12px}
+  .venues a,.venues .on{font-size:12px;font-weight:800;padding:4px 14px;border-radius:99px;
+       text-decoration:none;letter-spacing:.04em}
+  .venues a{color:#bcd0e0;border:1px solid var(--line);background:transparent}
+  .venues a:active{background:#24384f}
+  .venues .on{background:#e8eef5;color:#17263b}
   .tabs{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
   .tab{background:var(--card);border:1px solid var(--line);color:var(--tx);
        border-radius:8px;padding:8px 10px;cursor:pointer;font-size:14px}
@@ -55,11 +61,13 @@
        border-radius:10px;padding:12px;margin:10px 0}
   .loading{color:var(--sub);padding:30px 0;text-align:center}
 </style>
+<script src="venues.js" defer></script>
 </head>
 <body>
 <div class="wrap">
   <h1>丸亀 穴党ツール</h1>
   <div class="sub" id="updated">読み込み中...</div>
+  <nav class="venues" data-venue=""></nav>
   <div id="app" class="loading">データを読み込んでいます...</div>
   <div class="note">
     ・進入は枠なり仮定（1-3コース=スロー、4-6=ダッシュのSTで判定）<br>

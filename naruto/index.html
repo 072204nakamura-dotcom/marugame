@@ -33,7 +33,7 @@ header h1 .uzu{color:#7fb6d9}
 header .datebox{font-size:12px;opacity:.85;margin-left:auto;text-align:right;font-variant-numeric:tabular-nums}
 header .meet{font-size:12px;margin-top:4px;opacity:.9}
 header .meet b{color:#ffd98a;font-weight:700}
-.venues{display:flex;gap:6px;margin-top:9px}
+.venues{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
 .venues a,.venues .on{font-size:12px;font-weight:800;padding:4px 14px;border-radius:99px;text-decoration:none;letter-spacing:.04em}
 .venues a{color:#bcd0e0;border:1px solid #3d5573;background:transparent}
 .venues a:active{background:#24384f}
@@ -103,6 +103,7 @@ tr:last-child td{border-bottom:none}
 .notes b{color:var(--shu)}
 footer{padding:14px;text-align:center;font-size:10px;color:#93a1ad}
 </style>
+<script src="../venues.js" defer></script>
 </head>
 <body>
 <div class="wrap">
@@ -112,10 +113,7 @@ footer{padding:14px;text-align:center;font-size:10px;color:#93a1ad}
     <div class="datebox" id="hd-date"></div>
   </div>
   <div class="meet" id="hd-meet"></div>
-  <nav class="venues">
-    <a href="../">丸亀</a>
-    <span class="on">鳴門</span>
-  </nav>
+  <nav class="venues" data-venue="naruto"></nav>
 </header>
 <div class="terrain">
   <div class="cap">イン率地形図（直近12か月・レース番号別）— 谷が穴場</div>
