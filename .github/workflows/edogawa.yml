@@ -1,0 +1,49 @@
+name: edogawa-daily
+
+# 江戸川(03) 穴党ツール — 毎朝のレースカード生成
+#
+# cron は既存会場と重ならない枠を使う（指示書§9）:
+#   22:00 build(丸亀) / 22:00 naruto / 22:10 ← ここ / 22:20 fukuoka
+#   22:30 tsu / 22:40 heiwajima / 22:50 toda
+# UTC 22:10 = 日本時間 翌朝 7:10（JST 07:00 台に完了する）。
+#
+# 前日ぶんのKファイルだけを差分で取り込むので毎朝の所要は短い
+# （data/edogawa/cursor.txt が前回処理日を覚えている）。
+on:
+  schedule:
+    - cron: '10 22 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30      # 欠測が続いて差分が溜まった場合の取り直しに余裕を持たせる
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: deps
+        run: pip install lhafile
+
+      - name: build
+        run: python scripts/edogawa/edogawa_daily.py
+
+      # 指示書§8の受け入れテスト。落ちたら公開せず前回のページを残す。
+      - name: test
+        run: python scripts/edogawa/test_edogawa.py
+
+      - name: push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add edogawa/data.json data/edogawa
+          git diff --cached --quiet || git commit -m "edogawa daily build $(date +%F)"
+          git pull --rebase origin main || true
+          git push
