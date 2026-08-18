@@ -1,0 +1,41 @@
+name: miyajima-daily
+
+# 宮島(17) 穴党ツール — 毎朝の data.json 生成
+#
+# cron は仕様書（docs/miyajima/spec_miyajima.md §8-7）の指定どおり
+# '0 22 * * *'（UTC 22:00 = JST 翌朝 7:00）。丸亀・鳴門と同時刻にして
+# mbrace への負荷を朝の1回に集約する方針（他場の分散方針とは意図が異なる）。
+on:
+  schedule:
+    - cron: '0 22 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: deps
+        run: pip install lhafile
+
+      - name: build
+        run: python build_miyajima.py
+
+      - name: push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add miyajima/data.json
+          git diff --cached --quiet || git commit -m "miyajima daily build $(date +%F)"
+          git pull --rebase origin main || true
+          git push
