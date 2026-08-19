@@ -109,14 +109,18 @@ def jiriki(regno):
     return round((w + 20 * P0) / (n + 20) * 100, 1)
 
 # ---------- 津式スコアリング ----------
-def score_race(r, day_n):
+def score_race(r, day_n, kikaku_day=True):
     score, badges, notes = 0, {b['teiban']: [] for b in r['boats']}, []
     rno = r['rno']
-    # 番組構造
-    if rno == 4:
-        score += 2; notes.append('津の主戦場4R（イン36%・万舟23%）。崩れは差し系＝2-1-X主軸、2-3/2-4が万舟ゾーン。3は頭でなくヒモ。')
-    if rno == 7:
-        score += 1; notes.append('準穴ゾーン7R（イン43%）。')
+    # 番組構造（企画レースがある通常編成の日のみ有効）
+    if kikaku_day:
+        if rno == 4:
+            score += 2; notes.append('津の主戦場4R（イン36%・万舟23%）。崩れは差し系＝2-1-X主軸、2-3/2-4が万舟ゾーン。3は頭でなくヒモ。')
+        if rno == 7:
+            score += 1; notes.append('準穴ゾーン7R（イン43%）。')
+    else:
+        if rno == 1:
+            notes.append('特別編成の節（企画レースなし）＝レース番号シグナルと地形図の基礎率は本日適用外。')
     # 節内カーブ
     if day_n:
         if day_n <= 3:
@@ -203,8 +207,8 @@ def score_race(r, day_n):
         b.pop('motor_no', None)
     return score, notes
 
-def label_for(rno, score):
-    if rno in (1, 5):
+def label_for(rno, score, kikaku_day=True):
+    if kikaku_day and rno in (1, 5):
         return '鉄板企画'
     if score >= 4:
         return '穴の巣'
@@ -236,10 +240,11 @@ def main():
         data['kaisai'] = True
         data['title'] = parsed['title']
         data['nichime'] = parsed['day_n']
+        kikaku_day = any(('ッキー' in r['rname'] or 'ールド' in r['rname']) for r in parsed['races'])
         out_races = []
         for r in parsed['races']:
-            sc, notes = score_race(r, parsed['day_n'])
-            lab = label_for(r['rno'], sc)
+            sc, notes = score_race(r, parsed['day_n'], kikaku_day)
+            lab = label_for(r['rno'], sc, kikaku_day)
             base = next((x for x in RNO_TABLE if x['rno'] == r['rno']), None)
             out_races.append(dict(
                 rno=r['rno'], rname=r['rname'], deadline=r['deadline'],
