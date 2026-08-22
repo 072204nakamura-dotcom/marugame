@@ -137,6 +137,7 @@ footer{font-size:10.5px;color:#9aa3ad;text-align:center;margin-top:22px}
     スコア＝崩れ筋の重ね合わせ：1号艇スローST>.18(+1)／1号艇F1(+1)F2+(+2)／3・4号艇絞りまくり(+1)／2号艇壁弱(+1)／1号艇モーター低▲(+1)。0-1=スルー、2=検討、3+=本気の日。<br>
     機◎/低▲＝現行世代モーター2連率の上下20%。6ヒモ外し●＝艇番6の3連対率25%未満（全国）。カタメン１＝イン要塞(+12pt)・カタメン３＝イン受難(−7pt)。
   </div>
+  <div class="legend" id="evline" style="margin-top:6px"></div>
   <footer id="foot"></footer>
 </main>
 </div>
@@ -237,6 +238,16 @@ fetch('data/racecard.json?'+Date.now()).then(r=>r.json()).then(D=>{
 }).catch(e=>{
   document.getElementById('meet').textContent='データ読み込みエラー（初回ビルド前かも）';
 });
+// うねり窓EV通算（scripts/fukuoka_ev.py が毎朝生成。無ければ何も出さない）
+fetch('data/ev_summary.json?'+Date.now()).then(r=>r.json()).then(E=>{
+  try{
+    const s8=E.bands.S8, s20=E.bands.S20;
+    const line=(nm,b)=>nm+' n='+b.n+' 的中'+b.hits+'本 回収率'+(b.roi==null?'—':b.roi+'%')+'（市場含意'+b.mkt_implied_fair+'%）';
+    document.getElementById('evline').innerHTML=
+      '<b>窓EV通算</b>（確定オッズ照合・'+E.covered_days+'日分）：'+line('S8',s8)+' ／ '+line('S20',s20)+
+      (E.window_races<30?'<br>※窓レース'+E.window_races+'R＝サンプル不足。毎朝自動で貯まる（30R超で本判定）':'');
+  }catch(e){}
+}).catch(()=>{});
 </script>
 </body>
 </html>
