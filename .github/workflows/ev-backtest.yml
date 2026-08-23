@@ -1,0 +1,39 @@
+name: ev-backtest-weekly
+
+# 全場共通 EVバックテスト v1（シグナルレース × 確定オッズ照合）
+# 週1回で十分（判定は100R貯まってから）。毎朝の各場ビルド（UTC 22:00〜22:50）と重ならない
+# UTC 月曜 00:00 = JST 月曜 09:00 に実行。
+on:
+  schedule:
+    - cron: '0 0 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: deps
+        run: pip install lhafile
+
+      - name: EVバックテスト（フル再計算）
+        run: python scripts/ev_backtest.py
+
+      - name: push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add data/ev_backtest_log.csv data/ev_backtest_summary.json
+          git diff --cached --quiet || git commit -m "ev backtest weekly $(date +%F)"
+          git pull --rebase origin main || true
+          git push

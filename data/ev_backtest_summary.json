@@ -1,0 +1,284 @@
+{
+ "09": {
+  "name": "津",
+  "label": "4R企画穴ゾーン(z=-2.3/-4.5)",
+  "days": 2,
+  "head1": {
+   "n": 2,
+   "hits": 1,
+   "roi": 23.8,
+   "roi_haircut": 18.8,
+   "hit_rate": 50.0,
+   "mkt_fair": 60.9,
+   "edge_z": -0.32,
+   "max_miss_streak": 1,
+   "max_dd_yen": -3050
+  },
+  "head2": {
+   "n": 2,
+   "hits": 0,
+   "roi": 0.0,
+   "roi_haircut": -5.0,
+   "hit_rate": 0.0,
+   "mkt_fair": 10.3,
+   "edge_z": -0.49,
+   "max_miss_streak": 2,
+   "max_dd_yen": -4000
+  },
+  "head3": {
+   "n": 2,
+   "hits": 0,
+   "roi": 0.0,
+   "roi_haircut": -5.0,
+   "hit_rate": 0.0,
+   "mkt_fair": 3.9,
+   "edge_z": -0.29,
+   "max_miss_streak": 2,
+   "max_dd_yen": -4000
+  },
+  "head4": {
+   "n": 2,
+   "hits": 1,
+   "roi": 299.0,
+   "roi_haircut": 294.0,
+   "hit_rate": 50.0,
+   "mkt_fair": 18.8,
+   "edge_z": 1.13,
+   "max_miss_streak": 1,
+   "max_dd_yen": -2000
+  },
+  "head5": {
+   "n": 2,
+   "hits": 0,
+   "roi": 0.0,
+   "roi_haircut": -5.0,
+   "hit_rate": 0.0,
+   "mkt_fair": 6.2,
+   "edge_z": -0.36,
+   "max_miss_streak": 2,
+   "max_dd_yen": -4000
+  },
+  "head6": {
+   "n": 2,
+   "hits": 0,
+   "roi": 0.0,
+   "roi_haircut": -5.0,
+   "hit_rate": 0.0,
+   "mkt_fair": 0.3,
+   "edge_z": -0.08,
+   "max_miss_streak": 2,
+   "max_dd_yen": -4000
+  },
+  "anti_in": {
+   "n": 2,
+   "hits": 1,
+   "roi": 59.8,
+   "roi_haircut": 54.8,
+   "hit_rate": 50.0,
+   "mkt_fair": 39.5,
+   "edge_z": 0.31,
+   "max_miss_streak": 1,
+   "max_dd_yen": -10000
+  },
+  "sweep_outsider_heads": {
+   "0": {
+    "n": 10,
+    "hits": 1,
+    "roi": 59.8,
+    "roi_haircut": 54.8,
+    "hit_rate": 10.0,
+    "mkt_fair": 7.9,
+    "edge_z": 0.26,
+    "max_miss_streak": 7,
+    "max_dd_yen": -14000
+   },
+   "8": {
+    "n": 7,
+    "hits": 0,
+    "roi": 0.0,
+    "roi_haircut": -5.0,
+    "hit_rate": 0.0,
+    "mkt_fair": 3.5,
+    "edge_z": -0.51,
+    "max_miss_streak": 7,
+    "max_dd_yen": -14000
+   },
+   "12": {
+    "n": 6,
+    "hits": 0,
+    "roi": 0.0,
+    "roi_haircut": -5.0,
+    "hit_rate": 0.0,
+    "mkt_fair": 2.7,
+    "edge_z": -0.41,
+    "max_miss_streak": 6,
+    "max_dd_yen": -12000
+   },
+   "16": {
+    "n": 6,
+    "hits": 0,
+    "roi": 0.0,
+    "roi_haircut": -5.0,
+    "hit_rate": 0.0,
+    "mkt_fair": 2.7,
+    "edge_z": -0.41,
+    "max_miss_streak": 6,
+    "max_dd_yen": -12000
+   },
+   "20": {
+    "n": 4,
+    "hits": 0,
+    "roi": 0.0,
+    "roi_haircut": -5.0,
+    "hit_rate": 0.0,
+    "mkt_fair": 1.9,
+    "edge_z": -0.28,
+    "max_miss_streak": 4,
+    "max_dd_yen": -8000
+   }
+  }
+ },
+ "04": {
+  "name": "平和島",
+  "note": "オッズ未蓄積のためスキップ"
+ },
+ "03": {
+  "name": "江戸川",
+  "label": "6R最深穴ゾーン(z=-2.62)",
+  "days": 178,
+  "head1": {
+   "n": 178,
+   "hits": 60,
+   "roi": 50.7,
+   "roi_haircut": 45.7,
+   "hit_rate": 33.7,
+   "mkt_fair": 38.5,
+   "edge_z": -1.39,
+   "max_miss_streak": 16,
+   "max_dd_yen": -174493
+  },
+  "head2": {
+   "n": 178,
+   "hits": 39,
+   "roi": 69.9,
+   "roi_haircut": 64.9,
+   "hit_rate": 21.9,
+   "mkt_fair": 20.6,
+   "edge_z": 0.46,
+   "max_miss_streak": 12,
+   "max_dd_yen": -123303
+  },
+  "head3": {
+   "n": 177,
+   "hits": 32,
+   "roi": 70.7,
+   "roi_haircut": 65.7,
+   "hit_rate": 18.1,
+   "mkt_fair": 16.9,
+   "edge_z": 0.43,
+   "max_miss_streak": 34,
+   "max_dd_yen": -129710
+  },
+  "head4": {
+   "n": 178,
+   "hits": 24,
+   "roi": 109.1,
+   "roi_haircut": 104.1,
+   "hit_rate": 13.5,
+   "mkt_fair": 12.7,
+   "edge_z": 0.32,
+   "max_miss_streak": 24,
+   "max_dd_yen": -105810
+  },
+  "head5": {
+   "n": 178,
+   "hits": 14,
+   "roi": 49.9,
+   "roi_haircut": 44.9,
+   "hit_rate": 7.9,
+   "mkt_fair": 7.8,
+   "edge_z": 0.04,
+   "max_miss_streak": 24,
+   "max_dd_yen": -177150
+  },
+  "head6": {
+   "n": 176,
+   "hits": 9,
+   "roi": 40.1,
+   "roi_haircut": 35.1,
+   "hit_rate": 5.1,
+   "mkt_fair": 3.8,
+   "edge_z": 0.94,
+   "max_miss_streak": 43,
+   "max_dd_yen": -214370
+  },
+  "anti_in": {
+   "n": 175,
+   "hits": 117,
+   "roi": 67.9,
+   "roi_haircut": 62.9,
+   "hit_rate": 66.9,
+   "mkt_fair": 61.6,
+   "edge_z": 1.5,
+   "max_miss_streak": 4,
+   "max_dd_yen": -630735
+  },
+  "sweep_outsider_heads": {
+   "0": {
+    "n": 887,
+    "hits": 118,
+    "roi": 68.0,
+    "roi_haircut": 63.0,
+    "hit_rate": 13.3,
+    "mkt_fair": 12.4,
+    "edge_z": 0.89,
+    "max_miss_streak": 24,
+    "max_dd_yen": -633175
+   },
+   "8": {
+    "n": 477,
+    "hits": 21,
+    "roi": 59.2,
+    "roi_haircut": 54.2,
+    "hit_rate": 4.4,
+    "mkt_fair": 4.3,
+    "edge_z": 0.06,
+    "max_miss_streak": 88,
+    "max_dd_yen": -446980
+   },
+   "12": {
+    "n": 343,
+    "hits": 11,
+    "roi": 53.5,
+    "roi_haircut": 48.5,
+    "hit_rate": 3.2,
+    "mkt_fair": 3.0,
+    "edge_z": 0.27,
+    "max_miss_streak": 75,
+    "max_dd_yen": -388970
+   },
+   "16": {
+    "n": 277,
+    "hits": 8,
+    "roi": 57.2,
+    "roi_haircut": 52.2,
+    "hit_rate": 2.9,
+    "mkt_fair": 2.4,
+    "edge_z": 0.56,
+    "max_miss_streak": 102,
+    "max_dd_yen": -311400
+   },
+   "20": {
+    "n": 231,
+    "hits": 6,
+    "roi": 58.5,
+    "roi_haircut": 53.5,
+    "hit_rate": 2.6,
+    "mkt_fair": 2.0,
+    "edge_z": 0.65,
+    "max_miss_streak": 87,
+    "max_dd_yen": -265970
+   }
+  }
+ }
+}
