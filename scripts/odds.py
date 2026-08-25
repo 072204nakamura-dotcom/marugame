@@ -21,7 +21,7 @@ import datetime
 import urllib.request
 
 OUT_DIR = "data/odds"
-VENUES = ["15", "03", "22", "02", "14", "17", "09"]   # 丸亀・江戸川・福岡・戸田・鳴門・宮島・津
+VENUES = ["15", "03", "22", "02", "14", "17", "09", "04"]   # 丸亀・江戸川・福岡・戸田・鳴門・宮島・津・平和島
 UA = {"User-Agent": "Mozilla/5.0 (marugame-tool)"}
 
 
