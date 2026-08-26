@@ -170,6 +170,7 @@ def build_race(r, sig, motors, tide_cm, race_base):
     pol = []
     if unari:
         pol.append('うねり窓：2頭本線・相手3,5厚め(8点)／2-1は押さえまで(窓では1が2着に残りにくい)／6ヒモ厚張り禁物')
+        pol.append('買い目S8: 2-3-1 2-3-4 2-3-5 2-3-6 ／ 2-5-1 2-5-3 2-5-4 2-5-6（EV監視セル: 窓93RでROI121%・未確定）')
     s1 = sig.get(e_by_boat.get(1, {}).get('regno', ''), {})
     if score >= 3:
         if s1.get('n1_type') == '飛ぶ型':

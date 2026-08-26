@@ -72,6 +72,27 @@ MAKURI_KEI = ('まくり', 'まくり差し')
 UA = {'User-Agent': 'Mozilla/5.0 (toda-tool)'}
 
 
+def load_atk5():
+    """5号艇の「攻め手」判定（全国5コースまくり系1着率>=5%・15走以上）。
+    江戸川パイプラインが毎朝更新する全国コース別カウンタを読む（22:10に更新→戸田は22:50実行）。
+    無ければ空＝表示が出ないだけで、採点には一切影響しない（EV監視セル用の表示専用）。"""
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..',
+                        'data', 'edogawa', 'nat_course.csv')
+    agg = {}
+    try:
+        with open(path, encoding='utf-8') as f:
+            for row in csv.DictReader(f):
+                if row['course'] == '5':
+                    a = agg.setdefault(row['regno'], [0.0, 0.0])
+                    a[0] += float(row['n']); a[1] += float(row['mk1'])
+    except OSError:
+        return set()
+    return {r for r, (n, mk) in agg.items() if n >= 15 and mk / n >= 0.05}
+
+
+ATK5 = load_atk5()
+
+
 def jst_today():
     if os.environ.get('TODA_DATE'):
         return datetime.date.fromisoformat(os.environ['TODA_DATE'])
@@ -591,6 +612,12 @@ def judge_race(r, T_MAK, T_NOK):
                   'まくり決着なら2着づけ、まくり差し決着なら3着づけ。')
     elif kado == 'keshi':
         policy = '4コース勝率6.7%。カドを消してヒモを絞れる。'
+        b5 = boats.get(5)
+        if b5 and b5['regno'] in ATK5:
+            badges[5].append('攻め手●')
+            policy += ('攻撃権は5号艇へ＝本線候補 買い目: 5-1-x 5-2-x 5-3-x（5-X-Y）。'
+                       'EV監視セル: カド消し×攻め手5の頭は市場の2倍'
+                       '（実測16.9% vs 含意8.4%・ROI194%・n=83未確定）。')
     else:
         policy = '見送り。'
     if kado == 'keshi' and nokoshi == 'nokosu':

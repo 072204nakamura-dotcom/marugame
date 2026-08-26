@@ -97,6 +97,8 @@ h2.sec{font-size:14px;font-weight:800;color:var(--akane);margin:18px 4px 8px;let
 .cal .row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px dashed #e8e2d8;font-size:13px;font-variant-numeric:tabular-nums}
 .cal .row:last-child{border-bottom:none}
 .cal .row.today{background:#fdf3f0}
+.cal .row.norace{opacity:.45}
+.cal .row .nr{font-size:10px;font-weight:800;color:#8a94a0;border:1px solid #cfd6db;border-radius:99px;padding:1px 7px;margin-left:6px}
 .cal .d{font-weight:800;color:var(--akane);min-width:96px}
 .cal .h{color:#4a5560}
 .cal .p{margin-left:auto;font-weight:800;color:var(--unami)}
@@ -229,7 +231,7 @@ fetch('data/racecard.json?'+Date.now()).then(r=>r.json()).then(D=>{
   }
   const today=D.date;
   document.getElementById('cal').innerHTML=(D.unari_cal||[]).map(c=>
-    `<div class="row ${c.date===today?'today':''}"><span class="d">${c.date.slice(5).replace('-','/')}${c.date===today?'（本日）':''}</span>
+    `<div class="row ${c.date===today?'today':''} ${c.kaisai===0?'norace':''}"><span class="d">${c.date.slice(5).replace('-','/')}${c.date===today?'（本日）':''}${c.kaisai===0?'<span class="nr">非開催</span>':''}${c.kaisai===1?'<span class="nr" style="color:#8c2f39;border-color:#d8a8ae">開催</span>':''}</span>
      <span class="h">${c.start}時〜${c.end}時</span>
      <span class="p ${c.peak>=200?'big':''}">最高${c.peak}cm</span></div>`).join('')
     ||'<div class="row">今後90日に窓なし（冬場は昼の潮位が170cmに届きません）</div>';

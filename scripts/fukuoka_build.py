@@ -350,9 +350,44 @@ def tide_days(year):
         out[d] = [int(ln[i*3:i*3+3]) for i in range(24)]
     return out
 
+def fukuoka_race_days():
+    """公式の月間スケジュールから福岡の開催日集合を作る（今月＋2か月先まで）。
+    節セルは <td colspan="N"><a href=...assen?jcd=22&hd=初日> の形。開催日=初日〜初日+N-1。
+    月マタギ節は両月のページで拾って和集合にする。取得失敗時は None（＝従来表示に自動フォールバック）。"""
+    days = set()
+    t = today_jst()
+    ok = False
+    for k in range(3):
+        y, m = t.year, t.month + k
+        while m > 12:
+            m -= 12; y += 1
+        url = f'https://www.boatrace.jp/owpc/pc/race/monthlyschedule?jcd=22&ym={y}{m:02d}'
+        try:
+            req = urllib.request.Request(url, headers=UA)
+            html = urllib.request.urlopen(req, timeout=30).read().decode('utf-8', 'replace')
+        except Exception:
+            continue
+        i = html.find('stadium?jcd=22')
+        if i < 0:
+            continue
+        row = html[i:html.find('</tr>', i)]
+        # 未来の節: assen リンクで hd=初日 ／ 進行中・終了の節: raceindex リンクで hd=最終日
+        for m2 in re.finditer(
+                r'colspan\s*="(\d+)"[^>]*>\s*<a href="[^"]*/(assen|raceindex)\?jcd=22&hd=(\d{8})"', row):
+            span, kind, hd = int(m2.group(1)), m2.group(2), m2.group(3)
+            d0 = date(int(hd[:4]), int(hd[4:6]), int(hd[6:8]))
+            if kind == 'raceindex':
+                d0 = d0 - timedelta(days=span - 1)
+            for j in range(span):
+                days.add((d0 + timedelta(days=j)).isoformat())
+            ok = True
+    return days if ok else None
+
+
 def unari_calendar():
     t = today_jst()
     tides = tide_days(t.year); tides.update(tide_days(t.year + 1))
+    kaisai = fukuoka_race_days()
     cal = []
     for i in range(90):
         d = (t + timedelta(days=i)).isoformat()
@@ -361,8 +396,12 @@ def unari_calendar():
             continue
         hrs = [h for h in range(11, 18) if vals[h] >= 170]
         if hrs:
-            cal.append(dict(date=d, start=min(hrs), end=max(hrs) + 1,
-                            peak=max(vals[h] for h in hrs)))
+            row = dict(date=d, start=min(hrs), end=max(hrs) + 1,
+                       peak=max(vals[h] for h in hrs))
+            if kaisai is not None:
+                # 開催日程が2〜3か月先までしか出ないため、判定できる範囲だけ付ける
+                row['kaisai'] = 1 if d in kaisai else 0
+            cal.append(row)
     return cal
 
 # ================= main =================
