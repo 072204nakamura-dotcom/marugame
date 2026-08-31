@@ -1,1 +1,1 @@
-{"covered_days": 199, "window_races": 92, "bands": {"S8": {"n": 92, "hits": 6, "roi": 122.5, "hit_rate": 6.5, "mkt_implied": 6.2, "mkt_implied_fair": 4.7}, "S20": {"n": 92, "hits": 17, "roi": 72.0, "hit_rate": 18.5, "mkt_implied": 17.2, "mkt_implied_fair": 12.9}}}
+{"covered_days": 198, "window_races": 90, "bands": {"S8": {"n": 90, "hits": 6, "roi": 125.2, "hit_rate": 6.7, "mkt_implied": 6.3, "mkt_implied_fair": 4.7}, "S20": {"n": 90, "hits": 17, "roi": 73.6, "hit_rate": 18.9, "mkt_implied": 17.3, "mkt_implied_fair": 13.0}}}
