@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>実戦成績 — 表示した買い目の通算ROI</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:16px;font-family:-apple-system,"Hiragino Sans","Yu Gothic UI",Meiryo,sans-serif;font-size:15px;line-height:1.8;color:#2B2B28;background:#F7F5EF}
+h1{font-size:22px;margin:0 0 4px}
+h2{font-size:18px;margin:28px 0 8px}
+.lead{font-size:14px;color:#5A574E;margin:0 0 16px}
+.venues{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 16px}
+.venues a,.venues .on{display:inline-block;padding:6px 12px;border-radius:6px;font-size:14px;font-weight:700;text-decoration:none}
+.venues a{background:#fff;color:#2B2B28;border:1px solid #D8D4C8}
+.venues .on{background:#2B2B28;color:#fff}
+.total{background:#fff;border:2px solid #2B2B28;border-radius:10px;padding:14px 16px;margin:0 0 8px}
+.total b{font-size:26px}
+.total .roi{font-size:32px;font-weight:700}
+.wrap{overflow-x:auto}
+table{border-collapse:collapse;background:#fff;width:100%;min-width:560px}
+th,td{border:1px solid #D8D4C8;padding:7px 9px;font-size:14px;text-align:left;vertical-align:top}
+th{background:#EFECE3;font-weight:700}
+td.num{text-align:right;font-family:"Zen Kaku Gothic New",-apple-system,sans-serif;font-weight:700}
+td.roi.good{color:#1B6E3A}
+td.roi.bad{color:#B8322A}
+td.hit{color:#1B6E3A}
+.pend{color:#B8322A;font-weight:700}
+.note{background:#fff;border:1px solid #D8D4C8;border-radius:8px;padding:12px 14px;font-size:14px;margin:12px 0}
+.note li{margin:2px 0}
+footer{margin-top:24px;font-size:12px;color:#5A574E}
+</style></head><body>
+<nav class="venues" data-venue="track"></nav>
+<h1>実戦成績 — 表示した買い目の通算ROI</h1>
+<p class="lead">各会場ページに<b>その日実際に表示した買い目</b>を、そのまま買っていたらどうなったか。
+バックテストではなく実戦の記録です（2026-08-27〜、毎週月曜に自動更新）。</p>
+
+<div class="total">通算 <b>1</b>レース ／ 的中 <b>0</b>本 ／ 賭け 1,000円 → 払戻 0円 ／ ROI <span class="roi">0%</span>（ほか未確定 6）</div>
+
+<h2>セル別</h2>
+<div class="wrap"><table>
+<tr><th>監視セル</th><th>レース</th><th>的中</th><th>賭け(円)</th><th>払戻(円)</th><th>ROI</th><th>未確定</th></tr>
+<tr><td>平和島 壁強×頭1（1-2-x 比例配分）</td><td class="num">1</td><td class="num">0</td><td class="num">1,000</td><td class="num">0</td><td class="num roi bad">0%</td><td class="num"></td></tr><tr><td>福岡 うねり窓S8（2-3-x／2-5-x）</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num roi bad">—</td><td class="num">6</td></tr>
+</table></div>
+
+<div class="note"><b>読み方</b>
+<ul>
+<li>ROI100%が損益分岐。<b>100レース貯まるまでは判定しない</b>（EV検証と同じ三条件ルール）。</li>
+<li>福岡S8は的中率6.5%（15レースに1本）の「万舟を拾う」買い方。外れが続くのが前提。</li>
+<li>平和島 壁強は1,000円を100円単位でオッズ反比例に配分（安い組ほど厚く）。ほかは1点100円の均等買い。</li>
+<li>戸田 カド消し×攻め手5は頭5帯（5-X-Y）20点均等＝EV検証で ROI194%（n=83）が出た帯と同じ買い方。</li>
+<li>「未確定」は結果ファイル未着（翌朝のビルドで確定）。</li>
+</ul></div>
+
+<h2>全レース</h2>
+<div class="wrap"><table>
+<tr><th>日付</th><th>レース</th><th>セル</th><th>点数</th><th>賭け</th><th>結果</th><th>払戻</th><th>回収</th></tr>
+<tr><td>2026-09-02</td><td>福岡 6R</td><td>福岡 うねり窓S8</td><td class="num">8</td><td class="num">800</td><td><span class="pend">未確定</span></td><td class="num"></td><td class="num "></td></tr><tr><td>2026-09-02</td><td>福岡 5R</td><td>福岡 うねり窓S8</td><td class="num">8</td><td class="num">800</td><td><span class="pend">未確定</span></td><td class="num"></td><td class="num "></td></tr><tr><td>2026-09-02</td><td>福岡 4R</td><td>福岡 うねり窓S8</td><td class="num">8</td><td class="num">800</td><td><span class="pend">未確定</span></td><td class="num"></td><td class="num "></td></tr><tr><td>2026-09-02</td><td>福岡 3R</td><td>福岡 うねり窓S8</td><td class="num">8</td><td class="num">800</td><td><span class="pend">未確定</span></td><td class="num"></td><td class="num "></td></tr><tr><td>2026-09-02</td><td>福岡 2R</td><td>福岡 うねり窓S8</td><td class="num">8</td><td class="num">800</td><td><span class="pend">未確定</span></td><td class="num"></td><td class="num "></td></tr><tr><td>2026-09-02</td><td>福岡 1R</td><td>福岡 うねり窓S8</td><td class="num">8</td><td class="num">800</td><td><span class="pend">未確定</span></td><td class="num"></td><td class="num "></td></tr><tr><td>2026-08-27</td><td>平和島 12R</td><td>平和島 壁強×頭1</td><td class="num">4</td><td class="num">1,000</td><td>1-4-5</td><td class="num">1,730</td><td class="num ">0</td></tr>
+</table></div>
+
+<footer>更新: 2026-09-03 08:04 JST ／ scripts/ev_track.py（git履歴の各日ページ × Kファイル結果）</footer>
+<script src="../venues.js"></script>
+</body></html>

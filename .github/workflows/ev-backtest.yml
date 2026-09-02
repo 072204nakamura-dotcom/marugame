@@ -18,6 +18,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0     # ev_track.py が各日のページを git 履歴から復元するため全履歴が要る
 
       - uses: actions/setup-python@v5
         with:
@@ -29,11 +31,15 @@ jobs:
       - name: EVバックテスト（フル再計算）
         run: python scripts/ev_backtest.py
 
+      - name: 実戦成績（表示した買い目の通算ROI）
+        run: python scripts/ev_track.py
+
       - name: push
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add data/ev_backtest_log.csv data/ev_backtest_summary.json
+          git add data/ev_track_log.csv data/ev_track_summary.json track/index.html
           git diff --cached --quiet || git commit -m "ev backtest weekly $(date +%F)"
           git pull --rebase origin main || true
           git push

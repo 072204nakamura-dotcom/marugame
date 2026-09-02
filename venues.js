@@ -18,7 +18,8 @@ var VENUES = [
   { name: '津',     path: 'tsu'       },  // 09
   { name: '鳴門',   path: 'naruto'    },  // 14
   { name: '宮島',   path: 'miyajima'  },  // 17
-  { name: '福岡',   path: 'fukuoka'   }   // 22
+  { name: '福岡',   path: 'fukuoka'   },  // 22
+  { name: '実戦成績', path: 'track'   }   // 表示した買い目の通算ROI（週次更新）
 ];
 
 /* 各ページの <nav class="venues" data-venue="○○"></nav> を中身で埋める。
