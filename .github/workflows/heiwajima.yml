@@ -4,10 +4,10 @@ name: heiwajima-daily
 #
 # cron の時刻は既存会場と重ならないように取ってある（HANDOVER §6）:
 #   22:00 build(丸亀) / 22:00 naruto / 22:20 fukuoka / 22:30 tsu / 22:40 ← ここ
-# UTC 22:40 = 日本時間 翌朝 7:40。
+# UTC 20:40 = 日本時間 翌朝 5:40（GitHubの遅延を見込んで前倒し。2026-09-03）。
 on:
   schedule:
-    - cron: '40 22 * * *'
+    - cron: '40 20 * * *'
   workflow_dispatch:          # 「Run workflow」ボタンで手動実行もできる
 
 permissions:

@@ -12,7 +12,7 @@
 ## 現状（2026-07-19時点・済んでいること）
 
 - `tsu/` 一式（index.html・tools/daily.py・tables/8ファイル）はアップロード済み
-- `.github/workflows/tsu_daily.yml` は稼働確認済み（毎朝 UTC 22:30 = JST 7:30 の cron ＋ workflow_dispatch）
+- `.github/workflows/tsu_daily.yml` は稼働確認済み（毎朝 UTC 20:30 = JST 5:30 の cron ＋ workflow_dispatch。2026-09-03 に 22:30 から前倒し）
 - ページは正常表示中
 
 残作業は【タスク1】daily.pyの特別編成日パッチ、【タスク2】既存3ページへの津タブ追加、【タスク3】再生成と検証、の3つ。

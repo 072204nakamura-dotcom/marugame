@@ -2,12 +2,12 @@ name: miyajima-daily
 
 # 宮島(17) 穴党ツール — 毎朝の data.json 生成
 #
-# cron は仕様書（docs/miyajima/spec_miyajima.md §8-7）の指定どおり
-# '0 22 * * *'（UTC 22:00 = JST 翌朝 7:00）。丸亀・鳴門と同時刻にして
+# cron は仕様書（docs/miyajima/spec_miyajima.md §8-7）の '0 22' から 2 時間前倒し（docs/SCHEDULE.md）。
+# '0 20 * * *'（UTC 20:00 = JST 翌朝 5:00）。丸亀・鳴門と同時刻にして
 # mbrace への負荷を朝の1回に集約する方針（他場の分散方針とは意図が異なる）。
 on:
   schedule:
-    - cron: '0 22 * * *'
+    - cron: '0 20 * * *'
   workflow_dispatch:
 
 permissions:

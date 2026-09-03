@@ -5,13 +5,13 @@ name: edogawa-daily
 # cron は既存会場と重ならない枠を使う（指示書§9）:
 #   22:00 build(丸亀) / 22:00 naruto / 22:10 ← ここ / 22:20 fukuoka
 #   22:30 tsu / 22:40 heiwajima / 22:50 toda
-# UTC 22:10 = 日本時間 翌朝 7:10（JST 07:00 台に完了する）。
+# UTC 20:10 = 日本時間 翌朝 5:10（GitHubの遅延を見込んで前倒し。2026-09-03）。
 #
 # 前日ぶんのKファイルだけを差分で取り込むので毎朝の所要は短い
 # （data/edogawa/cursor.txt が前回処理日を覚えている）。
 on:
   schedule:
-    - cron: '10 22 * * *'
+    - cron: '10 20 * * *'
   workflow_dispatch:
 
 permissions:

@@ -4,13 +4,13 @@ name: toda-daily
 #
 # cron は既存会場と重ならない枠を使う:
 #   22:00 build(丸亀) / 22:00 naruto / 22:20 fukuoka / 22:30 tsu / 22:40 heiwajima / 22:50 ← ここ
-# UTC 22:50 = 日本時間 翌朝 7:50。
+# UTC 20:50 = 日本時間 翌朝 5:50（江戸川 20:10 の後。GitHubの遅延を見込んで前倒し。2026-09-03）。
 #
 # 前日ぶんのKファイルだけを差分で取り込むので、毎朝の所要は数十秒で済む
 # （data/toda/cursor.txt が前回処理日を覚えている）。
 on:
   schedule:
-    - cron: '50 22 * * *'
+    - cron: '50 20 * * *'
   workflow_dispatch:
 
 permissions:

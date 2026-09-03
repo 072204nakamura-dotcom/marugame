@@ -3,7 +3,7 @@ name: build-data
 # いつ動かすか
 on:
   schedule:
-    - cron: "0 22 * * *"   # 毎日 UTC22:00 = 日本時間 翌朝7:00 に自動実行
+    - cron: "0 20 * * *"   # 毎日 UTC20:00 = 日本時間 翌朝5:00 に自動実行（GitHubの遅延込みで8時までに反映）
   workflow_dispatch:        # 「Run workflow」ボタンで手動実行もできる
 
 # データCSVの書き戻しと、通知Issueを作るための権限

@@ -2,7 +2,7 @@ name: naruto-build
 
 on:
   schedule:
-    - cron: '0 22 * * *'   # UTC 22:00 = 日本時間 朝7:00
+    - cron: '0 20 * * *'   # UTC 20:00 = 日本時間 朝5:00（GitHubの遅延込みで8時までに反映）
   workflow_dispatch: {}     # 手動実行ボタンも使えるように
 
 jobs:

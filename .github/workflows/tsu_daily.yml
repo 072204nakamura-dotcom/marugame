@@ -4,7 +4,7 @@ on:
 
   schedule:
 
-    - cron: '30 22 * * *'
+    - cron: '30 20 * * *'   # UTC20:30 = JST 5:30（GitHubの遅延を見込んで前倒し。2026-09-03）
 
   workflow_dispatch:
 

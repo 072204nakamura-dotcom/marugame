@@ -2,7 +2,7 @@ name: fukuoka-build
 
 on:
   schedule:
-    - cron: '20 22 * * *'   # UTC22:20 = JST翌朝7:20（丸亀の22:00と20分ずらして衝突回避）
+    - cron: '20 20 * * *'   # UTC20:20 = JST翌朝5:20（丸亀の20:00と20分ずらして衝突回避）
   workflow_dispatch:          # 手動実行ボタン
 
 permissions:
