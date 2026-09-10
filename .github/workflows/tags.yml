@@ -1,0 +1,36 @@
+name: racer-tags
+
+# 選手タグ台帳（Googleスプレッドシート）→ data/tags/racer_tags.json
+# 各場のビルド（UTC 20:00〜20:50）の前、UTC 19:50 = JST 4:50 に取り込む。
+# ページ側は tags.js が閲覧時に JSON を読むので、取り込みさえ済めば全場に即反映される。
+on:
+  schedule:
+    - cron: '50 19 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 台帳からタグを取り込む
+        run: python scripts/tags/fetch_tags.py
+
+      - name: push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add data/tags/racer_tags.json data/tags/racer_tags.csv
+          git diff --cached --quiet || git commit -m "racer tags $(date +%F)"
+          git pull --rebase origin main || true
+          git push

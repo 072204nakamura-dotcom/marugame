@@ -38,4 +38,9 @@ var VENUES = [
     if (v.path === here) return '<span class="on">' + v.name + '</span>';
     return '<a href="' + base + (v.path ? v.path + '/' : '') + '">' + v.name + '</a>';
   }).join('');
+
+  // 選手タグのバッジ（tags.js）も全ページ共通で読み込む。無くてもページは普通に動く
+  var s = document.createElement('script');
+  s.src = base + 'tags.js';
+  document.head.appendChild(s);
 })();
