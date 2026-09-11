@@ -2,7 +2,8 @@
 """選手タグ台帳（店主の印象タグ × 機械の参考値）を作る
 
 1行＝1選手（直近13か月に全国で出走した全員）。左から
-  基本情報 → 店主の評価3列（攻め1〜5・ST1〜5・型の複数選択）→ メモ → 機械の参考値
+  基本情報（登番・名前・級別・支部・年齢・期・勝率・出走数）→ 店主の評価3列（攻め1〜5・ST1〜5・型の複数選択）→ メモ → 機械の参考値
+  期 … 登録期。data/tags/term_ranges.csv（艇国データバンクの登録期ページから作成）で登番→期を引く
 機械の参考値は既存パイプラインの表をそのまま読み、Kファイルからは「F前後のST変化」だけ新たに計算する。
 
   攻め手5    … 全国5コース15走以上でまくり系1着5%以上（戸田の攻め手判定と同じ）
@@ -108,6 +109,27 @@ def fnum(x, nd=1):
     return '' if x is None else ('%.*f' % (nd, x))
 
 
+def load_terms():
+    """登録期の表（data/tags/term_ranges.csv: term,min,max,n）→ 登番から期を引く関数を返す。
+    表は艇国データバンクの登録期ページから作成（scratchpad/scan_terms.py）。期ごとの登番は連続ブロック。"""
+    rows = []
+    p = 'data/tags/term_ranges.csv'
+    if os.path.exists(p):
+        with open(p, encoding='utf-8') as f:
+            rows = sorted(((int(r['min']), int(r['max']), int(r['term'])) for r in csv.DictReader(f)))
+
+    def term_of(regno):
+        try:
+            n = int(regno)
+        except ValueError:
+            return ''
+        for lo, hi, t in rows:
+            if lo <= n <= hi:
+                return t
+        return ''
+    return term_of
+
+
 def load_csv(path, key):
     with open(path, encoding='utf-8-sig') as f:
         return {r[key]: r for r in csv.DictReader(f)}
@@ -127,7 +149,8 @@ def main():
     wall = load_csv('data/heiwajima/hw_wall.csv', 'regno')
     sashi = load_csv('data/heiwajima/hw_c2sashi.csv', 'regno')
 
-    hdr = ['登番', '選手名', '級別', '支部', '年齢', '全国勝率', '出走(13か月)'] + TAGS + ['メモ'] + REF
+    term_of = load_terms()
+    hdr = ['登番', '選手名', '級別', '支部', '年齢', '期', '全国勝率', '出走(13か月)'] + TAGS + ['メモ'] + REF
     out = []
     for regno, recs in krows.items():
         b = binfo.get(regno, {})
@@ -160,9 +183,9 @@ def main():
                pr.get('まくり差し', ''), pr.get('抜き', ''), pr.get('恵まれ', ''),
                fnum(fp['avg'], 2), fp['nF'], fp['nL'], fnum(fp['st_before'], 2), fnum(fp['st_after'], 2),
                ('%+.2f' % fp['diff']) if fp['diff'] is not None else '', fp['n_after'], fnare]
-        out.append([regno, name, b.get('grade', ''), b.get('branch', ''), b.get('age', ''), b.get('win', ''),
-                    len(recs)] + [''] * len(TAGS) + [''] + ref)
-    out.sort(key=lambda r: -r[6])                       # 出走の多い順（現役で走っている人が上）
+        out.append([regno, name, b.get('grade', ''), b.get('branch', ''), b.get('age', ''), term_of(regno),
+                    b.get('win', ''), len(recs)] + [''] * len(TAGS) + [''] + ref)
+    out.sort(key=lambda r: -r[7])                       # 出走の多い順（現役で走っている人が上）
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, 'w', newline='', encoding='utf-8-sig') as f:
         w = csv.writer(f)
