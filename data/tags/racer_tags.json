@@ -1,7 +1,18 @@
 {
- "updated": "2026-09-11 06:58",
+ "updated": "2026-09-12 07:00",
  "sheet": "1h3tlHkd5t5brxsOaYnuJTfGcepg1WIJD8s4-XmkYzIY",
  "total": 1643,
- "tagged": 0,
- "racers": {}
+ "tagged": 1,
+ "racers": {
+  "3557": {
+   "name": "太田和美",
+   "atk": null,
+   "st": null,
+   "types": [
+    "出足型",
+    "差し屋"
+   ],
+   "memo": ""
+  }
+ }
 }
