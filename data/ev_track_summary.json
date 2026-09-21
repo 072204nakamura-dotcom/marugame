@@ -1,38 +1,38 @@
 {
- "generated": "2026-09-14 11:03",
+ "generated": "2026-09-21 11:03",
  "since": "2026-08-26",
  "cells": {
   "平和島 壁強×頭1（1-2-x 比例配分）": {
-   "n": 5,
+   "n": 8,
    "hits": 1,
-   "stake": 5000,
+   "stake": 8000,
    "ret": 10150,
-   "pending": 1,
-   "roi": 203.0
+   "pending": 0,
+   "roi": 126.9
   },
   "福岡 うねり窓S8（2-3-x／2-5-x）": {
-   "n": 9,
+   "n": 15,
    "hits": 0,
-   "stake": 7200,
+   "stake": 12000,
    "ret": 0,
-   "pending": 3,
+   "pending": 0,
    "roi": 0.0
   },
   "平和島 差し巧者×頭2（2-1-x＋2-3-1・2-4-1）": {
-   "n": 0,
-   "hits": 0,
-   "stake": 0,
-   "ret": 0,
-   "pending": 1,
-   "roi": null
+   "n": 6,
+   "hits": 1,
+   "stake": 3600,
+   "ret": 940,
+   "pending": 0,
+   "roi": 26.1
   }
  },
  "total": {
-  "n": 14,
-  "hits": 1,
-  "stake": 12200,
-  "ret": 10150,
-  "pending": 5,
-  "roi": 83.2
+  "n": 29,
+  "hits": 2,
+  "stake": 23600,
+  "ret": 11090,
+  "pending": 0,
+  "roi": 47.0
  }
 }
