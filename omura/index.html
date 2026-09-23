@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大村 穴党ツール</title>
+<style>
+:root{
+  --kon:#1b2340;        /* 夜の紺: ヘッダー */
+  --kikyo:#3a4a8a;      /* 見出し文字 */
+  --gin:#eceef4;        /* 背景 */
+  --asagi:#3d7ea6;      /* 堅め */
+  --shu:#c04a37;        /* 穴・警告 */
+  --kincha:#b8862e;     /* 二択・注意 */
+  --sumi:#2b2f36;
+  --paper:#ffffff;
+  --line:#d3d7e2;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic Medium","Noto Sans JP",sans-serif;
+  background:var(--gin);color:var(--sumi);font-size:14px;line-height:1.55;font-feature-settings:"palt"}
+.wrap{max-width:660px;margin:0 auto;padding-bottom:60px}
+
+header{background:var(--kon);color:#e8eaf5;padding:14px 16px 10px}
+header .brand{display:flex;align-items:baseline;gap:10px}
+header h1{font-size:19px;font-weight:800;letter-spacing:.06em}
+header h1 .nami{color:#ffd98a}
+header .datebox{font-size:12px;opacity:.85;margin-left:auto;text-align:right;font-variant-numeric:tabular-nums}
+header .meet{font-size:12px;margin-top:4px;opacity:.9}
+header .meet b{color:#ffd98a;font-weight:700}
+.venues{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.venues a,.venues .on{font-size:12px;font-weight:800;padding:4px 14px;border-radius:99px;text-decoration:none;letter-spacing:.04em}
+.venues a{color:#bcc4e0;border:1px solid #46528a;background:transparent}
+.venues a:active{background:#2f3a68}
+.venues .on{background:#e8eaf5;color:var(--kon)}
+
+.summary{background:var(--kon);color:#c3cbe8;font-size:11.5px;padding:0 16px 12px;letter-spacing:.02em}
+.summary b{color:#ffd98a}
+
+.terrain{background:var(--kon);padding:2px 16px 14px}
+.terrain .cap{font-size:10px;color:#98a2c8;letter-spacing:.1em;margin-bottom:4px}
+.tbars{display:flex;align-items:flex-end;gap:3px;height:64px}
+.tbar{flex:1;display:flex;flex-direction:column;justify-content:flex-end}
+.tbar .col{border-radius:2px 2px 0 0;min-height:4px}
+.tbar .num{font-size:9px;text-align:center;color:#a3adcf;margin-top:3px;font-variant-numeric:tabular-nums}
+.tbar .pct{font-size:8px;text-align:center;color:#7b85ab;font-variant-numeric:tabular-nums}
+
+.banner{background:linear-gradient(90deg,#8c2f39,#c04a37);color:#fff;font-size:12.5px;font-weight:800;
+  padding:8px 16px;text-align:center;letter-spacing:.04em}
+.banner.day1{background:linear-gradient(90deg,#8c5a1f,#c08a2e)}
+.banner.final{background:linear-gradient(90deg,#24507a,#3d7ea6)}
+.failnote{background:#fdf6ec;border-bottom:1px solid #e6d3ac;color:#8a6a1f;font-size:11.5px;padding:6px 16px;text-align:center}
+
+main{padding:12px 10px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:10px;margin-bottom:12px;overflow:hidden}
+.card.tetsu{border:2px solid var(--asagi)}
+.card.ana{border:2px solid var(--shu)}
+.card-head{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--line)}
+.rno{font-size:26px;font-weight:900;color:var(--kikyo);min-width:52px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.rno small{font-size:13px;font-weight:700}
+.rmeta{flex:1;min-width:0}
+.rname{font-size:14px;font-weight:800;color:var(--kikyo)}
+.deadline{font-size:11px;color:#6b7683;font-variant-numeric:tabular-nums}
+.label{font-size:11px;font-weight:800;padding:3px 9px;border-radius:99px;white-space:nowrap;color:#fff}
+.label.ana{background:var(--shu)}
+.label.katame{background:var(--asagi)}
+.label.nitaku{background:var(--kincha)}
+.label.chukan{background:#7a8794}
+.base{display:flex;flex-wrap:wrap;gap:12px;padding:7px 12px;background:#f1f3f8;font-size:12px;color:#4a5560;
+  border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.base b{color:var(--kikyo);font-weight:800}
+.base .man b{color:var(--shu)}
+.base .score{margin-left:auto;font-weight:800;color:var(--shu)}
+.base .score.minus{color:var(--asagi)}
+.cls{font-size:10.5px;font-weight:800;color:#5a6478;background:#e4e8f2;border-radius:4px;padding:1px 7px}
+.cls.flag{background:var(--kincha);color:#fff}
+.base .nn{font-size:10.5px;color:#8a94a6}
+
+table{width:100%;border-collapse:collapse}
+td{padding:5px 8px;border-bottom:1px dashed #e5e8ef;vertical-align:middle;font-size:13px}
+tr:last-child td{border-bottom:none}
+.bn{width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;
+    font-weight:900;font-size:14px;font-variant-numeric:tabular-nums}
+.b1{background:#fff;color:#222;border:1.5px solid #999}
+.b2{background:#222;color:#fff}
+.b3{background:#c8352b;color:#fff}
+.b4{background:#1e58c8;color:#fff}
+.b5{background:#f2c500;color:#333}
+.b6{background:#1f9e50;color:#fff}
+.pname{font-weight:700}
+.grade{font-size:10px;font-weight:800;padding:1px 5px;border-radius:3px;margin-left:5px;vertical-align:1px}
+.gA1{background:#fbe3c9;color:#9a5b12}
+.gA2{background:#fdf1de;color:#a97c2f}
+.gB1,.gB2{background:#eef1f4;color:#7a8590}
+.rk{font-size:10px;font-weight:800;padding:1px 5px;border-radius:3px;margin-left:4px;background:#e4e8f2;color:#3a4a8a}
+.rk.low{background:#fbe0db;color:#a1301f}
+.sub{font-size:10.5px;color:#7c8794;font-variant-numeric:tabular-nums}
+.badge{display:inline-block;font-size:10px;font-weight:800;padding:1.5px 6px;border-radius:4px;margin:1px 3px 1px 0}
+.bg-st{background:#fdeccc;color:#8f6410}
+.bg-wall{background:#e2ecf7;color:#245a9e}
+.bg-good{background:#e3f1ea;color:#1f6b45}
+.bg-out{background:#2b2f36;color:#ffd98a}
+.bg-low{background:#eef1f4;color:#5b6672;border:1px solid #d5dce2}
+
+.policy{padding:9px 12px;background:#fbf8f0;border-top:1px solid #ece4cf;font-size:12.5px;color:#5a4d2e}
+.policy::before{content:"方針 ";font-weight:900;color:var(--kincha);letter-spacing:.08em}
+
+.nokaisai{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:28px 16px;text-align:center;color:#5a6572}
+.nokaisai b{display:block;font-size:16px;color:var(--kikyo);margin-bottom:6px}
+.notes{margin:18px 4px 0;font-size:11px;color:#6b7683;line-height:1.75}
+.notes div{margin-bottom:7px}
+.notes b{color:var(--shu)}
+footer{padding:14px;text-align:center;font-size:10px;color:#93a1ad}
+</style>
+<script src="../venues.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="brand">
+    <h1>大村 <span class="nami">夜</span> 穴党ツール</h1>
+    <div class="datebox">2026-09-21（開催なし）</div>
+  </div>
+  <div class="meet"></div>
+  <nav class="venues" data-venue="omura"></nav>
+</header>
+<div class="summary">イン水面（場残差 <b>+3.7pt</b>）／イン<b>61%</b>・万舟<b>15.6%</b>／主戦場 <b>初日の1〜6R</b>（イン36%）／7R<b>進入固定</b>は鉄板／夜は<b>中穴フォーム</b>（1-4/5/6の2着流し・50番人気まで）</div>
+<div class="terrain"><div class="cap">レース番号別イン率（中日の通常戦・進入固定と特選系を除く・直近12か月）— 7Rは進入固定が大半のため「—」</div><div class="tbars"><div class="tbar"><div class="col" style="height:36px;background:#4a5a9c"></div><div class="num">1</div><div class="pct">51</div></div><div class="tbar"><div class="col" style="height:36px;background:#4a5a9c"></div><div class="num">2</div><div class="pct">52</div></div><div class="tbar"><div class="col" style="height:34px;background:#d96a55"></div><div class="num">3</div><div class="pct">49</div></div><div class="tbar"><div class="col" style="height:42px;background:#4a5a9c"></div><div class="num">4</div><div class="pct">60</div></div><div class="tbar"><div class="col" style="height:39px;background:#4a5a9c"></div><div class="num">5</div><div class="pct">56</div></div><div class="tbar"><div class="col" style="height:37px;background:#4a5a9c"></div><div class="num">6</div><div class="pct">53</div></div><div class="tbar"><div class="col" style="height:5px;background:#4b5170"></div><div class="num">7</div><div class="pct">—</div></div><div class="tbar"><div class="col" style="height:46px;background:#5b93bd"></div><div class="num">8</div><div class="pct">66</div></div><div class="tbar"><div class="col" style="height:42px;background:#4a5a9c"></div><div class="num">9</div><div class="pct">60</div></div><div class="tbar"><div class="col" style="height:52px;background:#5b93bd"></div><div class="num">10</div><div class="pct">74</div></div><div class="tbar"><div class="col" style="height:5px;background:#4b5170"></div><div class="num">11</div><div class="pct">—</div></div><div class="tbar"><div class="col" style="height:48px;background:#5b93bd"></div><div class="num">12</div><div class="pct">69</div></div></div><div class="cap" style="margin-top:6px">初日の1〜6R：イン <b style="color:#ffd98a">36%</b>・万舟 22%・15倍以上 78%（n=222）＝ここだけが主戦場</div></div>
+<div id="failnote"></div>
+
+<main><div class="nokaisai"><b>本日、大村の開催はありません</b>上の地形図は直近12か月の基礎率です。次回開催日にまた自動更新されます。</div></main>
+<div class="notes">
+<div><b>大村は「番組が支配するイン水面」</b>（場残差 +3.7pt・イン61%＝全国3位）。崩れるかどうかは
+<b>1号艇が出走表の中で相対的に強いか</b>で決まります（勝率1位A級＝イン77%／4位以下＝44%）。
+番組表に見えている条件なので、市場も概ね織り込んでいる前提で「候補を絞る道具」として使ってください。</div>
+<div><b>主戦場は「初日の1〜6R」</b>（イン36%・万舟21%・15倍以上77%）。慣らし前の1号艇は平均ST0.166と遅く、
+級で統制しても−12〜−19pt。7R以降は元に戻る（+8pt）ので「初日」でなく「初日の前半」です。
+中日の1〜6Rはほぼ公正で、<b>毎日の前半が穴ではありません</b>。</div>
+<div><b>7Rの進入固定は鉄板</b>（イン75%・万舟8%・配当中央値1,080円）。レース番号でなく番組表の「進入固定」で判定しています。
+<b>最終日の前半でA級が1号艇</b>（今節成績順の番組・イン76%）、<b>準優・予選特選</b>（イン78〜81%）も見送り寄りです。</div>
+<div><b>夜（7R以降・18時台〜）の大村は構造的にイン水面</b>で、番号や級では穴が見つかりませんでした。
+夜の買い方は<b>中穴フォーム＝1頭固定・2着を4〜6号艇に寄せる</b>（イン逃げ決着の43%が15倍以上、その2着は54〜57%が4〜6号艇）と、
+<b>選手の型</b>（1号艇スロー遅れ●・2号艇壁弱●）の重ね掛けです。3連単51番人気以降（目安170倍超）は買いません。</div>
+<div><b>1号艇は負けても45%が2着に残る</b>（残す型70%・飛ぶ型38%）＝X-1-Yが基本。崩れの決まり手はまくり・まくり差し・差しが三等分で、
+頭は3≧2＞4。差し水面（平和島）でもまくり水面でもない「均等型」です。</div>
+<div><b>風・季節・モーターは採点に入れていません</b>（風速は主効果なし、北系風はWF不一致、季節はヌル、モーターは旧・現行両世代でWF不一致）。
+西風・東風3m以上の崩れ（−16／−12pt・n不足）だけ監視中＝直前に西風3m以上なら頭に入れてください。</div>
+<div>スコアは大村の365日・2,462レース検証で三条件（方向・有意・前後半一致）を通ったシグナルだけを積んだものです。
+機械買いは控除の壁の内側＝スコアは候補絞り用途、オッズの歪みは締切前に人間が判断してください。</div>
+</div>
+<footer>更新: 2026-09-21 23:10 JST ／ 大村(24)・365日2,462レース検証</footer>
+</div>
+</body>
+</html>

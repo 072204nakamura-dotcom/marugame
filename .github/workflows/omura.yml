@@ -1,0 +1,45 @@
+name: omura-daily
+
+# 大村(24) 穴党ツール — 毎朝のレースカード生成
+#
+# cron の時刻は既存会場と重ならないように取ってある（docs/SCHEDULE.md）:
+#   20:00 build(丸亀)/naruto/miyajima ／ 20:10 edogawa ／ 20:20 fukuoka ／ 20:30 tsu ／ 20:40 heiwajima ／ 20:50 toda
+#   → 20:05 ← ここ（UTC 20:05 = 日本時間 翌朝 5:05）
+on:
+  schedule:
+    - cron: '5 20 * * *'
+  workflow_dispatch:          # 「Run workflow」ボタンで手動実行もできる
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20       # mbraceは遅い（1ファイル約10秒）ので余裕を持たせる
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: deps
+        run: pip install lhafile
+
+      # 採点仕様の回帰テスト。ここが落ちたらビルドせず、前回のページを残す。
+      - name: test
+        run: python scripts/omura/test_daily_build_om.py
+
+      - name: build
+        run: python scripts/omura/daily_build_om.py
+
+      - name: push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add omura/index.html
+          git diff --cached --quiet || git commit -m "omura daily build $(date +%F)"
+          git pull --rebase origin main || true
+          git push
