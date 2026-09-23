@@ -16,9 +16,12 @@
 実行: python scripts/tags/tag_ev.py            … 両系統
       python scripts/tags/tag_ev.py --min-n 15  … 機械判定の走数しきい値
 """
-import os, re, csv, json, glob, math, argparse, unicodedata
+import os, re, sys, csv, json, glob, math, argparse, unicodedata
 from collections import defaultdict
 import lhafile
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
+from ev_common import NINKI_MAX, ninki_rank
 
 REPO = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..')
 os.chdir(REPO)
@@ -143,8 +146,18 @@ def summarize(label, races, odds, base=None):
             ret = sum(r['payout'] for r, om in ev if r['combo'][0] == head)
             imp = sum(implied_head(om, head) for r, om in ev) / m
             act = hit / m
-            print('      └ オッズあり n=%4d 頭%s帯20点均等: 的中 %4.1f%% / 市場含意 %4.1f%% (差 %+.1fpt, z=%+.1f)  ROI %5.1f%%' % (
-                m, head, act * 100, imp * 100, (act - imp) * 100, z(act, m, imp) if 0 < imp < 1 else 0, ret / (m * 2000) * 100))
+            # 51番人気以降を外した版（2026-09-19 方針）
+            cost50 = ret50 = 0
+            for r, om in ev:
+                rank = ninki_rank(list(om.items()))
+                buy = [c for c in om if c[0] == head and rank[c] <= NINKI_MAX]
+                cost50 += len(buy) * 100
+                if r['combo'] in buy:
+                    ret50 += r['payout']
+            print('      └ オッズあり n=%4d 頭%s帯20点均等: 的中 %4.1f%% / 市場含意 %4.1f%% (差 %+.1fpt, z=%+.1f)  '
+                  'ROI %5.1f%%  ninki50 ROI %5.1f%%(%.1f点)' % (
+                m, head, act * 100, imp * 100, (act - imp) * 100, z(act, m, imp) if 0 < imp < 1 else 0,
+                ret / (m * 2000) * 100, ret50 / cost50 * 100 if cost50 else 0, cost50 / 100 / m))
     return r56
 
 

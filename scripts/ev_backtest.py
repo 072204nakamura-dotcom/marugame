@@ -8,6 +8,8 @@
  2) 確定オッズ等額買いのROI（すべり想定ヘアカット付き）
  3) 合成オッズ閾値（EVフィルタ）を上げると回収率が上がるか（過剰人気の裏の構造確認）
  4) 最大連敗・最大ドローダウン（資金設計用）
+ 5) 上の各帯から「確定オッズの人気順位が51番以降の買い目」を外した版（キー末尾 _ninki50）
+    ＝2026-09-19 の方針「3連単は50番人気までしか買わない」を当てはめた場合の成績
 
 実行: python scripts/ev_backtest.py
 出力:
@@ -19,6 +21,8 @@
 import os, re, csv, json, glob
 
 import lhafile
+
+from ev_common import NINKI_MAX, ninki_rank
 
 ODDS_ROOT = 'data/odds'
 LZH_K = 'data/lzh_k'
@@ -92,7 +96,12 @@ def make_bands():
 BANDS = make_bands()
 
 
-def band_row(date, race, odds, res, name, combos):
+def race_ranks(odds, race):
+    """そのレースの {combo: 人気順位}（確定オッズ昇順・同値はcombo順）"""
+    return ninki_rank([(c, o) for (r, c), o in odds.items() if r == race])
+
+
+def band_row(date, race, odds, res, name, combos, rank=None):
     priced = [(c, odds[(race, c)]) for c in combos if (race, c) in odds]
     if len(priced) < len(combos) - 8:     # 欠場等で帯が大きく壊れた日は除外
         return None
@@ -100,33 +109,50 @@ def band_row(date, race, odds, res, name, combos):
     combo, payout = res
     hit = any(c == combo for c, _ in priced)
     ret = int(odds.get((race, combo), 0) * 100) if hit else 0
-    return dict(date=date, race=race, band=name,
-                points=len(priced), cost=len(priced) * 100,
-                hit=int(hit), ret=ret,
-                synth=round(1 / synth_p, 2),            # 帯の合成オッズ
-                fair_p=round(synth_p * TAKEOUT, 4),     # 控除補正後の公正確率
-                combo=combo, payout=payout)
+    row = dict(date=date, race=race, band=name,
+               points=len(priced), cost=len(priced) * 100,
+               hit=int(hit), ret=ret,
+               synth=round(1 / synth_p, 2),            # 帯の合成オッズ
+               fair_p=round(synth_p * TAKEOUT, 4),     # 控除補正後の公正確率
+               combo=combo, payout=payout)
+    # ---- 50番人気まで版（51番人気以降はコストにも払戻にも入れない）----
+    rank = rank or {}
+    keep = [(c, o) for c, o in priced if rank.get(c, 10 ** 6) <= NINKI_MAX]
+    hit50 = any(c == combo for c, _ in keep)
+    synth50 = sum(1 / o for _, o in keep)
+    row.update(points_n50=len(keep), cost_n50=len(keep) * 100,
+               hit_n50=int(hit50),
+               ret_n50=int(odds.get((race, combo), 0) * 100) if hit50 else 0,
+               fair_p_n50=round(synth50 * TAKEOUT, 4) if synth50 else 0.0,
+               rank_win=rank.get(combo, ''))
+    return row
 
 
-def summarize(rows):
-    """等額100円買いの通算成績（時系列で連敗・DDも計算）"""
+def summarize(rows, sfx=''):
+    """等額100円買いの通算成績（時系列で連敗・DDも計算）
+    sfx='_n50' で「50番人気まで」版の列を使う（買い目が0点になったレースは除外）"""
     rows = sorted(rows, key=lambda r: (r['date'], r['race'], r['band']))
+    if sfx:
+        rows = [r for r in rows if r.get('cost' + sfx, 0) > 0]
     n = len(rows)
-    cost = sum(r['cost'] for r in rows)
-    ret = sum(r['ret'] for r in rows)
-    hits = sum(r['hit'] for r in rows)
-    ep = sum(r['fair_p'] for r in rows)                 # 期待的中数（市場基準）
-    var = sum(r['fair_p'] * (1 - r['fair_p']) for r in rows)
+    if not n:
+        return dict(n=0)
+    cost = sum(r['cost' + sfx] for r in rows)
+    ret = sum(r['ret' + sfx] for r in rows)
+    hits = sum(r['hit' + sfx] for r in rows)
+    ep = sum(r['fair_p' + sfx] for r in rows)           # 期待的中数（市場基準）
+    var = sum(r['fair_p' + sfx] * (1 - r['fair_p' + sfx]) for r in rows)
     z = (hits - ep) / var ** 0.5 if var > 0 else 0.0
     streak = worst = cum = peak = dd = 0
     for r in rows:
-        streak = 0 if r['hit'] else streak + 1
+        streak = 0 if r['hit' + sfx] else streak + 1
         worst = max(worst, streak)
-        cum += r['ret'] - r['cost']
+        cum += r['ret' + sfx] - r['cost' + sfx]
         peak = max(peak, cum)
         dd = min(dd, cum - peak)
     roi = ret / cost * 100 if cost else 0.0
     return dict(n=n, hits=hits,
+                points_per_race=round(cost / 100 / n, 1),
                 roi=round(roi, 1), roi_haircut=round(roi - HAIRCUT, 1),
                 hit_rate=round(hits / n * 100, 1) if n else 0,
                 mkt_fair=round(ep / n * 100, 1) if n else 0,
@@ -153,8 +179,9 @@ def main():
                     continue
                 if odds is None:
                     odds = load_odds(path)
+                rank = race_ranks(odds, race)
                 for name, combos in BANDS.items():
-                    r = band_row(date, race, odds, res[race], name, combos)
+                    r = band_row(date, race, odds, res[race], name, combos, rank)
                     if r:
                         r['jcd'] = jcd
                         rows.append(r)
@@ -167,6 +194,7 @@ def main():
             sub = [r for r in rows if r['band'] == name]
             if sub:
                 venue[name] = summarize(sub)
+                venue[name + '_ninki50'] = summarize(sub, '_n50')
         # EVフィルタの効き確認：外枠頭帯(head2〜6)をプールし、合成オッズ閾値でふるう
         sweep = {}
         outs = [r for r in rows
@@ -175,18 +203,22 @@ def main():
             sub = [r for r in outs if r['synth'] >= cut]
             if sub:
                 sweep[str(cut)] = summarize(sub)
+                sweep[str(cut) + '_ninki50'] = summarize(sub, '_n50')
         venue['sweep_outsider_heads'] = sweep
         report[jcd] = venue
 
     os.makedirs('data', exist_ok=True)
     with open(LOG_CSV, 'w', newline='', encoding='utf-8-sig') as f:
         cols = ['jcd', 'date', 'race', 'band', 'points', 'cost', 'hit', 'ret',
-                'synth', 'fair_p', 'combo', 'payout']
+                'synth', 'fair_p', 'combo', 'payout',
+                'points_n50', 'cost_n50', 'hit_n50', 'ret_n50', 'fair_p_n50', 'rank_win']
         w = csv.DictWriter(f, fieldnames=cols)
         w.writeheader(); w.writerows(all_rows)
     with open(SUM_JSON, 'w', encoding='utf-8') as f:
         json.dump(report, f, ensure_ascii=False, indent=1)
     print(json.dumps(report, ensure_ascii=False, indent=1))
+    print('_ninki50 … 確定オッズの人気順位が51番以降の買い目を外した版（2026-09-19 方針）。'
+          '同じ帯の上限あり／なしを見比べる。')
     print('読み方: hit_rate > mkt_fair かつ edge_z>=2.0 でエッジ残存。'
           'roi_haircut>=110 かつ n>=100 で本採用検討。'
           'sweepは合成オッズ閾値を上げてroiが上がるか（EVフィルタの効き）を見る。'

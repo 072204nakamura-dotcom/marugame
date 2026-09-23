@@ -11,6 +11,8 @@ from itertools import permutations
 
 import lhafile
 
+from ev_common import NINKI_MAX, ninki_rank
+
 JCD = '22'
 ODDS_DIR = 'data/odds/22'
 LZH_K, LZH_B = 'data/lzh_k', 'data/lzh_b'
@@ -95,7 +97,7 @@ def tide_at(vals, h, m):
     return vals[i] * (1 - f) + vals[j] * f
 
 
-def band_row(date, race, tide, odds, res, band, name):
+def band_row(date, race, tide, odds, res, band, name, rank=None):
     combo, pay = res
     olist = [odds.get((race, c)) for c in band]
     olist = [o for o in olist if o and o > 0]
@@ -105,9 +107,18 @@ def band_row(date, race, tide, odds, res, band, name):
     hit = combo in band
     ret = (odds.get((race, combo)) or 0) * 100 if hit else 0
     cost = len(band) * 100
+    # ---- 50番人気まで版（51番人気以降は買わない：2026-09-19 方針）----
+    rank = rank or {}
+    keep = [c for c in band if (odds.get((race, c)) or 0) > 0 and rank.get(c, 10 ** 6) <= NINKI_MAX]
+    hit50 = combo in keep
+    synth50 = sum(1 / odds[(race, c)] for c in keep)
     return dict(date=date, race=race, tide=round(tide, 1), band=name,
                 cost=cost, hit=int(hit), ret=int(ret),
-                synth_p=round(synth_p, 4), combo=combo, payout=pay)
+                synth_p=round(synth_p, 4), combo=combo, payout=pay,
+                points_n50=len(keep), cost_n50=len(keep) * 100,
+                hit_n50=int(hit50),
+                ret_n50=int((odds.get((race, combo)) or 0) * 100) if hit50 else 0,
+                synth_p_n50=round(synth50, 4), rank_win=rank.get(combo, ''))
 
 
 def main():
@@ -133,30 +144,41 @@ def main():
                 continue
             windows += 1
             odds = load_odds(path)
+            rank = ninki_rank([(c, o) for (r_, c), o in odds.items() if r_ == race and o > 0])
             for band, name in ((S8, 'S8'), (S20, 'S20')):
-                r = band_row(date, race, tv, odds, res[race], band, name)
+                r = band_row(date, race, tv, odds, res[race], band, name, rank)
                 if r:
                     rows.append(r)
     os.makedirs(os.path.dirname(LOG_CSV), exist_ok=True)
     with open(LOG_CSV, 'w', newline='', encoding='utf-8-sig') as f:
         w = csv.DictWriter(f, fieldnames=['date', 'race', 'tide', 'band', 'cost',
-                                          'hit', 'ret', 'synth_p', 'combo', 'payout'])
+                                          'hit', 'ret', 'synth_p', 'combo', 'payout',
+                                          'points_n50', 'cost_n50', 'hit_n50', 'ret_n50',
+                                          'synth_p_n50', 'rank_win'])
         w.writeheader(); w.writerows(rows)
 
-    summary = {}
-    for name in ('S8', 'S20'):
-        rs = [r for r in rows if r['band'] == name]
+    def agg(rs, sfx=''):
+        if sfx:
+            rs = [r for r in rs if r['cost' + sfx] > 0]
         n = len(rs)
-        cost = sum(r['cost'] for r in rs)
-        ret = sum(r['ret'] for r in rs)
-        hits = sum(r['hit'] for r in rs)
-        mkt_p = sum(r['synth_p'] for r in rs) / n if n else 0          # 市場の帯含意確率（控除込み平均）
-        summary[name] = dict(
+        cost = sum(r['cost' + sfx] for r in rs)
+        ret = sum(r['ret' + sfx] for r in rs)
+        hits = sum(r['hit' + sfx] for r in rs)
+        mkt_p = sum(r['synth_p' + sfx] for r in rs) / n if n else 0     # 市場の帯含意確率（控除込み平均）
+        return dict(
             n=n, hits=hits,
+            points_per_race=round(cost / 100 / n, 1) if n else None,
             roi=round(ret / cost * 100, 1) if cost else None,
             hit_rate=round(hits / n * 100, 1) if n else None,
             mkt_implied=round(mkt_p * 100, 1),                          # そのまま（控除込み）
             mkt_implied_fair=round(mkt_p * TAKEOUT * 100, 1))           # 控除補正後の公正確率
+
+    summary = {}
+    for name in ('S8', 'S20'):
+        rs = [r for r in rows if r['band'] == name]
+        summary[name] = agg(rs)
+        # 51番人気以降を外した版（2026-09-19 方針）。既存キーはそのまま残す
+        summary[name + '_ninki50'] = agg(rs, '_n50')
     out = dict(covered_days=covered, window_races=windows, bands=summary)
     os.makedirs(os.path.dirname(SUM_JSON), exist_ok=True)
     with open(SUM_JSON, 'w', encoding='utf-8') as f:

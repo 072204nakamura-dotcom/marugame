@@ -12,9 +12,12 @@
 
 実行: python scripts/tsu_ev.py
 """
-import os, re, csv, math, unicodedata
+import os, re, sys, csv, math, unicodedata
 from collections import defaultdict
 import lhafile
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from ev_common import NINKI_MAX, ninki_rank
 
 ODDS_DIR = 'data/odds/09'
 LZH_K = 'data/lzh_k'
@@ -92,7 +95,9 @@ def main():
     print('オッズ%d日 × K結果 → JOIN %dレース' % (len(dates), len(JOIN)))
 
     def bucket(rows, band_head, label):
+        """頭帯20点均等のROIに加え、51番人気以降を外した版も出す（2026-09-19 方針）"""
         n = hit = 0; imp = ret = 0.0
+        cost50 = ret50 = 0
         for r, om in rows:
             im = implied(om)
             p = sum(v for c, v in im.items() if c.startswith(band_head + '-'))
@@ -100,12 +105,19 @@ def main():
             n += 1; imp += p
             if r['combo'].startswith(band_head + '-'):
                 hit += 1; ret += r['payout']
+            rank = ninki_rank(list(om.items()))
+            buy = [c for c in om if c.startswith(band_head + '-') and rank[c] <= NINKI_MAX]
+            cost50 += len(buy) * 100
+            if r['combo'] in buy:
+                ret50 += r['payout']
         if not n:
             print('  %-30s データなし' % label); return
         a, i = hit/n, imp/n
         se = math.sqrt(a*(1-a)/n) if 0 < a < 1 else 0
-        print('  %-30s n=%4d 実測%5.1f%% 含意%5.1f%% 差%+5.1fpt(z=%+.1f) 頭帯ROI%6.1f%%'
-              % (label, n, a*100, i*100, (i-a)*100, (i-a)/se if se else 0, ret/(n*20*100)*100))
+        print('  %-30s n=%4d 実測%5.1f%% 含意%5.1f%% 差%+5.1fpt(z=%+.1f) 頭帯ROI%6.1f%% '
+              '50番人気まで%6.1f%%(%.1f点)'
+              % (label, n, a*100, i*100, (i-a)*100, (i-a)/se if se else 0, ret/(n*20*100)*100,
+                 ret50/cost50*100 if cost50 else 0, cost50/100/n))
 
     def sel(f):
         return [(r, om) for r, om in JOIN if f(r)]

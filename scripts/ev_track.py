@@ -14,8 +14,11 @@ Kファイル（data/lzh_k）の3連単結果・払戻と突き合わせて通�
 出力: data/ev_track_log.csv（1行=1レース）／data/ev_track_summary.json／track/index.html
 実行: python scripts/ev_track.py   （git履歴が要るので Actions では fetch-depth: 0）
 """
-import os, re, csv, json, subprocess, unicodedata, datetime
+import os, re, sys, csv, json, subprocess, unicodedata, datetime
 import lhafile
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from ev_common import NINKI_MAX, ninki_rank
 
 TRACK_SINCE = '2026-08-26'
 LOG = 'data/ev_track_log.csv'
@@ -28,8 +31,10 @@ RACE_HDR = re.compile(r'^\s{2,}(\d{1,2})R\s+(.*?)\s+H(\d{3,4})m')
 SANTAN = re.compile(r'3連単\s+([1-6]-[1-6]-[1-6])\s+(\d+)')
 S8 = ['2-3-1', '2-3-4', '2-3-5', '2-3-6', '2-5-1', '2-5-3', '2-5-4', '2-5-6']
 HEAD5 = ['5-%d-%d' % (a, b) for a in range(1, 7) for b in range(1, 7) if a != 5 and b != 5 and a != b]
-LOG_COLS = ['date', 'venue', 'race', 'cell', 'points', 'stake', 'bets', 'result', 'payout', 'return', 'note']
+LOG_COLS = ['date', 'venue', 'race', 'cell', 'points', 'stake', 'bets', 'result', 'payout', 'return', 'note',
+            'points_n50', 'stake_n50', 'return_n50']
 # bets … 「買い目=金額」を空白区切りで並べた文字列（例: 1-2-3=400 1-2-4=300 …）。ページの明細に使う
+# *_n50 … 確定オッズの人気順位が51番以降の買い目を外した版（2026-09-19 方針）。集計の比較用で、ページ表示は変えていない
 
 
 # ---------------- git 履歴から「表示した買い目」を復元 ----------------
@@ -166,8 +171,8 @@ def settle(rec):
     row = dict(date=rec['date'], venue=rec['venue'], race=rec['race'], cell=rec['cell'],
                points=len(rec['combos']), result='', payout='', **{'return': ''}, note='', bets='')
     alloc = {c: 100 for c in rec['combos']}                # 既定は1点100円の均等買い
+    o = odds(rec['jcd'], rec['date'], rec['race'])
     if rec['mode'] == 'prop':
-        o = odds(rec['jcd'], rec['date'], rec['race'])
         if all(c in o for c in rec['combos']):
             alloc = allocate(rec['combos'], o)
             row['note'] = '合成オッズ %.1f倍（1,000円をオッズ反比例で配分）' % (1 / sum(1 / o[c] for c in rec['combos']))
@@ -176,11 +181,19 @@ def settle(rec):
     row['stake'] = sum(alloc.values())
     row['bets'] = ' '.join('%s=%d' % (c, alloc[c]) for c in rec['combos'])
     hit_ret = lambda combo, pay: alloc[combo] / 100 * pay
+    # 50番人気まで版（オッズが無い日は空欄＝集計に入れない）
+    rank = ninki_rank(list(o.items())) if o else {}
+    keep = [c for c in rec['combos'] if rank.get(c, 10 ** 6) <= NINKI_MAX]
+    row['points_n50'] = len(keep) if rank else ''
+    row['stake_n50'] = sum(alloc[c] for c in keep) if rank else ''
+    row['return_n50'] = ''
     if res is None:
         return row                                     # 結果未着（Kファイル未取得）＝未確定
     combo, pay = res
     row['result'], row['payout'] = combo, pay
     row['return'] = int(round(hit_ret(combo, pay))) if combo in rec['combos'] else 0
+    if rank:
+        row['return_n50'] = int(round(hit_ret(combo, pay))) if combo in keep else 0
     return row
 
 
@@ -195,17 +208,25 @@ def load_log():
 def summarize(rows):
     cells = {}
     for r in rows:
-        s = cells.setdefault(r['cell'], dict(n=0, hits=0, stake=0, ret=0, pending=0))
+        s = cells.setdefault(r['cell'], dict(n=0, hits=0, stake=0, ret=0, pending=0,
+                                             n_n50=0, stake_n50=0, ret_n50=0))
         if r['result'] == '':
             s['pending'] += 1; continue
         s['n'] += 1; s['stake'] += int(r['stake']); s['ret'] += int(r['return'])
         s['hits'] += 1 if int(r['return']) > 0 else 0
+        if str(r.get('stake_n50', '')) != '' and int(r['stake_n50']) > 0:   # オッズがある日だけ
+            s['n_n50'] += 1; s['stake_n50'] += int(r['stake_n50']); s['ret_n50'] += int(r['return_n50'] or 0)
     for s in cells.values():
         s['roi'] = round(s['ret'] / s['stake'] * 100, 1) if s['stake'] else None
+        s['roi_n50'] = round(s['ret_n50'] / s['stake_n50'] * 100, 1) if s['stake_n50'] else None
     tot = dict(n=sum(s['n'] for s in cells.values()), hits=sum(s['hits'] for s in cells.values()),
                stake=sum(s['stake'] for s in cells.values()), ret=sum(s['ret'] for s in cells.values()),
-               pending=sum(s['pending'] for s in cells.values()))
+               pending=sum(s['pending'] for s in cells.values()),
+               n_n50=sum(s['n_n50'] for s in cells.values()),
+               stake_n50=sum(s['stake_n50'] for s in cells.values()),
+               ret_n50=sum(s['ret_n50'] for s in cells.values()))
     tot['roi'] = round(tot['ret'] / tot['stake'] * 100, 1) if tot['stake'] else None
+    tot['roi_n50'] = round(tot['ret_n50'] / tot['stake_n50'] * 100, 1) if tot['stake_n50'] else None
     return cells, tot
 
 
@@ -350,10 +371,14 @@ def main():
 
     print('表示した買い目 %d レース（未確定 %d）' % (len(rows), tot['pending']))
     for k, s in cells.items():
-        print('  %-40s n=%3d 的中%2d 賭け%6d 払戻%6d ROI %s' % (k, s['n'], s['hits'], s['stake'], s['ret'],
-              '—' if s['roi'] is None else '%.0f%%' % s['roi']))
-    print('  合計 n=%d 的中%d 賭け%d 払戻%d ROI %s' % (tot['n'], tot['hits'], tot['stake'], tot['ret'],
-          '—' if tot['roi'] is None else '%.0f%%' % tot['roi']))
+        print('  %-40s n=%3d 的中%2d 賭け%6d 払戻%6d ROI %s ／ 50番人気まで n=%3d ROI %s' % (
+              k, s['n'], s['hits'], s['stake'], s['ret'],
+              '—' if s['roi'] is None else '%.0f%%' % s['roi'],
+              s['n_n50'], '—' if s['roi_n50'] is None else '%.0f%%' % s['roi_n50']))
+    print('  合計 n=%d 的中%d 賭け%d 払戻%d ROI %s ／ 50番人気まで n=%d ROI %s' % (
+          tot['n'], tot['hits'], tot['stake'], tot['ret'],
+          '—' if tot['roi'] is None else '%.0f%%' % tot['roi'],
+          tot['n_n50'], '—' if tot['roi_n50'] is None else '%.0f%%' % tot['roi_n50']))
 
 
 if __name__ == '__main__':

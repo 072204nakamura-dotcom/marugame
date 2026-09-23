@@ -15,9 +15,13 @@
 実行: python scripts/naruto_ev.py
 """
 import os
+import sys
 import csv
 import math
 from collections import defaultdict
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from ev_common import NINKI_MAX, ninki_rank
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 ODDS_DIR = os.path.join(REPO, 'data', 'odds', '14')
@@ -55,9 +59,11 @@ def main():
     print()
 
     def bucket(rows, label, pos, boat):
-        """pos着に boat 号艇が来る出目の 実測/含意/等額買い回収"""
+        """pos着に boat 号艇が来る出目の 実測/含意/等額買い回収
+        ninki50 … 確定オッズの人気順位が51番以降の買い目を外した版（2026-09-19 方針）"""
         n = act = 0
         imp_sum = ret = 0.0
+        cost50 = ret50 = 0
         for r, om in rows:
             im = implied(om)
             p = sum(v for c, v in im.items() if c.split('-')[pos - 1] == boat)
@@ -69,14 +75,21 @@ def main():
             act += 1 if hit else 0
             if hit:
                 ret += int(r['payout'])
+            rank = ninki_rank(list(om.items()))
+            buy = [c for c in om if c.split('-')[pos - 1] == boat and rank[c] <= NINKI_MAX]
+            cost50 += len(buy) * 100
+            if hit and r['santan'] in buy:
+                ret50 += int(r['payout'])
         if n == 0:
             print('  %-22s データなし' % label)
             return
         a, i = act / n, imp_sum / n
         s = math.sqrt(a * (1 - a) / n)
         z = (i - a) / s if s else 0
-        print('  %-22s n=%4d  実測 %5.1f%%  含意 %5.1f%%  差 %+5.1fpt (z=%+.1f)  等額買い回収 %5.1f%%'
-              % (label, n, a * 100, i * 100, (i - a) * 100, z, ret / (n * 20 * 100) * 100))
+        print('  %-22s n=%4d  実測 %5.1f%%  含意 %5.1f%%  差 %+5.1fpt (z=%+.1f)  等額買い回収 %5.1f%%  '
+              '50番人気まで %5.1f%%(%.1f点)'
+              % (label, n, a * 100, i * 100, (i - a) * 100, z, ret / (n * 20 * 100) * 100,
+                 ret50 / cost50 * 100 if cost50 else 0, cost50 / 100 / n))
 
     def pick(name=None, exclude=False):
         if name is None:
