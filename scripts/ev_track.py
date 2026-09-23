@@ -28,7 +28,8 @@ RACE_HDR = re.compile(r'^\s{2,}(\d{1,2})R\s+(.*?)\s+H(\d{3,4})m')
 SANTAN = re.compile(r'3連単\s+([1-6]-[1-6]-[1-6])\s+(\d+)')
 S8 = ['2-3-1', '2-3-4', '2-3-5', '2-3-6', '2-5-1', '2-5-3', '2-5-4', '2-5-6']
 HEAD5 = ['5-%d-%d' % (a, b) for a in range(1, 7) for b in range(1, 7) if a != 5 and b != 5 and a != b]
-LOG_COLS = ['date', 'venue', 'race', 'cell', 'points', 'stake', 'result', 'payout', 'return', 'note']
+LOG_COLS = ['date', 'venue', 'race', 'cell', 'points', 'stake', 'bets', 'result', 'payout', 'return', 'note']
+# bets … 「買い目=金額」を空白区切りで並べた文字列（例: 1-2-3=400 1-2-4=300 …）。ページの明細に使う
 
 
 # ---------------- git 履歴から「表示した買い目」を復元 ----------------
@@ -163,21 +164,18 @@ def allocate(combos, o, budget=1000, unit=100):
 def settle(rec):
     res = results(rec['date'], rec['jcd']).get(rec['race'])
     row = dict(date=rec['date'], venue=rec['venue'], race=rec['race'], cell=rec['cell'],
-               points=len(rec['combos']), result='', payout='', **{'return': ''}, note='')
+               points=len(rec['combos']), result='', payout='', **{'return': ''}, note='', bets='')
+    alloc = {c: 100 for c in rec['combos']}                # 既定は1点100円の均等買い
     if rec['mode'] == 'prop':
         o = odds(rec['jcd'], rec['date'], rec['race'])
         if all(c in o for c in rec['combos']):
             alloc = allocate(rec['combos'], o)
-            row['stake'] = sum(alloc.values())
-            row['note'] = ' '.join('%s=%d' % (c, alloc[c]) for c in rec['combos'])
-            hit_ret = lambda combo, pay: alloc[combo] / 100 * pay
+            row['note'] = '合成オッズ %.1f倍（1,000円をオッズ反比例で配分）' % (1 / sum(1 / o[c] for c in rec['combos']))
         else:
-            row['stake'] = 100 * len(rec['combos'])
             row['note'] = 'オッズ未取得のため均等'
-            hit_ret = lambda combo, pay: pay
-    else:
-        row['stake'] = 100 * len(rec['combos'])
-        hit_ret = lambda combo, pay: pay
+    row['stake'] = sum(alloc.values())
+    row['bets'] = ' '.join('%s=%d' % (c, alloc[c]) for c in rec['combos'])
+    hit_ret = lambda combo, pay: alloc[combo] / 100 * pay
     if res is None:
         return row                                     # 結果未着（Kファイル未取得）＝未確定
     combo, pay = res
@@ -224,14 +222,31 @@ def render(rows, cells, tot, now):
         % (esc(k), s['n'], s['hits'], '{:,}'.format(s['stake']), '{:,}'.format(s['ret']),
            'good' if (s['roi'] or 0) >= 100 else 'bad', pct(s['roi']), s['pending'] or '')
         for k, s in cells.items())
+    def bets_html(r):
+        """買い目と金額の振り分け。的中した組は緑で強調、0円の組（配分で切り捨て）は薄く"""
+        if not r.get('bets'):
+            return ''
+        chips = []
+        for item in r['bets'].split():
+            combo, _, yen = item.partition('=')
+            yen = int(yen or 0)
+            cls = 'chip'
+            if combo == r['result']:
+                cls += ' win'
+            elif yen == 0:
+                cls += ' zero'
+            chips.append('<span class="%s">%s<b>%s円</b></span>' % (cls, esc(combo), '{:,}'.format(yen)))
+        note = (' <span class="bnote">%s</span>' % esc(r['note'])) if r.get('note') else ''
+        return '<tr class="bets"><td colspan="8">%s%s</td></tr>' % (''.join(chips), note)
+
     log_rows = ''.join(
-        '<tr><td>%s</td><td>%s %dR</td><td>%s</td><td class="num">%s</td>'
-        '<td class="num">%s</td><td>%s</td><td class="num">%s</td><td class="num %s">%s</td></tr>'
-        % (r['date'], esc(r['venue']), int(r['race']), esc(r['cell']).split('（')[0], r['points'],
-           '{:,}'.format(int(r['stake'])), r['result'] or '<span class="pend">未確定</span>',
-           '{:,}'.format(int(r['payout'])) if r['payout'] != '' else '',
-           'hit' if r['return'] not in ('', '0', 0) else '',
-           ('{:,}'.format(int(r['return'])) if r['return'] != '' else ''))
+        ('<tr><td>%s</td><td>%s %dR</td><td>%s</td><td class="num">%s</td>'
+         '<td class="num">%s</td><td>%s</td><td class="num">%s</td><td class="num %s">%s</td></tr>'
+         % (r['date'], esc(r['venue']), int(r['race']), esc(r['cell']).split('（')[0], r['points'],
+            '{:,}'.format(int(r['stake'])), r['result'] or '<span class="pend">未確定</span>',
+            '{:,}'.format(int(r['payout'])) if r['payout'] != '' else '',
+            'hit' if r['return'] not in ('', '0', 0) else '',
+            ('{:,}'.format(int(r['return'])) if r['return'] != '' else ''))) + bets_html(r)
         for r in sorted(rows, key=lambda r: (r['date'], r['venue'], int(r['race'])), reverse=True))
     return '''<!DOCTYPE html>
 <html lang="ja"><head><meta charset="utf-8">
@@ -259,6 +274,14 @@ td.roi.good{color:#1B6E3A}
 td.roi.bad{color:#B8322A}
 td.hit{color:#1B6E3A}
 .pend{color:#B8322A;font-weight:700}
+tr.bets td{background:#FAF8F2;padding:6px 9px 8px;border-top:0}
+.chip{display:inline-block;margin:3px 6px 3px 0;padding:2px 8px;border:1px solid #D8D4C8;border-radius:6px;background:#fff;font-size:14px;font-weight:700;color:#2B2B28;white-space:nowrap}
+.chip b{margin-left:6px;font-family:"Zen Kaku Gothic New",-apple-system,sans-serif;font-weight:700;color:#5A574E}
+.chip.win{background:#E3F3E8;border-color:#1B6E3A;color:#1B6E3A}
+.chip.win b{color:#1B6E3A}
+.chip.zero{color:#5A574E;background:#F3F1EB}
+.chip.zero b{color:#7A776D}
+.bnote{display:inline-block;margin-left:4px;font-size:12px;color:#5A574E}
 .note{background:#fff;border:1px solid #D8D4C8;border-radius:8px;padding:12px 14px;font-size:14px;margin:12px 0}
 .note li{margin:2px 0}
 footer{margin-top:24px;font-size:12px;color:#5A574E}
@@ -283,11 +306,13 @@ footer{margin-top:24px;font-size:12px;color:#5A574E}
 <li>平和島 壁強は1,000円を100円単位でオッズ反比例に配分（安い組ほど厚く）。ほかは1点100円の均等買い。</li>
 <li>戸田 カド消し×攻め手5は頭5帯（5-X-Y）20点均等＝EV検証で ROI194%%（n=83）が出た帯と同じ買い方。</li>
 <li>「未確定」は結果ファイル未着（翌朝のビルドで確定）。</li>
+<li>各レースの下の段が<b>その日の買い目と1点ごとの金額</b>。的中した組は緑。壁強で「0円」の組は、配分の結果100円に届かず買わなかった組。</li>
 </ul></div>
 
 <h2>全レース</h2>
 <div class="wrap"><table>
 <tr><th>日付</th><th>レース</th><th>セル</th><th>点数</th><th>賭け</th><th>結果</th><th>払戻</th><th>回収</th></tr>
+<!-- 各レースの直下に「買い目=金額」の段（tr.bets）が入る -->
 %s
 </table></div>
 
