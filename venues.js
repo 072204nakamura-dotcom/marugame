@@ -20,6 +20,7 @@ var VENUES = [
   { name: '宮島',   path: 'miyajima'  },  // 17
   { name: '福岡',   path: 'fukuoka'   },  // 22
   { name: '大村',   path: 'omura'     },  // 24
+  { name: '買い目', path: 'kaime'     },  // 締切前に風・オッズで判定する買い目シグナル（GAS）
   { name: '実戦成績', path: 'track'   }   // 表示した買い目の通算ROI（週次更新）
 ];
 

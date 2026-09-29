@@ -1,0 +1,46 @@
+name: kaime-targets
+
+# 買い目シグナル — 毎朝の候補作り（番組・季節・日程の条件だけで候補レースを出す）
+# 風とオッズの判定は締切約5分前に GAS（gas/kaime/Code.gs）が行う。
+#
+# cron の時刻は既存会場と重ならないように取ってある（docs/SCHEDULE.md）
+#   20:20 fukuoka ／ 20:30 tsu の間の空き枠
+#   → 20:25 ← ここ（UTC 20:25 = 日本時間 翌朝 5:25）
+on:
+  schedule:
+    - cron: '25 20 * * *'
+  workflow_dispatch:          # 「Run workflow」ボタンで手動実行もできる
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20       # mbraceは遅い（1ファイル約60秒）ので余裕を持たせる
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: deps
+        run: pip install lhafile
+
+      # 並び・判定の回帰テスト。落ちたら候補を作らない（前日の latest.json は日付が違うのでGASは何もしない）
+      - name: test
+        run: python scripts/kaime/test_kaime.py
+
+      - name: build
+        run: python scripts/kaime/build_targets.py
+
+      - name: push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add data/kaime/targets/
+          git diff --cached --quiet || git commit -m "kaime targets $(date +%F)"
+          git pull --rebase origin main || true
+          git push

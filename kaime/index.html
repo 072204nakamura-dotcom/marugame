@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>買い目シグナル</title>
+<link rel="icon" href="../favicon-32.png">
+<link rel="apple-touch-icon" href="../icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#2B2B28; --sub:#5A574E; --line:#D8D4C8; --bg:#F7F5EF; --paper:#fff; --head:#EFECE3;
+  --honmei:#B8322A; --honmei-bg:#FBEDEA; --ok:#1B6E3A; --ok-bg:#E3F3E8; --gray:#5A574E; --gray-bg:#F1EFE9;
+}
+*{box-sizing:border-box}
+body{margin:0;padding:16px;font-family:-apple-system,"Hiragino Sans","Yu Gothic UI",Meiryo,sans-serif;font-size:15px;line-height:1.8;color:var(--ink);background:var(--bg)}
+.wrap{max-width:720px;margin:0 auto}
+h1{font-size:22px;margin:0 0 4px}
+h2{font-size:18px;margin:28px 0 8px}
+.lead{font-size:14px;color:var(--sub);margin:0 0 12px}
+.num,.big{font-family:"Zen Kaku Gothic New",-apple-system,sans-serif;font-weight:700}
+.venues{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 16px}
+.venues a,.venues .on{display:inline-block;padding:6px 12px;border-radius:6px;font-size:14px;font-weight:700;text-decoration:none}
+.venues a{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.venues .on{background:var(--ink);color:#fff}
+
+.top{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;background:var(--paper);border:2px solid var(--ink);border-radius:10px;padding:12px 14px;margin:0 0 8px}
+.top .cnt{font-size:16px;font-weight:700}
+.top .cnt .big{font-size:26px;margin:0 2px}
+.top label{font-size:14px;font-weight:700;margin-left:auto;white-space:nowrap}
+.top input{width:84px;font-size:18px;padding:4px 6px;border:1px solid var(--sub);border-radius:6px;text-align:right;font-family:"Zen Kaku Gothic New",sans-serif;font-weight:700}
+.status{font-size:14px;color:var(--sub);margin:0 0 12px}
+.status.warn{color:var(--honmei);font-weight:700}
+
+.card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:0 0 12px}
+.card.past{opacity:.72}
+.card .rh{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}
+.card .rh .vr{font-size:20px;font-weight:700}
+.card .rh .dl{font-size:16px;font-weight:700}
+.card .rh .dl .num{font-size:20px}
+.card .rh .left{font-size:14px;color:var(--sub)}
+.card .meta{font-size:14px;color:var(--sub);margin:2px 0 6px}
+
+.rule{border-top:1px dashed var(--line);padding:8px 0 4px}
+.rule .rt{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px}
+.badge{display:inline-block;min-width:34px;text-align:center;padding:1px 8px;border-radius:6px;font-weight:700;font-size:15px}
+.r-honmei .badge{background:var(--honmei);color:#fff}
+.r-sanko .badge{background:var(--gray-bg);color:var(--ink);border:1px solid var(--sub)}
+.r-kanshi .badge{background:#fff;color:var(--sub);border:1px dashed var(--sub)}
+.rid{font-weight:700;font-size:17px}
+.rlabel{font-size:14px;color:var(--sub)}
+.tag{font-size:12px;font-weight:700;padding:0 6px;border-radius:4px;background:var(--gray-bg);color:var(--sub);border:1px solid var(--line)}
+.checks{font-size:14px;margin:4px 0}
+.checks span{display:inline-block;margin-right:10px;white-space:nowrap}
+.st{display:inline-block;font-weight:700;font-size:15px;padding:1px 10px;border-radius:6px}
+.st.wait{background:var(--gray-bg);color:var(--sub)}
+.st.go{background:var(--ok-bg);color:var(--ok);border:1px solid var(--ok)}
+.st.no{background:var(--gray-bg);color:var(--ink)}
+.st.hold{background:#FFF6DC;color:#7A5A00}
+
+table.bets{border-collapse:collapse;width:100%;margin:6px 0 2px;background:#fff}
+table.bets th,table.bets td{border:1px solid var(--line);padding:5px 8px;font-size:15px;text-align:right}
+table.bets th{background:var(--head);font-size:14px;text-align:center}
+table.bets td.c{text-align:center;font-size:18px}
+.r-honmei table.bets{border:2px solid var(--honmei)}
+.r-honmei table.bets td.c{color:var(--honmei)}
+.r-sanko table.bets td,.r-kanshi table.bets td{color:var(--sub)}
+.tot{font-size:15px;font-weight:700;margin:2px 0 4px}
+.r-honmei .tot{color:var(--honmei)}
+details summary{cursor:pointer;font-size:14px;font-weight:700;color:var(--sub);padding:4px 0}
+
+.empty{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:18px 14px;font-size:15px;text-align:center;color:var(--sub)}
+.wrapx{overflow-x:auto}
+table.sum{border-collapse:collapse;background:#fff;width:100%;min-width:560px}
+table.sum th,table.sum td{border:1px solid var(--line);padding:6px 8px;font-size:14px;text-align:right;white-space:nowrap}
+table.sum th{background:var(--head);text-align:center}
+table.sum td.l{text-align:left}
+table.sum tr.fy td{color:var(--sub);font-size:14px}
+table.sum tr.fy td.l{padding-left:22px}
+td.good{color:var(--ok)} td.bad{color:var(--honmei)}
+.note{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px 14px;font-size:14px;margin:16px 0}
+.note ul{margin:4px 0 0;padding-left:20px}
+.note li{margin:3px 0}
+footer{margin-top:20px;font-size:12px;color:var(--sub)}
+</style></head><body><div class="wrap">
+<nav class="venues" data-venue="kaime"></nav>
+<h1>買い目シグナル</h1>
+<p class="lead">検証で回収率100%を超えた条件のレースだけを出します。<b>風速とオッズは締切の約5分前に判定</b>するので、それまでは「待機中」です。</p>
+
+<div class="top">
+  <div class="cnt">本日の候補<span class="big" id="nCand">–</span>件 ／ 成立<span class="big" id="nGo">–</span>件</div>
+  <label>1点あたり <input id="unit" type="number" inputmode="numeric" min="100" step="100" value="100"> 円</label>
+</div>
+<p class="status" id="status">読み込み中…</p>
+
+<div id="cards"></div>
+
+<h2>紙上成績（ルール別）</h2>
+<p class="lead">1点100円で買ったと仮定した記録。翌朝6〜7時に前日分が自動で入ります。</p>
+<div class="wrapx"><table class="sum" id="sum"><tr><th>ルール</th><th>期間</th><th>件数</th><th>投資</th><th>払戻</th><th>回収率</th><th>的中</th></tr>
+<tr><td class="l" colspan="7">まだ記録がありません</td></tr></table></div>
+
+<div class="note"><b>注意</b>
+<ul>
+<li>検証は過去3年（2023/10〜2026/9）。◎でも公平に見積もると回収率は104〜107%程度で、確実にプラスではありません。</li>
+<li>オッズ40〜80倍は締切約5分前のオッズで判定しています。検証は確定オッズで行ったため、実際の成績は変わる可能性があります。</li>
+<li>△・×は記録のみを推奨。</li>
+<li>3連単51番人気以降は買わない（中穴ルール）。</li>
+</ul></div>
+
+<footer>候補：毎朝5時半ごろ GitHub Actions（scripts/kaime/build_targets.py）／ 判定：締切2〜9分前に Google Apps Script（gas/kaime/Code.gs）。60秒ごとに自動で読み直します。</footer>
+</div>
+<script src="../venues.js"></script>
+<script>
+/* ★ GASのウェブアプリURL（gas/kaime/README.md の手順7で出たURL）をここに入れる */
+var GAS_URL = '';
+
+var TARGETS = '../data/kaime/targets/';
+
+/* ルールの表示用（scripts/kaime/rules.py と同じ条件） */
+var RULE = {
+  'KIR-A': {rank:'◎', label:'3連単 X-1-Y（40〜80倍・50番人気まで）', winter:1, nonfinal:1, rmax:5, wind:1},
+  'KIR-B': {rank:'◎', label:'2連単 X-1（5点）',                     winter:1, nonfinal:1, rmax:5, wind:1},
+  'KIR-C': {rank:'△', label:'3連単 X-1-Y（X,Y∈2〜5・50番人気まで）', winter:1, nonfinal:1, rmax:5, wind:1},
+  'MIY-B': {rank:'△', label:'2連単 X-1（5点）',                     winter:1, nonfinal:1, rmax:5, wind:1},
+  'FUK-B': {rank:'△', label:'2連単 X-1（5点）',                     winter:1, nonfinal:1, rank1:4, wind:1},
+  'WAK-C': {rank:'△', label:'3連単 X-1-Y（20点）',                  winter:1, nonfinal:1, rmax:5, wind:1},
+  'TOD-A': {rank:'△', label:'3連単 X-1-Y（40〜80倍・50番人気まで）', winter:1, nonfinal:1, rmax:5, wind:1},
+  'ASH-Q': {rank:'×', label:'3連複 外上位3艇の1点',                 nonfinal:1, rmax:5, rank1:4},
+  'MAR-E': {rank:'×', label:'2連単 外上位3艇BOX（6点）',             rank1:4, wind:1},
+  'W1-Q':  {rank:'×', label:'3連複 1号艇を含む10通り',               w1:1}
+};
+var RANK_ORDER = {'◎':0, '△':1, '×':2};
+var RANK_CLASS = {'◎':'r-honmei', '△':'r-sanko', '×':'r-kanshi'};
+var RANK_TAG = {'◎':'本命', '△':'記録のみ推奨', '×':'偶然の可能性が高い・記録のみ'};
+
+var qs = new URLSearchParams(location.search);
+var DATE = qs.get('date') || new Intl.DateTimeFormat('sv-SE', {timeZone:'Asia/Tokyo'}).format(new Date());
+var state = {targets:null, snaps:[], summary:null, err:''};
+
+function lsGet(k){ try { return localStorage.getItem(k); } catch(e) { return null; } }
+function lsSet(k, v){ try { localStorage.setItem(k, v); } catch(e) {} }
+var unitEl = document.getElementById('unit');
+if (Number(lsGet('kaime_unit')) >= 100) unitEl.value = lsGet('kaime_unit');
+unitEl.addEventListener('input', function(){ if (Number(unitEl.value) > 0) lsSet('kaime_unit', unitEl.value); render(); });
+function unit(){ var u = Math.floor(Number(unitEl.value) / 100) * 100; return u >= 100 ? u : 100; }
+
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function yen(n){ return Number(n).toLocaleString('ja-JP'); }
+function nowJst(){ return new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Tokyo',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date()); }
+function minsLeft(hhmm){
+  if (DATE !== new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Tokyo'}).format(new Date())) return DATE < new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Tokyo'}).format(new Date()) ? -999 : 9999;
+  var n = nowJst().split(':'), d = hhmm.split(':');
+  return (Number(d[0])*60 + Number(d[1])) - (Number(n[0])*60 + Number(n[1]));
+}
+
+function getJSON(url){
+  return fetch(url, {cache:'no-store'}).then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); });
+}
+
+function load(){
+  var jobs = [];
+  if (GAS_URL) {
+    jobs.push(getJSON(GAS_URL + '?date=' + DATE).then(function(o){
+      if (!o.ok) throw new Error(o.error || 'GASエラー');
+      state.snaps = o.snapshots || [];
+      if (o.targets) state.targets = o.targets;
+    }).catch(function(e){ state.err = '判定データを読めませんでした（' + e.message + '）'; }));
+    jobs.push(getJSON(GAS_URL + '?mode=summary').then(function(o){ if (o.ok) state.summary = o.summary; }).catch(function(){}));
+  }
+  jobs.push(getJSON(TARGETS + DATE + '.json?t=' + Date.now()).then(function(o){ state.targets = o; })
+    .catch(function(){ if (!state.targets) state.targets = null; }));
+  Promise.all(jobs).then(function(){ render(); });
+}
+
+function checks(rid, race){
+  var r = RULE[rid], out = [];
+  if (r.winter)   out.push('✓冬');
+  if (r.nonfinal) out.push('✓非最終');
+  if (r.rmax)     out.push('✓1〜' + r.rmax + 'R');
+  if (r.rank1)    out.push('✓1号艇勝率' + race.rank1 + '位');
+  if (r.w1)       out.push('✓1号艇が勝率最下位（差' + race.weakest_is_boat1_gap + '）');
+  if (r.rank1 || rid === 'ASH-Q' || rid === 'MAR-E') out.push('外上位3艇 ' + race.outer_top3.join('・'));
+  return out.map(function(s){ return '<span>' + esc(s) + '</span>'; }).join('');
+}
+
+function ruleBlock(rid, race, snap, left){
+  var r = RULE[rid] || {rank:'×', label:''};
+  var st, stc, body = '';
+  if (!snap) {
+    if (left > 2) { st = r.wind ? '風：待機中（締切9分前から判定）' : '待機中（締切9分前から判定）'; stc = 'wait'; }
+    else { st = GAS_URL ? '判定なし（締切まで取得できず）' : '判定なし（GAS未接続）'; stc = 'no'; }
+  } else {
+    var windTxt = snap.wind_m !== '' ? '風' + snap.wind_m + 'm' : '';
+    if (snap.status === '成立') { st = '成立' + (windTxt ? '（' + windTxt + '）' : ''); stc = 'go'; }
+    else if (snap.status === '不成立') { st = '不成立（' + (snap.note || windTxt) + '）'; stc = 'no'; }
+    else if (snap.status === '見送り') { st = '見送り（' + (snap.note || '該当オッズなし') + '）' + (windTxt ? ' ' + windTxt : ''); stc = 'no'; }
+    else { st = '保留（' + (snap.note || '') + '）'; stc = 'hold'; }
+    if (snap.status === '成立' && snap.bets && snap.bets.length) {
+      var u = unit(), rows = snap.bets.map(function(b){
+        return '<tr><td class="c num">' + esc(b.combo) + '</td><td class="num">' + (b.odds == null ? '–' : Number(b.odds).toFixed(1)) +
+               '</td><td class="num">' + (b.pop == null ? '–' : b.pop + '番') + '</td><td class="num">' + yen(u) + '円</td></tr>';
+      }).join('');
+      body = '<table class="bets"><tr><th>組番</th><th>オッズ</th><th>人気</th><th>金額</th></tr>' + rows + '</table>' +
+             '<div class="tot">合計 <span class="num">' + snap.bets.length + '</span>点 ／ <span class="num">' + yen(u * snap.bets.length) + '</span>円' +
+             '<span class="rlabel">（判定 ' + esc(snap.judged_at.slice(0,5)) + '）</span></div>';
+      if (r.rank === '×') body = '<details><summary>買い目を見る（' + snap.bets.length + '点）</summary>' + body + '</details>';
+    }
+  }
+  return '<div class="rule ' + RANK_CLASS[r.rank] + '"><div class="rt"><span class="badge">' + r.rank + '</span>' +
+         '<span class="rid">' + esc(rid) + '</span>' + (r.rank !== '◎' ? '<span class="tag">' + RANK_TAG[r.rank] + '</span>' : '') +
+         '<span class="rlabel">' + esc(r.label) + '</span></div>' +
+         '<div class="checks">' + checks(rid, race) + '</div>' +
+         '<div><span class="st ' + stc + '">' + esc(st) + '</span></div>' + body + '</div>';
+}
+
+function render(){
+  var st = document.getElementById('status'), box = document.getElementById('cards');
+  var t = state.targets, snapBy = {};
+  state.snaps.forEach(function(s){ snapBy[s.jcd + '|' + Number(s.race) + '|' + s.rule_id] = s; });
+  var msg = DATE + ' ／ 最終読込 ' + nowJst();
+  if (!GAS_URL) msg += ' ／ 判定（風・オッズ）はGAS接続後に表示されます';
+  if (state.err) msg += ' ／ ' + state.err;
+  st.textContent = msg;
+  st.className = 'status' + (state.err ? ' warn' : '');
+
+  if (!t) {
+    box.innerHTML = '<div class="empty">この日の候補ファイルがまだありません（毎朝5時半ごろ作成。遅れることがあります）</div>';
+    document.getElementById('nCand').textContent = '–'; document.getElementById('nGo').textContent = '–';
+  } else if (!t.races.length) {
+    box.innerHTML = '<div class="empty">' + (t.bfile_ok === false ? '番組表を取得できませんでした' : '本日の候補なし') + '</div>';
+    document.getElementById('nCand').textContent = '0'; document.getElementById('nGo').textContent = '0';
+  } else {
+    var races = t.races.map(function(r){ r._left = minsLeft(r.deadline); return r; });
+    races.sort(function(a, b){
+      var ap = a._left < 0, bp = b._left < 0;
+      if (ap !== bp) return ap ? 1 : -1;                    // 締切前が上、終わったものは下へ
+      return a.deadline < b.deadline ? -1 : a.deadline > b.deadline ? 1 : a.jcd < b.jcd ? -1 : 1;
+    });
+    var nGo = 0;
+    box.innerHTML = races.map(function(r){
+      var ids = r.rules.slice().sort(function(a, b){ return RANK_ORDER[(RULE[a]||{}).rank] - RANK_ORDER[(RULE[b]||{}).rank]; });
+      var blocks = ids.map(function(id){
+        var s = snapBy[r.jcd + '|' + r.race + '|' + id];
+        if (s && s.status === '成立') nGo++;
+        return ruleBlock(id, r, s, r._left);
+      }).join('');
+      var leftTxt = r._left < 0 ? '締切済み' : r._left > 900 ? '' : 'あと' + r._left + '分';
+      return '<div class="card' + (r._left < 0 ? ' past' : '') + '"><div class="rh"><span class="vr">' + esc(r.venue) + ' ' + r.race + 'R</span>' +
+             '<span class="dl">締切 <span class="num">' + esc(r.deadline) + '</span></span><span class="left">' + leftTxt + '</span></div>' +
+             '<div class="meta">' + esc(r.rname || '') + (r.is_final_day ? ' ／ 最終日' : '') + ' ／ 全国勝率 ' +
+             r.boat_win.map(function(w, i){ return (i+1) + ':' + w.toFixed(2); }).join(' ') + '</div>' + blocks + '</div>';
+    }).join('');
+    document.getElementById('nCand').textContent = races.length;
+    document.getElementById('nGo').textContent = nGo;
+  }
+  renderSummary();
+}
+
+function renderSummary(){
+  var tb = document.getElementById('sum'), s = state.summary;
+  if (!s || !s.length) return;
+  tb.innerHTML = '<tr><th>ルール</th><th>期間</th><th>件数</th><th>投資</th><th>払戻</th><th>回収率</th><th>的中</th></tr>' +
+    s.map(function(o){
+      var roi = o.roi == null ? '–' : o.roi.toFixed(1) + '%';
+      var cls = o.roi == null ? '' : o.roi >= 100 ? ' good' : ' bad';
+      var fy = o.fy !== '通算';
+      return '<tr' + (fy ? ' class="fy"' : '') + '><td class="l">' + (fy ? '' : o.rank + ' ' + esc(o.rule_id)) + '</td><td class="l">' + esc(o.fy) + '</td>' +
+             '<td class="num">' + o.races + '</td><td class="num">' + yen(o.invest) + '</td><td class="num">' + yen(o.payout) + '</td>' +
+             '<td class="num' + cls + '">' + roi + '</td><td class="num">' + o.hits + '</td></tr>';
+    }).join('');
+}
+
+load();
+setInterval(load, 60000);
+</script>
+</body></html>
