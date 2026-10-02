@@ -771,15 +771,17 @@ def label_for(score):
     return 'イン堅め'
 
 
-def policy_for(score, forms, notes):
-    """買い目フォーム（仕様書§5）。処理順は 日目・番号 → 選手加点 → 方針テキスト。"""
+def policy_for(score, forms, notes, day1_in1=None):
+    """買い目フォーム（仕様書§5）。処理順は 日目・番号 → 選手加点 → 方針テキスト。
+    day1_in1 … 直近データで測り直した初日イン1着率（base_stats）。無ければ仕様書の40.5%。"""
     head = []
     if 'day1' in forms and 'r6' in forms:
         head.append('初日の6R＝江戸川で最も1号艇が飛ぶ組合せ（初日の前半戦は実測32.5%）。頭≠1を本線に。')
     elif 'day1' in forms and 'zone' in forms:
         head.append('初日の前半戦＝実測32.5%。江戸川で最も1号艇が飛ぶ組合せ。頭≠1を本線に。')
     elif 'day1' in forms:
-        head.append('初日＝イン最弱日（実測40.5%）。頭≠1を主軸、1は2着以下に置く。')
+        head.append('初日＝イン最弱日（実測%.1f%%）。頭≠1を主軸、1は2着以下に置く。'
+                    % (day1_in1 if day1_in1 else 40.5))
     elif 'r6' in forms:
         head.append('6R＝江戸川で最もインが飛ぶ番号（実測34.9%）。頭≠1を主軸に。')
     elif 'zone' in forms:
@@ -835,7 +837,8 @@ def main():
                             label=label_for(sc), score=max(sc, 0),
                             base_in1=next((x['in1'] for x in rno_table
                                            if x['rno'] == r['rno']), base.get('in1')),
-                            policy=policy_for(sc, forms, notes), boats=r['boats']))
+                            policy=policy_for(sc, forms, notes, base.get('day1_in1')),
+                            boats=r['boats']))
         data['races'] = out
         print('  開催あり: %s 第%s日 / %dレース（スコア2以上 %d）'
               % (parsed['title'], nichime, len(out),
