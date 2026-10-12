@@ -16,13 +16,19 @@ from collections import Counter, defaultdict
 import edogawa_daily as e
 
 FAILED = []
+DRIFT = []   # 注意だけの点検（仕様書の数字からのずれ）。ページ更新は止めない
 
 
-def check(name, cond, detail=''):
-    print(('  OK  ' if cond else '  NG! ') + name +
+def check(name, cond, detail='', soft=False):
+    """soft=False … 計算が壊れたら止める点検。NGならページを公開しない。
+    soft=True  … 仕様書（2026-07の窓）の数字から直近データがずれたかの点検。
+                 毎朝窓が進むので外れることがある。止めずに『注意』として
+                 Actionsの警告と edogawa/data.json の drift に出す（2026-10-12 発注者判断）。"""
+    mark = '  OK  ' if cond else ('  注意 ' if soft else '  NG! ')
+    print(mark + name +
           (('   << ' + detail) if not cond and detail else (('   ' + detail) if detail else '')))
     if not cond:
-        FAILED.append(name)
+        (DRIFT if soft else FAILED).append((name, detail))
 
 
 def near(got, want, tol):
@@ -48,10 +54,12 @@ def main():
     check('レース数 2,043R前後', 1950 <= len(races) <= 2150, '実測 %dR' % len(races))
 
     base, rno_table = e.base_stats(races)
-    check('1コース1着率 46.7%（±1.5）', near(base['in1'], 46.7, 1.5), '実測 %.1f%%' % base['in1'])
+    check('1コース1着率 46.7%（±1.5）', near(base['in1'], 46.7, 1.5), '実測 %.1f%%' % base['in1'],
+          soft=True)
     # 2026-10-02 発注者判断：値の固定（40.5%±2.5）ではなく「全体より2pt以上低い」という向きで見る。
     # 直近データで43.1%（n=378）に上がり止まっていたが、全体より約4pt低い＝方針の前提は残っている。
     # 差が2ptを切ったら「初日はイン最弱」の前提が崩れたとみなして止める（方針の見直しどき）。
+    # ※10-12 に点検を「止める／注意」に分けたが、これは10-02の判断どおり『止める』のまま。
     check('初日イン1着率が全体より2pt以上低い（仕様書時 40.5%）',
           base['day1_in1'] <= base['in1'] - 2.0,
           '実測 %.1f%%（n=%d）／全体 %.1f%%' % (base['day1_in1'], base['day1_n'], base['in1']))
@@ -61,21 +69,24 @@ def main():
     for nm, want in (('逃げ', 912), ('まくり', 432), ('差し', 300),
                      ('まくり差し', 208), ('抜き', 198), ('恵まれ', 24)):
         check('%s %d本前後（±60）' % (nm, want), abs(k[nm] - want) <= 60,
-              '実測 %d本' % k[nm])
+              '実測 %d本' % k[nm], soft=True)
 
     print('=== レース番号別イン1着率（前半戦が谷・6Rが底） ===')
     byr = {x['rno']: x for x in rno_table}
     for rno, want in ((1, 47.2), (6, 34.9), (12, 63.1)):
         got = byr[rno]['in1']
         check('%2dR イン%.1f%%（±3.0）' % (rno, want), near(got, want, 3.0),
-              '実測 %.1f%%' % got)
+              '実測 %.1f%%' % got, soft=True)
     zone = [byr[r]['in1'] for r in range(2, 7)]
     check('6R が全番号で最も低い', byr[6]['in1'] == min(x['in1'] for x in rno_table),
-          '6R %.1f%% / 最小 %.1f%%' % (byr[6]['in1'], min(x['in1'] for x in rno_table)))
+          '6R %.1f%% / 最小 %.1f%%（%dR）' % (byr[6]['in1'], min(x['in1'] for x in rno_table),
+                                          min(rno_table, key=lambda x: x['in1'])['rno']),
+          soft=True)
     check('前半戦2-6R が後半戦9-12R より低い',
           sum(zone) / 5 < sum(byr[r]['in1'] for r in range(9, 13)) / 4,
           '前半 %.1f%% vs 後半 %.1f%%' % (sum(zone) / 5,
-                                        sum(byr[r]['in1'] for r in range(9, 13)) / 4))
+                                        sum(byr[r]['in1'] for r in range(9, 13)) / 4),
+          soft=True)
 
     print('=== 6コース連対率（仕様書: 2連率11.0% / 3連率27.1%＝全国最高） ===')
     ed = load('ed_course.csv', False)
@@ -83,25 +94,25 @@ def main():
     r2 = sum(float(x['r1']) + float(x['r2']) for x in ed if x['course'] == '6')
     r3 = sum(float(x['r1']) + float(x['r2']) + float(x['r3']) for x in ed if x['course'] == '6')
     check('6コース2連率 11.0%（±1.5）', near(r2 / n6 * 100, 11.0, 1.5),
-          '実測 %.1f%%' % (r2 / n6 * 100))
+          '実測 %.1f%%' % (r2 / n6 * 100), soft=True)
     check('6コース3連率 27.1%（±2.0）', near(r3 / n6 * 100, 27.1, 2.0),
-          '実測 %.1f%%' % (r3 / n6 * 100))
+          '実測 %.1f%%' % (r3 / n6 * 100), soft=True)
 
     print('=== クロスウィンドウ検証（指示書§2-3・他4窓で再現済みの選手） ===')
     zn = {r['選手名']: r for r in zan}
     wl = {r['選手名']: r for r in wall}
     v = float(zn['太田和美']['残し率'])
     check('太田和美 残す型 76%前後（±6）', near(v * 100, 76, 6) and zn['太田和美']['型'] == '残す型',
-          '実測 %.1f%% (%s)' % (v * 100, zn['太田和美']['型']))
+          '実測 %.1f%% (%s)' % (v * 100, zn['太田和美']['型']), soft=True)
     v = float(zn['岡田憲行']['残し率'])
     check('岡田憲行 飛ぶ型 17〜19%（±4）', near(v * 100, 18, 4) and zn['岡田憲行']['型'] == '飛ぶ型',
-          '実測 %.1f%% (%s)' % (v * 100, zn['岡田憲行']['型']))
+          '実測 %.1f%% (%s)' % (v * 100, zn['岡田憲行']['型']), soft=True)
     v = float(wl['廣瀬将亨']['壁力'])
     check('廣瀬将亨 壁強 +16〜+24（±5）', 11 <= v <= 29 and wl['廣瀬将亨']['壁'] == '壁強●',
-          '実測 %+.1f (%s)' % (v, wl['廣瀬将亨']['壁']))
+          '実測 %+.1f (%s)' % (v, wl['廣瀬将亨']['壁']), soft=True)
     v = float(wl['西島義則']['壁力'])
     check('西島義則 壁弱 −22前後（±5）', near(v, -22, 5) and wl['西島義則']['壁'] == '壁弱●',
-          '実測 %+.1f (%s %s)' % (v, wl['西島義則']['壁'], wl['西島義則']['弱タイプ']))
+          '実測 %+.1f (%s %s)' % (v, wl['西島義則']['壁'], wl['西島義則']['弱タイプ']), soft=True)
 
     print('=== テーブルの列構成が既存4場と同一か ===')
     check('ST表の列', [c for c in st[0]][:8] ==
@@ -181,6 +192,8 @@ def main():
     check('初日×6R が最濃条件として出る', '初日の6R' in p, p[:60])
     p = pol_of(6, 3)
     check('6R単独（2日目以降）も頭≠1を主軸', '頭≠1を主軸' in p and '34.9%' in p, p[:60])
+    s6, f6, n6_ = e.score_race(mk(6), 3, L)
+    check('6Rの方針文は実測値を出す', '実測37.4%' in e.policy_for(s6, f6, n6_, None, 37.4))
     check('方針に6の土台ヒモが出る', '3連率27.1%' in pol_of(8, 2), pol_of(8, 2)[:80])
     check('無印レースは中立', '中立' in pol_of(8, 3), pol_of(8, 3)[:40])
     check('江戸川ブロックが無ければ None', e.parse_b('01BBGN\nx\n01BEND') is None)
@@ -197,9 +210,20 @@ def main():
             check('デイタイム開催（締切10〜16時台）', 10 <= min(hh) and max(hh) <= 16,
                   '%d〜%d時' % (min(hh), max(hh)))
 
+    # 注意（soft）は止めずに記録だけする：Actionsの警告欄と、ページ用の data.json
+    for name, detail in DRIFT:
+        print('::warning title=江戸川 仕様書からのずれ::%s %s' % (name, detail))
+    if os.path.exists(e.OUT_JSON):
+        d = json.load(open(e.OUT_JSON, encoding='utf-8'))
+        d['drift'] = [dict(name=n, detail=t) for n, t in DRIFT]
+        with open(e.OUT_JSON, 'w', encoding='utf-8') as f:
+            json.dump(d, f, ensure_ascii=False)
+
     print()
+    if DRIFT:
+        print('注意 %d件（止めない）: %s' % (len(DRIFT), ' / '.join(n for n, _ in DRIFT)))
     if FAILED:
-        print('NG %d件: %s' % (len(FAILED), ' / '.join(FAILED)))
+        print('NG %d件: %s' % (len(FAILED), ' / '.join(n for n, _ in FAILED)))
         return 1
     print('全テスト通過')
     return 0

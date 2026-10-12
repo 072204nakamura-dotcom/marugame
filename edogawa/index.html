@@ -101,6 +101,10 @@ tr:last-child td{border-bottom:none}
 .chokuzen li{margin:5px 0 5px 16px;line-height:1.65}
 .chokuzen b{color:#8a4a1f}
 
+.drift{background:#fdf6e3;border:1px solid #d9c38a;border-radius:10px;padding:10px 13px;margin:0 2px 12px;font-size:14px;color:#2b2f36;line-height:1.7}
+.drift b{color:#7a5a00}
+.drift ul{margin:4px 0 6px 18px}
+.drift li{margin:3px 0}
 .nokaisai{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:28px 16px;text-align:center;color:#5a6572}
 .nokaisai b{display:block;font-size:16px;color:var(--nando);margin-bottom:6px}
 .notes{margin:16px 4px 0;font-size:11px;color:#6b7683;line-height:1.75}
@@ -128,6 +132,7 @@ footer{padding:14px;text-align:center;font-size:10px;color:#93a1ad}
 <div class="summary" id="summary"></div>
 
 <main>
+  <div id="drift"></div>
   <div id="races"></div>
 
   <div class="chokuzen">
@@ -183,8 +188,16 @@ fetch('data.json?t=' + Date.now()).then(r => r.json()).then(d => {
       esc(d.title || '') + (d.nichime ? ' <b>第' + d.nichime + '日</b>' : '');
     if (d.nichime === 1) {
       document.getElementById('day1banner').innerHTML =
-        '<div class="day1">本日は初日 — 江戸川で最も1号艇が飛ぶ日（実測40.5%）</div>';
+        '<div class="day1">本日は初日 — 江戸川で最も1号艇が飛ぶ日（実測' +
+        (d.base.day1_in1 || 40.5) + '%）</div>';
     }
+  }
+  // 仕様書（2026-07時点）の数字から直近データがずれた項目。更新は止めずに知らせるだけ
+  if (d.drift && d.drift.length) {
+    document.getElementById('drift').innerHTML =
+      '<div class="drift"><b>注意：仕様書の数字からずれている項目（' + d.drift.length + '件）</b>' +
+      '<ul>' + d.drift.map(x => '<li>' + esc(x.name) + '<br>' + esc(x.detail) + '</li>').join('') + '</ul>' +
+      '採点ルールは仕様書のままです。ずれが続く項目は方針の見直し候補です。</div>';
   }
   renderSummary(d.base);
   renderTerrain(d.rno_table || []);
