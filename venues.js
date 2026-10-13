@@ -18,6 +18,7 @@ var VENUES = [
   { name: '津',     path: 'tsu'       },  // 09
   { name: '鳴門',   path: 'naruto'    },  // 14
   { name: '宮島',   path: 'miyajima'  },  // 17
+  { name: '若松',   path: 'wakamatsu' },  // 20
   { name: '福岡',   path: 'fukuoka'   },  // 22
   { name: '大村',   path: 'omura'     },  // 24
   { name: '買い目', path: 'kaime'     },  // 締切前に風・オッズで判定する買い目シグナル（GAS）
