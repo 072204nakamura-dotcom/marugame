@@ -1,0 +1,71 @@
+{
+ "date": "2026-10-30",
+ "generated_at": "2026-10-30T08:59:36+09:00",
+ "bfile_ok": true,
+ "races": [
+  {
+   "jcd": "15",
+   "venue": "丸亀",
+   "race": 2,
+   "deadline": "15:41",
+   "rname": "一般",
+   "is_final_day": false,
+   "rank1": 4,
+   "boat_win": [
+    4.54,
+    6.4,
+    5.56,
+    3.74,
+    5.27,
+    1.25
+   ],
+   "outer_top3": [
+    2,
+    3,
+    5
+   ],
+   "weakest_is_boat1_gap": null,
+   "rules": [
+    "MAR-E"
+   ],
+   "needs": {
+    "wind": true,
+    "odds3t": false,
+    "odds2t": true,
+    "odds3f": false
+   }
+  },
+  {
+   "jcd": "15",
+   "venue": "丸亀",
+   "race": 5,
+   "deadline": "17:01",
+   "rname": "一般",
+   "is_final_day": false,
+   "rank1": 5,
+   "boat_win": [
+    4.87,
+    6.03,
+    4.76,
+    5.08,
+    5.98,
+    6.59
+   ],
+   "outer_top3": [
+    6,
+    2,
+    5
+   ],
+   "weakest_is_boat1_gap": null,
+   "rules": [
+    "MAR-E"
+   ],
+   "needs": {
+    "wind": true,
+    "odds3t": false,
+    "odds2t": true,
+    "odds3f": false
+   }
+  }
+ ]
+}
