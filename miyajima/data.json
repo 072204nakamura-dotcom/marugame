@@ -1,5 +1,5 @@
 {
- "date": "2026-11-02",
+ "date": "2026-11-03",
  "kaisai": true,
  "rno_table": [
   {
@@ -63,197 +63,42 @@
    "man": 15.1
   }
  ],
- "updated": "2026-11-02 08:20 JST",
- "nichime": 2,
- "title": "2日  ルーキーシリーズ第2",
+ "updated": "2026-11-03 10:58 JST",
+ "nichime": 3,
+ "title": "3日  ルーキーシリーズ第2",
  "races": [
   {
    "rno": 1,
    "rname": "ファーストB",
-   "deadline": "10:13",
-   "score": -4.0,
+   "deadline": "10:18",
+   "score": -4.5,
    "label": "鉄板1R",
    "policy": "イン頭固定が本線。穴狙いは見送り推奨。 直前確認：北東/東の風2m以上なら穴側へ加点（−5.8pt効果・暫定採用）。",
    "base_in1": 72.7,
    "boats": [
     {
      "teiban": 1,
-     "name": "仲道大輔",
-     "grade": "A2",
-     "jiriki": 58.3,
-     "st_avg": 0.167,
-     "motor2": 27.27,
-     "badges": []
-    },
-    {
-     "teiban": 2,
-     "name": "福西広太",
-     "grade": "B1",
-     "jiriki": null,
-     "st_avg": 0.19,
-     "motor2": 0.0,
-     "badges": [
-      "ST遅め"
-     ]
-    },
-    {
-     "teiban": 3,
-     "name": "小林甘寧",
-     "grade": "B1",
-     "jiriki": null,
-     "st_avg": 0.151,
-     "motor2": 70.0,
-     "badges": []
-    },
-    {
-     "teiban": 4,
-     "name": "安藤瑠希",
-     "grade": "B1",
-     "jiriki": null,
-     "st_avg": 0.167,
-     "motor2": 0.0,
-     "badges": []
-    },
-    {
-     "teiban": 5,
-     "name": "佐藤永梧",
-     "grade": "B1",
-     "jiriki": 44.4,
-     "st_avg": 0.152,
-     "motor2": 0.0,
-     "badges": []
-    },
-    {
-     "teiban": 6,
-     "name": "今村天次",
-     "grade": "B2",
-     "jiriki": null,
-     "st_avg": 0.151,
-     "motor2": 40.0,
-     "badges": []
-    }
-   ]
-  },
-  {
-   "rno": 2,
-   "rname": "予選",
-   "deadline": "10:37",
-   "score": 1.7,
-   "label": "中間",
-   "policy": "特筆材料薄。無理せず他レースへ。 直前確認：北東/東の風2m以上なら穴側へ加点（−5.8pt効果・暫定採用）。",
-   "base_in1": 49.5,
-   "boats": [
-    {
-     "teiban": 1,
-     "name": "土井歩夢",
-     "grade": "A2",
-     "jiriki": 50.0,
-     "st_avg": 0.169,
-     "motor2": 0.0,
-     "badges": []
-    },
-    {
-     "teiban": 2,
-     "name": "庄島潤成",
-     "grade": "B1",
-     "jiriki": null,
-     "st_avg": 0.19,
-     "motor2": 70.0,
-     "badges": [
-      "ST遅め"
-     ]
-    },
-    {
-     "teiban": 3,
-     "name": "宮崎心之",
-     "grade": "B1",
-     "jiriki": null,
-     "st_avg": 0.184,
-     "motor2": 0.0,
-     "badges": []
-    },
-    {
-     "teiban": 4,
-     "name": "吉田一心",
-     "grade": "B1",
-     "jiriki": null,
-     "st_avg": 0.168,
-     "motor2": 0.0,
-     "badges": []
-    },
-    {
-     "teiban": 5,
-     "name": "中村 楓",
-     "grade": "B1",
-     "jiriki": null,
-     "st_avg": 0.177,
-     "motor2": 33.33,
-     "badges": []
-    },
-    {
-     "teiban": 6,
-     "name": "中 亮太",
+     "name": "中山翔太",
      "grade": "A1",
-     "jiriki": 72.3,
-     "st_avg": 0.138,
-     "motor2": 76.0,
+     "jiriki": 75.9,
+     "st_avg": 0.129,
+     "motor2": 50.0,
      "badges": [
-      "外に地力"
-     ]
-    }
-   ]
-  },
-  {
-   "rno": 3,
-   "rname": "予選",
-   "deadline": "11:04",
-   "score": 3.7,
-   "label": "堅いか万舟",
-   "policy": "イン信頼と崩れの二択。オッズ次第で崩れ側へ。ヒモも内寄り優先。 直前確認：北東/東の風2m以上なら穴側へ加点（−5.8pt効果・暫定採用）。",
-   "base_in1": 47.1,
-   "boats": [
-    {
-     "teiban": 1,
-     "name": "河内一馬",
-     "grade": "B1",
-     "jiriki": null,
-     "st_avg": 0.175,
-     "motor2": 0.0,
-     "badges": [
-      "F持ち"
+      "F持ち",
+      "逃げ厚"
      ]
     },
     {
      "teiban": 2,
-     "name": "大原祥昌",
-     "grade": "A2",
-     "jiriki": 65.9,
-     "st_avg": 0.138,
-     "motor2": 36.36,
+     "name": "三馬崇史",
+     "grade": "B1",
+     "jiriki": 47.5,
+     "st_avg": 0.143,
+     "motor2": 20.0,
      "badges": []
     },
     {
      "teiban": 3,
-     "name": "佐藤太亮",
-     "grade": "B1",
-     "jiriki": 50.0,
-     "st_avg": 0.172,
-     "motor2": 70.0,
-     "badges": []
-    },
-    {
-     "teiban": 4,
-     "name": "石田勇斗",
-     "grade": "B1",
-     "jiriki": 40.6,
-     "st_avg": 0.151,
-     "motor2": 72.73,
-     "badges": [
-      "F持ち"
-     ]
-    },
-    {
-     "teiban": 5,
      "name": "坂本一真",
      "grade": "B1",
      "jiriki": 19.2,
@@ -262,67 +107,7 @@
      "badges": []
     },
     {
-     "teiban": 6,
-     "name": "塚越海斗",
-     "grade": "A1",
-     "jiriki": 58.9,
-     "st_avg": 0.152,
-     "motor2": 0.0,
-     "badges": [
-      "外に地力"
-     ]
-    }
-   ]
-  },
-  {
-   "rno": 4,
-   "rname": "予選",
-   "deadline": "11:28",
-   "score": 0.0,
-   "label": "中間",
-   "policy": "特筆材料薄。無理せず他レースへ。 直前確認：北東/東の風2m以上なら穴側へ加点（−5.8pt効果・暫定採用）。",
-   "base_in1": 51.2,
-   "boats": [
-    {
-     "teiban": 1,
-     "name": "小宮涼雅",
-     "grade": "B1",
-     "jiriki": null,
-     "st_avg": 0.157,
-     "motor2": 20.0,
-     "badges": []
-    },
-    {
-     "teiban": 2,
-     "name": "鈴木柊介",
-     "grade": "B1",
-     "jiriki": null,
-     "st_avg": 0.155,
-     "motor2": 16.67,
-     "badges": []
-    },
-    {
-     "teiban": 3,
-     "name": "若林 麗",
-     "grade": "B1",
-     "jiriki": 25.0,
-     "st_avg": 0.177,
-     "motor2": 0.0,
-     "badges": []
-    },
-    {
      "teiban": 4,
-     "name": "上岡巧汰",
-     "grade": "B2",
-     "jiriki": null,
-     "st_avg": 0.163,
-     "motor2": 36.36,
-     "badges": [
-      "F持ち"
-     ]
-    },
-    {
-     "teiban": 5,
      "name": "米玉利大",
      "grade": "B1",
      "jiriki": null,
@@ -331,76 +116,13 @@
      "badges": []
     },
     {
-     "teiban": 6,
-     "name": "鈴木唯央",
+     "teiban": 5,
+     "name": "岩下巧斗",
      "grade": "B1",
-     "jiriki": null,
-     "st_avg": 0.163,
-     "motor2": 0.0,
-     "badges": [
-      "F持ち"
-     ]
-    }
-   ]
-  },
-  {
-   "rno": 5,
-   "rname": "予選",
-   "deadline": "11:56",
-   "score": 5.0,
-   "label": "穴の巣",
-   "policy": "イン頭を外す3連単を検討。受け皿は2-3-4（宮島は6が残らない）。 直前確認：北東/東の風2m以上なら穴側へ加点（−5.8pt効果・暫定採用）。",
-   "base_in1": 55.4,
-   "boats": [
-    {
-     "teiban": 1,
-     "name": "村松遥輝",
-     "grade": "B1",
-     "jiriki": 41.7,
-     "st_avg": 0.163,
-     "motor2": 50.0,
-     "badges": [
-      "F持ち",
-      "イン不安"
-     ]
-    },
-    {
-     "teiban": 2,
-     "name": "秋末秦悟",
-     "grade": "B1",
-     "jiriki": 47.6,
-     "st_avg": 0.166,
-     "motor2": 36.36,
-     "badges": []
-    },
-    {
-     "teiban": 3,
-     "name": "安河内鈴",
-     "grade": "A2",
-     "jiriki": 81.1,
-     "st_avg": 0.148,
+     "jiriki": 57.6,
+     "st_avg": 0.152,
      "motor2": 20.0,
      "badges": []
-    },
-    {
-     "teiban": 4,
-     "name": "品川二千",
-     "grade": "A1",
-     "jiriki": 65.9,
-     "st_avg": 0.159,
-     "motor2": 0.0,
-     "badges": []
-    },
-    {
-     "teiban": 5,
-     "name": "沼田大都",
-     "grade": "B1",
-     "jiriki": 38.5,
-     "st_avg": 0.214,
-     "motor2": 0.0,
-     "badges": [
-      "ST遅め"
-     ]
     },
     {
      "teiban": 6,
@@ -417,123 +139,39 @@
    ]
   },
   {
-   "rno": 6,
+   "rno": 2,
    "rname": "予選",
-   "deadline": "12:22",
-   "score": 0.5,
-   "label": "中間",
-   "policy": "特筆材料薄。無理せず他レースへ。 直前確認：北東/東の風2m以上なら穴側へ加点（−5.8pt効果・暫定採用）。",
-   "base_in1": 60.8,
+   "deadline": "10:55",
+   "score": 4.5,
+   "label": "穴の巣",
+   "policy": "イン頭を外す3連単を検討。受け皿は2-3-4（宮島は6が残らない）。 直前確認：北東/東の風2m以上なら穴側へ加点（−5.8pt効果・暫定採用）。",
+   "base_in1": 49.5,
    "boats": [
     {
      "teiban": 1,
-     "name": "網代良芽",
-     "grade": "B1",
-     "jiriki": 18.2,
-     "st_avg": 0.159,
-     "motor2": 0.0,
-     "badges": [
-      "イン不安"
-     ]
-    },
-    {
-     "teiban": 2,
-     "name": "藤森陸斗",
-     "grade": "A2",
-     "jiriki": 59.5,
-     "st_avg": 0.142,
-     "motor2": 45.45,
-     "badges": []
-    },
-    {
-     "teiban": 3,
-     "name": "水谷理人",
-     "grade": "A1",
-     "jiriki": 78.4,
-     "st_avg": 0.168,
-     "motor2": 0.0,
-     "badges": []
-    },
-    {
-     "teiban": 4,
      "name": "村松栄太",
      "grade": "B1",
      "jiriki": 40.7,
      "st_avg": 0.21,
      "motor2": 0.0,
      "badges": [
-      "ST遅め"
-     ]
-    },
-    {
-     "teiban": 5,
-     "name": "安藤瑠希",
-     "grade": "B1",
-     "jiriki": null,
-     "st_avg": 0.167,
-     "motor2": 0.0,
-     "badges": []
-    },
-    {
-     "teiban": 6,
-     "name": "岩下巧斗",
-     "grade": "B1",
-     "jiriki": 57.6,
-     "st_avg": 0.152,
-     "motor2": 20.0,
-     "badges": []
-    }
-   ]
-  },
-  {
-   "rno": 7,
-   "rname": "ランチ特賞",
-   "deadline": "12:52",
-   "score": 0.5,
-   "label": "中間",
-   "policy": "特筆材料薄。無理せず他レースへ。 直前確認：北東/東の風2m以上なら穴側へ加点（−5.8pt効果・暫定採用）。",
-   "base_in1": 46.8,
-   "boats": [
-    {
-     "teiban": 1,
-     "name": "竹下大樹",
-     "grade": "A1",
-     "jiriki": 81.9,
-     "st_avg": 0.165,
-     "motor2": 0.0,
-     "badges": [
-      "逃げ厚"
+      "ST遅め",
+      "イン不安"
      ]
     },
     {
      "teiban": 2,
-     "name": "遠藤圭吾",
+     "name": "石田勇斗",
      "grade": "B1",
-     "jiriki": 38.1,
-     "st_avg": 0.177,
-     "motor2": 30.0,
-     "badges": []
+     "jiriki": 40.6,
+     "st_avg": 0.151,
+     "motor2": 72.73,
+     "badges": [
+      "F持ち"
+     ]
     },
     {
      "teiban": 3,
-     "name": "嘉手苅徹",
-     "grade": "B2",
-     "jiriki": null,
-     "st_avg": 0.162,
-     "motor2": 0.0,
-     "badges": []
-    },
-    {
-     "teiban": 4,
-     "name": "数原 魁",
-     "grade": "A2",
-     "jiriki": 57.1,
-     "st_avg": 0.188,
-     "motor2": 27.27,
-     "badges": []
-    },
-    {
-     "teiban": 5,
      "name": "小林甘寧",
      "grade": "B1",
      "jiriki": null,
@@ -542,56 +180,16 @@
      "badges": []
     },
     {
-     "teiban": 6,
-     "name": "吉田一心",
-     "grade": "B1",
-     "jiriki": null,
-     "st_avg": 0.168,
-     "motor2": 0.0,
-     "badges": []
-    }
-   ]
-  },
-  {
-   "rno": 8,
-   "rname": "予選",
-   "deadline": "13:26",
-   "score": 0.0,
-   "label": "中間",
-   "policy": "特筆材料薄。無理せず他レースへ。 直前確認：北東/東の風2m以上なら穴側へ加点（−5.8pt効果・暫定採用）。",
-   "base_in1": 51.5,
-   "boats": [
-    {
-     "teiban": 1,
-     "name": "宮崎心之",
-     "grade": "B1",
-     "jiriki": null,
-     "st_avg": 0.184,
-     "motor2": 0.0,
-     "badges": []
-    },
-    {
-     "teiban": 2,
-     "name": "宮脇遼太",
-     "grade": "A1",
-     "jiriki": 72.0,
-     "st_avg": 0.156,
-     "motor2": 25.0,
-     "badges": []
-    },
-    {
-     "teiban": 3,
-     "name": "長谷川暖",
-     "grade": "B1",
-     "jiriki": null,
-     "st_avg": 0.151,
-     "motor2": 54.55,
-     "badges": [
-      "F持ち"
-     ]
-    },
-    {
      "teiban": 4,
+     "name": "遠藤圭吾",
+     "grade": "B1",
+     "jiriki": 38.1,
+     "st_avg": 0.177,
+     "motor2": 30.0,
+     "badges": []
+    },
+    {
+     "teiban": 5,
      "name": "成貞琳平",
      "grade": "B1",
      "jiriki": 35.5,
@@ -602,115 +200,33 @@
      ]
     },
     {
-     "teiban": 5,
-     "name": "今村天次",
-     "grade": "B2",
-     "jiriki": null,
-     "st_avg": 0.151,
-     "motor2": 40.0,
-     "badges": []
-    },
-    {
      "teiban": 6,
-     "name": "大原祥昌",
-     "grade": "A2",
-     "jiriki": 65.9,
-     "st_avg": 0.138,
+     "name": "秋末秦悟",
+     "grade": "B1",
+     "jiriki": 47.6,
+     "st_avg": 0.166,
      "motor2": 36.36,
      "badges": []
     }
    ]
   },
   {
-   "rno": 9,
+   "rno": 3,
    "rname": "予選",
-   "deadline": "13:52",
-   "score": 0.5,
-   "label": "中間",
-   "policy": "特筆材料薄。無理せず他レースへ。 直前確認：北東/東の風2m以上なら穴側へ加点（−5.8pt効果・暫定採用）。",
-   "base_in1": 53.2,
-   "boats": [
-    {
-     "teiban": 1,
-     "name": "中村 楓",
-     "grade": "B1",
-     "jiriki": null,
-     "st_avg": 0.177,
-     "motor2": 33.33,
-     "badges": []
-    },
-    {
-     "teiban": 2,
-     "name": "笹木香吾",
-     "grade": "A2",
-     "jiriki": 55.8,
-     "st_avg": 0.143,
-     "motor2": 0.0,
-     "badges": []
-    },
-    {
-     "teiban": 3,
-     "name": "三馬崇史",
-     "grade": "B1",
-     "jiriki": 47.5,
-     "st_avg": 0.143,
-     "motor2": 20.0,
-     "badges": []
-    },
-    {
-     "teiban": 4,
-     "name": "福西広太",
-     "grade": "B1",
-     "jiriki": null,
-     "st_avg": 0.19,
-     "motor2": 0.0,
-     "badges": [
-      "ST遅め"
-     ]
-    },
-    {
-     "teiban": 5,
-     "name": "河内一馬",
-     "grade": "B1",
-     "jiriki": null,
-     "st_avg": 0.175,
-     "motor2": 0.0,
-     "badges": [
-      "F持ち"
-     ]
-    },
-    {
-     "teiban": 6,
-     "name": "上岡巧汰",
-     "grade": "B2",
-     "jiriki": null,
-     "st_avg": 0.163,
-     "motor2": 36.36,
-     "badges": [
-      "F持ち"
-     ]
-    }
-   ]
-  },
-  {
-   "rno": 10,
-   "rname": "予選特賞",
-   "deadline": "14:18",
-   "score": 2.7,
+   "deadline": "11:19",
+   "score": 2.2,
    "label": "堅いか万舟",
    "policy": "イン信頼と崩れの二択。オッズ次第で崩れ側へ。ヒモも内寄り優先。 直前確認：北東/東の風2m以上なら穴側へ加点（−5.8pt効果・暫定採用）。",
-   "base_in1": 55.0,
+   "base_in1": 47.1,
    "boats": [
     {
      "teiban": 1,
-     "name": "佐藤永梧",
+     "name": "鈴木柊介",
      "grade": "B1",
-     "jiriki": 44.4,
-     "st_avg": 0.152,
-     "motor2": 0.0,
-     "badges": [
-      "イン不安"
-     ]
+     "jiriki": null,
+     "st_avg": 0.155,
+     "motor2": 16.67,
+     "badges": []
     },
     {
      "teiban": 2,
@@ -723,138 +239,26 @@
     },
     {
      "teiban": 3,
-     "name": "小宮涼雅",
+     "name": "網代良芽",
      "grade": "B1",
-     "jiriki": null,
-     "st_avg": 0.157,
-     "motor2": 20.0,
-     "badges": []
-    },
-    {
-     "teiban": 4,
-     "name": "庄島潤成",
-     "grade": "B1",
-     "jiriki": null,
-     "st_avg": 0.19,
-     "motor2": 70.0,
-     "badges": [
-      "ST遅め"
-     ]
-    },
-    {
-     "teiban": 5,
-     "name": "佐藤太亮",
-     "grade": "B1",
-     "jiriki": 50.0,
-     "st_avg": 0.172,
-     "motor2": 70.0,
-     "badges": []
-    },
-    {
-     "teiban": 6,
-     "name": "中山翔太",
-     "grade": "A1",
-     "jiriki": 75.9,
-     "st_avg": 0.129,
-     "motor2": 50.0,
-     "badges": [
-      "F持ち",
-      "外に地力"
-     ]
-    }
-   ]
-  },
-  {
-   "rno": 11,
-   "rname": "予選特選",
-   "deadline": "14:54",
-   "score": -0.2,
-   "label": "中間",
-   "policy": "特筆材料薄。無理せず他レースへ。 直前確認：北東/東の風2m以上なら穴側へ加点（−5.8pt効果・暫定採用）。",
-   "base_in1": 68.8,
-   "boats": [
-    {
-     "teiban": 1,
-     "name": "藤森陸斗",
-     "grade": "A2",
-     "jiriki": 59.5,
-     "st_avg": 0.142,
-     "motor2": 45.45,
-     "badges": []
-    },
-    {
-     "teiban": 2,
-     "name": "沼田大都",
-     "grade": "B1",
-     "jiriki": 38.5,
-     "st_avg": 0.214,
-     "motor2": 0.0,
-     "badges": [
-      "ST遅め"
-     ]
-    },
-    {
-     "teiban": 3,
-     "name": "塚越海斗",
-     "grade": "A1",
-     "jiriki": 58.9,
-     "st_avg": 0.152,
+     "jiriki": 18.2,
+     "st_avg": 0.159,
      "motor2": 0.0,
      "badges": []
     },
     {
      "teiban": 4,
-     "name": "中 亮太",
-     "grade": "A1",
-     "jiriki": 72.3,
-     "st_avg": 0.138,
-     "motor2": 76.0,
+     "name": "長谷川暖",
+     "grade": "B1",
+     "jiriki": null,
+     "st_avg": 0.151,
+     "motor2": 54.55,
      "badges": [
-      "ST一撃"
+      "F持ち"
      ]
     },
     {
      "teiban": 5,
-     "name": "仲道大輔",
-     "grade": "A2",
-     "jiriki": 58.3,
-     "st_avg": 0.167,
-     "motor2": 27.27,
-     "badges": []
-    },
-    {
-     "teiban": 6,
-     "name": "若林 麗",
-     "grade": "B1",
-     "jiriki": 25.0,
-     "st_avg": 0.177,
-     "motor2": 0.0,
-     "badges": []
-    }
-   ]
-  },
-  {
-   "rno": 12,
-   "rname": "モンタ特選",
-   "deadline": "15:30",
-   "score": -2.3,
-   "label": "中間",
-   "policy": "特筆材料薄。無理せず他レースへ。 直前確認：北東/東の風2m以上なら穴側へ加点（−5.8pt効果・暫定採用）。",
-   "base_in1": 70.9,
-   "boats": [
-    {
-     "teiban": 1,
-     "name": "水谷理人",
-     "grade": "A1",
-     "jiriki": 78.4,
-     "st_avg": 0.168,
-     "motor2": 0.0,
-     "badges": [
-      "逃げ厚"
-     ]
-    },
-    {
-     "teiban": 2,
      "name": "鈴木唯央",
      "grade": "B1",
      "jiriki": null,
@@ -863,6 +267,115 @@
      "badges": [
       "F持ち"
      ]
+    },
+    {
+     "teiban": 6,
+     "name": "竹下大樹",
+     "grade": "A1",
+     "jiriki": 81.9,
+     "st_avg": 0.165,
+     "motor2": 0.0,
+     "badges": [
+      "外に地力"
+     ]
+    }
+   ]
+  },
+  {
+   "rno": 4,
+   "rname": "予選",
+   "deadline": "11:47",
+   "score": 0.0,
+   "label": "中間",
+   "policy": "特筆材料薄。無理せず他レースへ。 直前確認：北東/東の風2m以上なら穴側へ加点（−5.8pt効果・暫定採用）。",
+   "base_in1": 51.2,
+   "boats": [
+    {
+     "teiban": 1,
+     "name": "吉田一心",
+     "grade": "B1",
+     "jiriki": null,
+     "st_avg": 0.168,
+     "motor2": 0.0,
+     "badges": []
+    },
+    {
+     "teiban": 2,
+     "name": "塚越海斗",
+     "grade": "A1",
+     "jiriki": 58.9,
+     "st_avg": 0.152,
+     "motor2": 0.0,
+     "badges": []
+    },
+    {
+     "teiban": 3,
+     "name": "福西広太",
+     "grade": "B1",
+     "jiriki": null,
+     "st_avg": 0.19,
+     "motor2": 0.0,
+     "badges": [
+      "ST遅め"
+     ]
+    },
+    {
+     "teiban": 4,
+     "name": "笹木香吾",
+     "grade": "A2",
+     "jiriki": 55.8,
+     "st_avg": 0.143,
+     "motor2": 0.0,
+     "badges": []
+    },
+    {
+     "teiban": 5,
+     "name": "安藤瑠希",
+     "grade": "B1",
+     "jiriki": null,
+     "st_avg": 0.167,
+     "motor2": 0.0,
+     "badges": []
+    },
+    {
+     "teiban": 6,
+     "name": "嘉手苅徹",
+     "grade": "B2",
+     "jiriki": null,
+     "st_avg": 0.162,
+     "motor2": 0.0,
+     "badges": []
+    }
+   ]
+  },
+  {
+   "rno": 5,
+   "rname": "予選",
+   "deadline": "12:14",
+   "score": 3.5,
+   "label": "堅いか万舟",
+   "policy": "イン信頼と崩れの二択。オッズ次第で崩れ側へ。ヒモも内寄り優先。 直前確認：北東/東の風2m以上なら穴側へ加点（−5.8pt効果・暫定採用）。",
+   "base_in1": 55.4,
+   "boats": [
+    {
+     "teiban": 1,
+     "name": "若林 麗",
+     "grade": "B1",
+     "jiriki": 25.0,
+     "st_avg": 0.177,
+     "motor2": 0.0,
+     "badges": [
+      "イン不安"
+     ]
+    },
+    {
+     "teiban": 2,
+     "name": "宮崎心之",
+     "grade": "B1",
+     "jiriki": null,
+     "st_avg": 0.184,
+     "motor2": 0.0,
+     "badges": []
     },
     {
      "teiban": 3,
@@ -875,6 +388,228 @@
     },
     {
      "teiban": 4,
+     "name": "佐藤永梧",
+     "grade": "B1",
+     "jiriki": 44.4,
+     "st_avg": 0.152,
+     "motor2": 0.0,
+     "badges": []
+    },
+    {
+     "teiban": 5,
+     "name": "上岡巧汰",
+     "grade": "B2",
+     "jiriki": null,
+     "st_avg": 0.163,
+     "motor2": 36.36,
+     "badges": [
+      "F持ち"
+     ]
+    },
+    {
+     "teiban": 6,
+     "name": "仲道大輔",
+     "grade": "A2",
+     "jiriki": 58.3,
+     "st_avg": 0.167,
+     "motor2": 27.27,
+     "badges": []
+    }
+   ]
+  },
+  {
+   "rno": 6,
+   "rname": "ランチ特賞",
+   "deadline": "12:42",
+   "score": -3.5,
+   "label": "イン堅め",
+   "policy": "イン頭固定が本線。穴狙いは見送り推奨。 直前確認：北東/東の風2m以上なら穴側へ加点（−5.8pt効果・暫定採用）。",
+   "base_in1": 60.8,
+   "boats": [
+    {
+     "teiban": 1,
+     "name": "宮脇遼太",
+     "grade": "A1",
+     "jiriki": 72.0,
+     "st_avg": 0.156,
+     "motor2": 25.0,
+     "badges": [
+      "逃げ厚"
+     ]
+    },
+    {
+     "teiban": 2,
+     "name": "中村 楓",
+     "grade": "B1",
+     "jiriki": null,
+     "st_avg": 0.177,
+     "motor2": 33.33,
+     "badges": []
+    },
+    {
+     "teiban": 3,
+     "name": "藤森陸斗",
+     "grade": "A2",
+     "jiriki": 59.5,
+     "st_avg": 0.142,
+     "motor2": 45.45,
+     "badges": []
+    },
+    {
+     "teiban": 4,
+     "name": "村松遥輝",
+     "grade": "B1",
+     "jiriki": 41.7,
+     "st_avg": 0.163,
+     "motor2": 50.0,
+     "badges": [
+      "F持ち"
+     ]
+    },
+    {
+     "teiban": 5,
+     "name": "三馬崇史",
+     "grade": "B1",
+     "jiriki": 47.5,
+     "st_avg": 0.143,
+     "motor2": 20.0,
+     "badges": []
+    },
+    {
+     "teiban": 6,
+     "name": "庄島潤成",
+     "grade": "B1",
+     "jiriki": null,
+     "st_avg": 0.19,
+     "motor2": 70.0,
+     "badges": [
+      "ST遅め"
+     ]
+    }
+   ]
+  },
+  {
+   "rno": 7,
+   "rname": "予選",
+   "deadline": "13:10",
+   "score": 4.5,
+   "label": "穴の巣",
+   "policy": "イン頭を外す3連単を検討。受け皿は2-3-4（宮島は6が残らない）。 直前確認：北東/東の風2m以上なら穴側へ加点（−5.8pt効果・暫定採用）。",
+   "base_in1": 46.8,
+   "boats": [
+    {
+     "teiban": 1,
+     "name": "坂本一真",
+     "grade": "B1",
+     "jiriki": 19.2,
+     "st_avg": 0.175,
+     "motor2": 10.0,
+     "badges": [
+      "イン不安"
+     ]
+    },
+    {
+     "teiban": 2,
+     "name": "数原 魁",
+     "grade": "A2",
+     "jiriki": 57.1,
+     "st_avg": 0.188,
+     "motor2": 27.27,
+     "badges": []
+    },
+    {
+     "teiban": 3,
+     "name": "河内一馬",
+     "grade": "B1",
+     "jiriki": null,
+     "st_avg": 0.175,
+     "motor2": 0.0,
+     "badges": [
+      "F持ち"
+     ]
+    },
+    {
+     "teiban": 4,
+     "name": "秋末秦悟",
+     "grade": "B1",
+     "jiriki": 47.6,
+     "st_avg": 0.166,
+     "motor2": 36.36,
+     "badges": []
+    },
+    {
+     "teiban": 5,
+     "name": "今村天次",
+     "grade": "B2",
+     "jiriki": null,
+     "st_avg": 0.151,
+     "motor2": 40.0,
+     "badges": []
+    },
+    {
+     "teiban": 6,
+     "name": "小宮涼雅",
+     "grade": "B1",
+     "jiriki": null,
+     "st_avg": 0.157,
+     "motor2": 20.0,
+     "badges": []
+    }
+   ]
+  },
+  {
+   "rno": 8,
+   "rname": "予選",
+   "deadline": "13:34",
+   "score": 1.5,
+   "label": "中間",
+   "policy": "特筆材料薄。無理せず他レースへ。 直前確認：北東/東の風2m以上なら穴側へ加点（−5.8pt効果・暫定採用）。",
+   "base_in1": 51.5,
+   "boats": [
+    {
+     "teiban": 1,
+     "name": "長谷川暖",
+     "grade": "B1",
+     "jiriki": null,
+     "st_avg": 0.151,
+     "motor2": 54.55,
+     "badges": [
+      "F持ち"
+     ]
+    },
+    {
+     "teiban": 2,
+     "name": "中 亮太",
+     "grade": "A1",
+     "jiriki": 72.3,
+     "st_avg": 0.138,
+     "motor2": 76.0,
+     "badges": []
+    },
+    {
+     "teiban": 3,
+     "name": "村松栄太",
+     "grade": "B1",
+     "jiriki": 40.7,
+     "st_avg": 0.21,
+     "motor2": 0.0,
+     "badges": [
+      "ST遅め"
+     ]
+    },
+    {
+     "teiban": 4,
+     "name": "沼田大都",
+     "grade": "B1",
+     "jiriki": 38.5,
+     "st_avg": 0.214,
+     "motor2": 0.0,
+     "badges": [
+      "ST遅め"
+     ]
+    },
+    {
+     "teiban": 5,
      "name": "土井歩夢",
      "grade": "A2",
      "jiriki": 50.0,
@@ -883,18 +618,45 @@
      "badges": []
     },
     {
-     "teiban": 5,
-     "name": "宮脇遼太",
-     "grade": "A1",
-     "jiriki": 72.0,
-     "st_avg": 0.156,
-     "motor2": 25.0,
-     "badges": [
-      "外に地力"
-     ]
+     "teiban": 6,
+     "name": "米玉利大",
+     "grade": "B1",
+     "jiriki": null,
+     "st_avg": 0.179,
+     "motor2": 0.0,
+     "badges": []
+    }
+   ]
+  },
+  {
+   "rno": 9,
+   "rname": "予選",
+   "deadline": "14:03",
+   "score": 0.5,
+   "label": "中間",
+   "policy": "特筆材料薄。無理せず他レースへ。 直前確認：北東/東の風2m以上なら穴側へ加点（−5.8pt効果・暫定採用）。",
+   "base_in1": 53.2,
+   "boats": [
+    {
+     "teiban": 1,
+     "name": "笹木香吾",
+     "grade": "A2",
+     "jiriki": 55.8,
+     "st_avg": 0.143,
+     "motor2": 0.0,
+     "badges": []
     },
     {
-     "teiban": 6,
+     "teiban": 2,
+     "name": "網代良芽",
+     "grade": "B1",
+     "jiriki": 18.2,
+     "st_avg": 0.159,
+     "motor2": 0.0,
+     "badges": []
+    },
+    {
+     "teiban": 3,
      "name": "石田勇斗",
      "grade": "B1",
      "jiriki": 40.6,
@@ -903,6 +665,240 @@
      "badges": [
       "F持ち"
      ]
+    },
+    {
+     "teiban": 4,
+     "name": "水谷理人",
+     "grade": "A1",
+     "jiriki": 78.4,
+     "st_avg": 0.168,
+     "motor2": 0.0,
+     "badges": []
+    },
+    {
+     "teiban": 5,
+     "name": "上馬場風",
+     "grade": "B2",
+     "jiriki": null,
+     "st_avg": 0.223,
+     "motor2": 30.0,
+     "badges": [
+      "F持ち",
+      "ST遅め"
+     ]
+    },
+    {
+     "teiban": 6,
+     "name": "佐藤太亮",
+     "grade": "B1",
+     "jiriki": 50.0,
+     "st_avg": 0.172,
+     "motor2": 70.0,
+     "badges": []
+    }
+   ]
+  },
+  {
+   "rno": 10,
+   "rname": "予選特賞",
+   "deadline": "14:31",
+   "score": 0.0,
+   "label": "中間",
+   "policy": "特筆材料薄。無理せず他レースへ。 直前確認：北東/東の風2m以上なら穴側へ加点（−5.8pt効果・暫定採用）。",
+   "base_in1": 55.0,
+   "boats": [
+    {
+     "teiban": 1,
+     "name": "岩下巧斗",
+     "grade": "B1",
+     "jiriki": 57.6,
+     "st_avg": 0.152,
+     "motor2": 20.0,
+     "badges": []
+    },
+    {
+     "teiban": 2,
+     "name": "嘉手苅徹",
+     "grade": "B2",
+     "jiriki": null,
+     "st_avg": 0.162,
+     "motor2": 0.0,
+     "badges": []
+    },
+    {
+     "teiban": 3,
+     "name": "仲道大輔",
+     "grade": "A2",
+     "jiriki": 58.3,
+     "st_avg": 0.167,
+     "motor2": 27.27,
+     "badges": []
+    },
+    {
+     "teiban": 4,
+     "name": "鈴木柊介",
+     "grade": "B1",
+     "jiriki": null,
+     "st_avg": 0.155,
+     "motor2": 16.67,
+     "badges": []
+    },
+    {
+     "teiban": 5,
+     "name": "大原祥昌",
+     "grade": "A2",
+     "jiriki": 65.9,
+     "st_avg": 0.138,
+     "motor2": 36.36,
+     "badges": []
+    },
+    {
+     "teiban": 6,
+     "name": "遠藤圭吾",
+     "grade": "B1",
+     "jiriki": 38.1,
+     "st_avg": 0.177,
+     "motor2": 30.0,
+     "badges": []
+    }
+   ]
+  },
+  {
+   "rno": 11,
+   "rname": "予選特選",
+   "deadline": "14:55",
+   "score": -2.2,
+   "label": "中間",
+   "policy": "特筆材料薄。無理せず他レースへ。 直前確認：北東/東の風2m以上なら穴側へ加点（−5.8pt効果・暫定採用）。",
+   "base_in1": 68.8,
+   "boats": [
+    {
+     "teiban": 1,
+     "name": "品川二千",
+     "grade": "A1",
+     "jiriki": 65.9,
+     "st_avg": 0.159,
+     "motor2": 0.0,
+     "badges": [
+      "逃げ厚"
+     ]
+    },
+    {
+     "teiban": 2,
+     "name": "成貞琳平",
+     "grade": "B1",
+     "jiriki": 35.5,
+     "st_avg": 0.194,
+     "motor2": 0.0,
+     "badges": [
+      "ST遅め"
+     ]
+    },
+    {
+     "teiban": 3,
+     "name": "中山翔太",
+     "grade": "A1",
+     "jiriki": 75.9,
+     "st_avg": 0.129,
+     "motor2": 50.0,
+     "badges": [
+      "F持ち",
+      "ST一撃"
+     ]
+    },
+    {
+     "teiban": 4,
+     "name": "藤森陸斗",
+     "grade": "A2",
+     "jiriki": 59.5,
+     "st_avg": 0.142,
+     "motor2": 45.45,
+     "badges": []
+    },
+    {
+     "teiban": 5,
+     "name": "吉田一心",
+     "grade": "B1",
+     "jiriki": null,
+     "st_avg": 0.168,
+     "motor2": 0.0,
+     "badges": []
+    },
+    {
+     "teiban": 6,
+     "name": "安河内鈴",
+     "grade": "A2",
+     "jiriki": 81.1,
+     "st_avg": 0.148,
+     "motor2": 20.0,
+     "badges": []
+    }
+   ]
+  },
+  {
+   "rno": 12,
+   "rname": "モンタ特選",
+   "deadline": "15:30",
+   "score": -1.0,
+   "label": "中間",
+   "policy": "特筆材料薄。無理せず他レースへ。 直前確認：北東/東の風2m以上なら穴側へ加点（−5.8pt効果・暫定採用）。",
+   "base_in1": 70.9,
+   "boats": [
+    {
+     "teiban": 1,
+     "name": "塚越海斗",
+     "grade": "A1",
+     "jiriki": 58.9,
+     "st_avg": 0.152,
+     "motor2": 0.0,
+     "badges": []
+    },
+    {
+     "teiban": 2,
+     "name": "土井歩夢",
+     "grade": "A2",
+     "jiriki": 50.0,
+     "st_avg": 0.169,
+     "motor2": 0.0,
+     "badges": []
+    },
+    {
+     "teiban": 3,
+     "name": "村松遥輝",
+     "grade": "B1",
+     "jiriki": 41.7,
+     "st_avg": 0.163,
+     "motor2": 50.0,
+     "badges": [
+      "F持ち"
+     ]
+    },
+    {
+     "teiban": 4,
+     "name": "竹下大樹",
+     "grade": "A1",
+     "jiriki": 81.9,
+     "st_avg": 0.165,
+     "motor2": 0.0,
+     "badges": []
+    },
+    {
+     "teiban": 5,
+     "name": "宮崎心之",
+     "grade": "B1",
+     "jiriki": null,
+     "st_avg": 0.184,
+     "motor2": 0.0,
+     "badges": []
+    },
+    {
+     "teiban": 6,
+     "name": "数原 魁",
+     "grade": "A2",
+     "jiriki": 57.1,
+     "st_avg": 0.188,
+     "motor2": 27.27,
+     "badges": []
     }
    ]
   }
