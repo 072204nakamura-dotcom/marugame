@@ -1,28 +1,28 @@
 {
- "date": "2026-11-03",
- "generated_at": "2026-11-03T11:26:29+09:00",
+ "date": "2026-11-04",
+ "generated_at": "2026-11-04T09:41:41+09:00",
  "bfile_ok": true,
  "races": [
   {
    "jcd": "17",
    "venue": "宮島",
    "race": 1,
-   "deadline": "10:18",
+   "deadline": "10:16",
    "rname": "ファーストB",
    "is_final_day": false,
-   "rank1": 2,
+   "rank1": 1,
    "boat_win": [
-    5.75,
-    6.32,
-    4.22,
-    3.95,
-    5.33,
-    1.18
+    6.99,
+    4.74,
+    2.84,
+    3.52,
+    3.31,
+    4.35
    ],
    "outer_top3": [
     2,
-    5,
-    3
+    6,
+    4
    ],
    "weakest_is_boat1_gap": null,
    "rules": [
@@ -33,60 +33,28 @@
     "odds3t": false,
     "odds2t": true,
     "odds3f": false
-   }
-  },
-  {
-   "jcd": "21",
-   "venue": "芦屋",
-   "race": 5,
-   "deadline": "10:27",
-   "rname": "サンライズZ",
-   "is_final_day": false,
-   "rank1": 4,
-   "boat_win": [
-    5.73,
-    6.09,
-    6.07,
-    3.28,
-    3.92,
-    7.07
-   ],
-   "outer_top3": [
-    6,
-    2,
-    3
-   ],
-   "weakest_is_boat1_gap": null,
-   "rules": [
-    "ASH-Q"
-   ],
-   "needs": {
-    "wind": true,
-    "odds3t": false,
-    "odds2t": false,
-    "odds3f": true
    }
   },
   {
    "jcd": "17",
    "venue": "宮島",
    "race": 2,
-   "deadline": "10:55",
+   "deadline": "10:41",
    "rname": "予選",
    "is_final_day": false,
-   "rank1": 3,
+   "rank1": 2,
    "boat_win": [
-    4.74,
-    4.61,
+    5.82,
+    5.59,
     5.89,
-    4.97,
-    4.47,
-    3.7
+    2.26,
+    3.18,
+    3.83
    ],
    "outer_top3": [
     3,
-    4,
-    2
+    2,
+    6
    ],
    "weakest_is_boat1_gap": null,
    "rules": [
@@ -103,58 +71,26 @@
    "jcd": "17",
    "venue": "宮島",
    "race": 3,
-   "deadline": "11:19",
+   "deadline": "11:10",
    "rname": "予選",
-   "is_final_day": false,
-   "rank1": 6,
-   "boat_win": [
-    3.28,
-    6.59,
-    5.39,
-    4.97,
-    4.09,
-    7.08
-   ],
-   "outer_top3": [
-    6,
-    2,
-    3
-   ],
-   "weakest_is_boat1_gap": 0.81,
-   "rules": [
-    "MIY-B"
-   ],
-   "needs": {
-    "wind": true,
-    "odds3t": false,
-    "odds2t": true,
-    "odds3f": false
-   }
-  },
-  {
-   "jcd": "22",
-   "venue": "福岡",
-   "race": 3,
-   "deadline": "11:44",
-   "rname": "カタメン3予",
    "is_final_day": false,
    "rank1": 4,
    "boat_win": [
-    5.08,
-    5.16,
-    6.68,
-    4.08,
-    0.0,
-    5.5
+    5.6,
+    6.04,
+    5.33,
+    6.13,
+    2.09,
+    6.32
    ],
    "outer_top3": [
-    3,
     6,
+    4,
     2
    ],
    "weakest_is_boat1_gap": null,
    "rules": [
-    "FUK-B"
+    "MIY-B"
    ],
    "needs": {
     "wind": true,
@@ -167,21 +103,21 @@
    "jcd": "17",
    "venue": "宮島",
    "race": 4,
-   "deadline": "11:47",
+   "deadline": "11:35",
    "rname": "予選",
    "is_final_day": false,
-   "rank1": 3,
+   "rank1": 5,
    "boat_win": [
-    5.59,
-    6.49,
-    3.31,
-    6.04,
-    3.36,
-    3.9
+    3.7,
+    5.75,
+    7.08,
+    4.47,
+    1.18,
+    4.97
    ],
    "outer_top3": [
+    3,
     2,
-    4,
     6
    ],
    "weakest_is_boat1_gap": null,
@@ -199,22 +135,22 @@
    "jcd": "17",
    "venue": "宮島",
    "race": 5,
-   "deadline": "12:14",
+   "deadline": "12:05",
    "rname": "予選",
    "is_final_day": false,
    "rank1": 5,
    "boat_win": [
-    3.52,
-    6.13,
-    6.6,
+    4.09,
+    6.15,
     5.03,
-    2.26,
-    6.25
+    3.9,
+    4.74,
+    6.6
    ],
    "outer_top3": [
-    3,
     6,
-    2
+    2,
+    3
    ],
    "weakest_is_boat1_gap": null,
    "rules": [
@@ -230,22 +166,86 @@
   {
    "jcd": "22",
    "venue": "福岡",
-   "race": 6,
-   "deadline": "13:16",
+   "race": 4,
+   "deadline": "12:14",
    "rname": "予選",
    "is_final_day": false,
-   "rank1": 5,
+   "rank1": 6,
    "boat_win": [
+    4.51,
+    6.68,
     4.71,
-    6.82,
-    5.1,
-    6.01,
-    7.14,
+    5.16,
+    5.59,
+    6.5
+   ],
+   "outer_top3": [
+    2,
+    6,
+    5
+   ],
+   "weakest_is_boat1_gap": 0.2,
+   "rules": [
+    "FUK-B"
+   ],
+   "needs": {
+    "wind": true,
+    "odds3t": false,
+    "odds2t": true,
+    "odds3f": false
+   }
+  },
+  {
+   "jcd": "22",
+   "venue": "福岡",
+   "race": 5,
+   "deadline": "12:41",
+   "rname": "予選",
+   "is_final_day": false,
+   "rank1": 4,
+   "boat_win": [
+    4.36,
+    4.78,
+    5.35,
+    6.29,
+    4.08,
     0.0
    ],
    "outer_top3": [
+    4,
+    3,
+    2
+   ],
+   "weakest_is_boat1_gap": null,
+   "rules": [
+    "FUK-B"
+   ],
+   "needs": {
+    "wind": true,
+    "odds3t": false,
+    "odds2t": true,
+    "odds3f": false
+   }
+  },
+  {
+   "jcd": "22",
+   "venue": "福岡",
+   "race": 6,
+   "deadline": "13:15",
+   "rname": "予選",
+   "is_final_day": false,
+   "rank1": 4,
+   "boat_win": [
+    4.41,
+    4.04,
+    6.82,
+    6.1,
+    6.44,
+    0.0
+   ],
+   "outer_top3": [
+    3,
     5,
-    2,
     4
    ],
    "weakest_is_boat1_gap": null,
@@ -262,23 +262,55 @@
   {
    "jcd": "22",
    "venue": "福岡",
+   "race": 7,
+   "deadline": "13:44",
+   "rname": "予選",
+   "is_final_day": false,
+   "rank1": 5,
+   "boat_win": [
+    3.82,
+    4.91,
+    5.35,
+    5.5,
+    1.27,
+    5.78
+   ],
+   "outer_top3": [
+    6,
+    4,
+    3
+   ],
+   "weakest_is_boat1_gap": null,
+   "rules": [
+    "FUK-B"
+   ],
+   "needs": {
+    "wind": true,
+    "odds3t": false,
+    "odds2t": true,
+    "odds3f": false
+   }
+  },
+  {
+   "jcd": "22",
+   "venue": "福岡",
    "race": 10,
-   "deadline": "15:18",
+   "deadline": "15:13",
    "rname": "予選特賞",
    "is_final_day": false,
    "rank1": 5,
    "boat_win": [
-    4.91,
-    6.29,
-    5.16,
-    6.71,
-    6.82,
-    4.5
+    4.78,
+    6.1,
+    5.1,
+    4.47,
+    7.21,
+    5.16
    ],
    "outer_top3": [
     5,
-    4,
-    2
+    2,
+    6
    ],
    "weakest_is_boat1_gap": null,
    "rules": [
@@ -300,16 +332,16 @@
    "is_final_day": false,
    "rank1": 2,
    "boat_win": [
-    4.62,
-    4.36,
+    4.76,
     4.42,
-    4.48,
-    5.49,
-    4.12
+    4.23,
+    3.9,
+    5.99,
+    3.92
    ],
    "outer_top3": [
     5,
-    4,
+    2,
     3
    ],
    "weakest_is_boat1_gap": null,
@@ -332,19 +364,19 @@
    "deadline": "15:22",
    "rname": "予選",
    "is_final_day": false,
-   "rank1": 4,
+   "rank1": 5,
    "boat_win": [
-    3.49,
-    5.77,
-    5.25,
-    4.07,
+    3.81,
+    4.76,
+    4.42,
+    5.36,
     0.0,
-    2.87
+    4.13
    ],
    "outer_top3": [
+    4,
     2,
-    3,
-    4
+    3
    ],
    "weakest_is_boat1_gap": null,
    "rules": [
@@ -364,21 +396,21 @@
    "deadline": "15:45",
    "rname": "予選",
    "is_final_day": false,
-   "rank1": 6,
+   "rank1": 3,
    "boat_win": [
-    3.68,
-    5.86,
-    5.52,
-    6.09,
-    4.63,
-    4.5
+    4.36,
+    2.92,
+    2.64,
+    4.98,
+    2.23,
+    5.98
    ],
    "outer_top3": [
+    6,
     4,
-    2,
-    3
+    2
    ],
-   "weakest_is_boat1_gap": 0.82,
+   "weakest_is_boat1_gap": null,
    "rules": [
     "KIR-A",
     "KIR-B",
@@ -395,24 +427,24 @@
    "jcd": "15",
    "venue": "丸亀",
    "race": 2,
-   "deadline": "15:48",
+   "deadline": "15:51",
    "rname": "予選",
    "is_final_day": false,
-   "rank1": 4,
+   "rank1": 6,
    "boat_win": [
-    4.79,
-    4.37,
-    6.04,
-    3.81,
+    3.63,
+    4.82,
+    4.65,
     5.74,
-    5.54
+    6.04,
+    4.5
    ],
    "outer_top3": [
-    3,
     5,
-    6
+    4,
+    2
    ],
-   "weakest_is_boat1_gap": null,
+   "weakest_is_boat1_gap": 0.87,
    "rules": [
     "MAR-E"
    ],
@@ -430,21 +462,21 @@
    "deadline": "16:10",
    "rname": "予選",
    "is_final_day": false,
-   "rank1": 4,
+   "rank1": 6,
    "boat_win": [
+    4.12,
+    6.28,
+    6.26,
+    5.28,
     4.72,
-    3.9,
-    5.99,
-    5.35,
-    4.65,
-    5.01
+    4.63
    ],
    "outer_top3": [
+    2,
     3,
-    4,
-    6
+    4
    ],
-   "weakest_is_boat1_gap": null,
+   "weakest_is_boat1_gap": 0.51,
    "rules": [
     "KIR-A",
     "KIR-B",
@@ -458,6 +490,38 @@
    }
   },
   {
+   "jcd": "15",
+   "venue": "丸亀",
+   "race": 3,
+   "deadline": "16:18",
+   "rname": "予選",
+   "is_final_day": false,
+   "rank1": 5,
+   "boat_win": [
+    5.01,
+    6.24,
+    4.42,
+    5.26,
+    5.84,
+    5.17
+   ],
+   "outer_top3": [
+    2,
+    5,
+    4
+   ],
+   "weakest_is_boat1_gap": null,
+   "rules": [
+    "MAR-E"
+   ],
+   "needs": {
+    "wind": true,
+    "odds3t": false,
+    "odds2t": true,
+    "odds3f": false
+   }
+  },
+  {
    "jcd": "01",
    "venue": "桐生",
    "race": 4,
@@ -466,17 +530,17 @@
    "is_final_day": false,
    "rank1": 5,
    "boat_win": [
-    3.92,
-    5.56,
-    2.92,
-    6.08,
-    5.89,
-    6.28
+    4.57,
+    5.35,
+    6.15,
+    6.95,
+    5.01,
+    3.18
    ],
    "outer_top3": [
-    6,
     4,
-    5
+    3,
+    2
    ],
    "weakest_is_boat1_gap": null,
    "rules": [
@@ -498,19 +562,19 @@
    "deadline": "16:43",
    "rname": "予選",
    "is_final_day": false,
-   "rank1": 4,
+   "rank1": 5,
    "boat_win": [
-    4.65,
-    4.13,
-    6.55,
     2.48,
-    6.22,
-    5.98
+    4.79,
+    5.36,
+    5.81,
+    5.25,
+    0.0
    ],
    "outer_top3": [
+    4,
     3,
-    5,
-    6
+    5
    ],
    "weakest_is_boat1_gap": null,
    "rules": [
@@ -530,19 +594,19 @@
    "deadline": "17:01",
    "rname": "予選",
    "is_final_day": false,
-   "rank1": 4,
+   "rank1": 5,
    "boat_win": [
-    4.61,
-    6.15,
-    5.57,
-    6.3,
     4.48,
-    4.23
+    5.52,
+    6.03,
+    5.96,
+    3.9,
+    6.89
    ],
    "outer_top3": [
-    4,
-    2,
-    3
+    6,
+    3,
+    4
    ],
    "weakest_is_boat1_gap": null,
    "rules": [
@@ -564,19 +628,51 @@
    "deadline": "17:09",
    "rname": "予選",
    "is_final_day": false,
-   "rank1": 5,
+   "rank1": 6,
    "boat_win": [
-    4.5,
-    6.08,
-    7.46,
-    4.76,
-    6.24,
+    2.87,
+    5.98,
+    5.77,
+    4.37,
+    5.9,
+    4.42
+   ],
+   "outer_top3": [
+    2,
+    5,
+    3
+   ],
+   "weakest_is_boat1_gap": 1.5,
+   "rules": [
+    "MAR-E"
+   ],
+   "needs": {
+    "wind": true,
+    "odds3t": false,
+    "odds2t": true,
+    "odds3f": false
+   }
+  },
+  {
+   "jcd": "15",
+   "venue": "丸亀",
+   "race": 6,
+   "deadline": "17:34",
+   "rname": "かけうどん6",
+   "is_final_day": false,
+   "rank1": 4,
+   "boat_win": [
+    5.03,
+    4.07,
+    5.74,
+    6.22,
+    6.57,
     0.0
    ],
    "outer_top3": [
-    3,
     5,
-    2
+    4,
+    3
    ],
    "weakest_is_boat1_gap": null,
    "rules": [
@@ -592,23 +688,55 @@
   {
    "jcd": "15",
    "venue": "丸亀",
-   "race": 12,
-   "deadline": "20:38",
-   "rname": "予選選抜",
+   "race": 7,
+   "deadline": "18:02",
+   "rname": "ざるうどん7",
    "is_final_day": false,
    "rank1": 4,
    "boat_win": [
-    5.9,
-    5.81,
+    5.26,
+    4.79,
+    6.55,
     6.8,
-    5.74,
-    6.16,
+    4.5,
     6.08
    ],
    "outer_top3": [
+    4,
     3,
-    5,
     6
+   ],
+   "weakest_is_boat1_gap": null,
+   "rules": [
+    "MAR-E"
+   ],
+   "needs": {
+    "wind": true,
+    "odds3t": false,
+    "odds2t": true,
+    "odds3f": false
+   }
+  },
+  {
+   "jcd": "15",
+   "venue": "丸亀",
+   "race": 9,
+   "deadline": "19:10",
+   "rname": "まるがめ特賞",
+   "is_final_day": false,
+   "rank1": 4,
+   "boat_win": [
+    5.36,
+    5.9,
+    5.54,
+    4.79,
+    4.42,
+    7.46
+   ],
+   "outer_top3": [
+    6,
+    2,
+    3
    ],
    "weakest_is_boat1_gap": null,
    "rules": [
