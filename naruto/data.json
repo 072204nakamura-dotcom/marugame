@@ -1,102 +1,1047 @@
 {
- "updated": "2026-11-26 11:35 JST",
- "date": "2026-11-26",
- "kaisai": false,
- "races": [],
- "rno_table": [
+ "updated": "2026-11-27 11:35 JST",
+ "date": "2026-11-27",
+ "kaisai": true,
+ "races": [
   {
    "rno": 1,
-   "n": 180,
-   "in1": 75.6,
-   "man": 13.3
+   "rname": "とるならなる",
+   "deadline": "08:35",
+   "boats": [
+    {
+     "teiban": "1",
+     "touban": "3304",
+     "name": "烏野賢太",
+     "grade": "A1",
+     "natl_rate": "5.88",
+     "motor": "33",
+     "motor2": "43.65",
+     "st_avg": "0.14(当地)",
+     "jiriki": 62,
+     "badges": []
+    },
+    {
+     "teiban": "2",
+     "touban": "3832",
+     "name": "下田哲也",
+     "grade": "B2",
+     "natl_rate": "3.74",
+     "motor": "63",
+     "motor2": "31.88",
+     "badges": []
+    },
+    {
+     "teiban": "3",
+     "touban": "3726",
+     "name": "桂林寛",
+     "grade": "B1",
+     "natl_rate": "3.82",
+     "motor": "66",
+     "motor2": "35.34",
+     "badges": []
+    },
+    {
+     "teiban": "4",
+     "touban": "3596",
+     "name": "河上年昭",
+     "grade": "B1",
+     "natl_rate": "4.19",
+     "motor": "31",
+     "motor2": "29.10",
+     "badges": []
+    },
+    {
+     "teiban": "5",
+     "touban": "4740",
+     "name": "齋藤達希",
+     "grade": "B1",
+     "natl_rate": "3.89",
+     "motor": "60",
+     "motor2": "33.33",
+     "teiban_rate": 18,
+     "badges": [
+      "5低率"
+     ]
+    },
+    {
+     "teiban": "6",
+     "touban": "5334",
+     "name": "樫葉新心",
+     "grade": "B1",
+     "natl_rate": "3.12",
+     "motor": "56",
+     "motor2": "26.15",
+     "teiban_rate": 6,
+     "badges": [
+      "6ヒモ外し●"
+     ]
+    }
+   ],
+   "label": "鉄板企画",
+   "policy": "穴党は基本見送り。イン72%・万舟11%の鉄板番組。1頭時の平均配当は1,700円台。 6号艇は3着からも外して点数圧縮。",
+   "base_in1": 77.3,
+   "score": 0,
+   "flags": []
   },
   {
    "rno": 2,
-   "n": 180,
-   "in1": 33.3,
-   "man": 23.3
+   "rname": "どーなるなる",
+   "deadline": "09:01",
+   "boats": [
+    {
+     "teiban": "1",
+     "touban": "3746",
+     "name": "岡瀬正人",
+     "grade": "A2",
+     "natl_rate": "5.71",
+     "motor": "10",
+     "motor2": "22.83",
+     "st_avg": "0.16(全国)",
+     "jiriki": 57,
+     "badges": []
+    },
+    {
+     "teiban": "2",
+     "touban": "5340",
+     "name": "樋江井舞",
+     "grade": "B1",
+     "natl_rate": "4.41",
+     "motor": "25",
+     "motor2": "32.19",
+     "badges": [
+      "F1持ち"
+     ]
+    },
+    {
+     "teiban": "3",
+     "touban": "4958",
+     "name": "溝口海義",
+     "grade": "A1",
+     "natl_rate": "6.51",
+     "motor": "39",
+     "motor2": "19.69",
+     "badges": []
+    },
+    {
+     "teiban": "4",
+     "touban": "3801",
+     "name": "五反田忍",
+     "grade": "B1",
+     "natl_rate": "3.80",
+     "motor": "35",
+     "motor2": "30.77",
+     "badges": []
+    },
+    {
+     "teiban": "5",
+     "touban": "4691",
+     "name": "水原慎",
+     "grade": "B1",
+     "natl_rate": "4.20",
+     "motor": "36",
+     "motor2": "20.45",
+     "teiban_rate": 32,
+     "badges": []
+    },
+    {
+     "teiban": "6",
+     "touban": "4949",
+     "name": "横田貴満",
+     "grade": "A2",
+     "natl_rate": "6.66",
+     "motor": "34",
+     "motor2": "34.59",
+     "teiban_rate": 32,
+     "badges": []
+    }
+   ],
+   "label": "穴の巣",
+   "policy": "頭を2・3・4号艇に散らす番組（イン32%・万舟23%）。1号艇は相手まで。",
+   "base_in1": 28.2,
+   "score": 0,
+   "flags": []
   },
   {
    "rno": 3,
-   "n": 180,
-   "in1": 60.6,
-   "man": 14.4
+   "rname": "どきどきなる",
+   "deadline": "09:27",
+   "boats": [
+    {
+     "teiban": "1",
+     "touban": "3562",
+     "name": "山下和彦",
+     "grade": "A2",
+     "natl_rate": "6.33",
+     "motor": "58",
+     "motor2": "31.34",
+     "st_avg": "0.17(全国)",
+     "jiriki": 56,
+     "badges": []
+    },
+    {
+     "teiban": "2",
+     "touban": "4593",
+     "name": "小坂宗司",
+     "grade": "A2",
+     "natl_rate": "6.02",
+     "motor": "76",
+     "motor2": "32.56",
+     "badges": []
+    },
+    {
+     "teiban": "3",
+     "touban": "4744",
+     "name": "伊藤玲奈",
+     "grade": "B1",
+     "natl_rate": "4.64",
+     "motor": "27",
+     "motor2": "30.30",
+     "badges": []
+    },
+    {
+     "teiban": "4",
+     "touban": "4950",
+     "name": "高岡竜也",
+     "grade": "A1",
+     "natl_rate": "6.25",
+     "motor": "13",
+     "motor2": "40.16",
+     "badges": []
+    },
+    {
+     "teiban": "5",
+     "touban": "4731",
+     "name": "間野兼礼",
+     "grade": "B1",
+     "natl_rate": "4.88",
+     "motor": "38",
+     "motor2": "35.66",
+     "teiban_rate": 34,
+     "badges": []
+    },
+    {
+     "teiban": "6",
+     "touban": "5014",
+     "name": "梶山涼斗",
+     "grade": "B1",
+     "natl_rate": "4.36",
+     "motor": "54",
+     "motor2": "34.92",
+     "teiban_rate": 17,
+     "badges": [
+      "6ヒモ外し●"
+     ]
+    }
+   ],
+   "label": "堅いか万舟",
+   "policy": "二択番組。1頭時は平均1,576円と安く、飛ぶ35%が深く壊れる。買うなら1総外し側。 6号艇は3着からも外して点数圧縮。",
+   "base_in1": 63.6,
+   "score": 0,
+   "flags": []
   },
   {
    "rno": 4,
-   "n": 179,
-   "in1": 57.5,
-   "man": 20.7
+   "rname": "とにかくなる",
+   "deadline": "09:53",
+   "boats": [
+    {
+     "teiban": "1",
+     "touban": "4435",
+     "name": "服部達哉",
+     "grade": "A2",
+     "natl_rate": "5.48",
+     "motor": "26",
+     "motor2": "34.81",
+     "st_avg": "0.16(全国)",
+     "jiriki": 62,
+     "badges": []
+    },
+    {
+     "teiban": "2",
+     "touban": "4896",
+     "name": "花本剛",
+     "grade": "B1",
+     "natl_rate": "4.13",
+     "motor": "70",
+     "motor2": "33.33",
+     "badges": []
+    },
+    {
+     "teiban": "3",
+     "touban": "4494",
+     "name": "河合佑樹",
+     "grade": "A1",
+     "natl_rate": "6.41",
+     "motor": "71",
+     "motor2": "31.20",
+     "badges": []
+    },
+    {
+     "teiban": "4",
+     "touban": "4720",
+     "name": "西澤日花",
+     "grade": "B1",
+     "natl_rate": "3.59",
+     "motor": "69",
+     "motor2": "22.14",
+     "badges": []
+    },
+    {
+     "teiban": "5",
+     "touban": "4394",
+     "name": "永嶋裕一",
+     "grade": "A2",
+     "natl_rate": "6.14",
+     "motor": "52",
+     "motor2": "34.15",
+     "teiban_rate": 54,
+     "badges": []
+    },
+    {
+     "teiban": "6",
+     "touban": "5477",
+     "name": "中井海仁",
+     "grade": "B2",
+     "natl_rate": "1.00",
+     "motor": "68",
+     "motor2": "32.52",
+     "badges": []
+    }
+   ],
+   "label": "中間",
+   "policy": "企画の中では標準的。フラグ次第で判断。",
+   "base_in1": 58.2,
+   "score": 0,
+   "flags": []
   },
   {
    "rno": 5,
-   "n": 179,
-   "in1": 41.3,
-   "man": 15.7
+   "rname": "予選",
+   "deadline": "10:21",
+   "boats": [
+    {
+     "teiban": "1",
+     "touban": "4960",
+     "name": "黒野元基",
+     "grade": "A1",
+     "natl_rate": "7.46",
+     "motor": "23",
+     "motor2": "25.19",
+     "st_avg": "0.14(全国)",
+     "jiriki": 80,
+     "badges": []
+    },
+    {
+     "teiban": "2",
+     "touban": "4874",
+     "name": "池田奈津",
+     "grade": "B1",
+     "natl_rate": "4.19",
+     "motor": "28",
+     "motor2": "33.59",
+     "badges": []
+    },
+    {
+     "teiban": "3",
+     "touban": "4380",
+     "name": "鈴木峻佑",
+     "grade": "B1",
+     "natl_rate": "4.74",
+     "motor": "83",
+     "motor2": "29.85",
+     "badges": []
+    },
+    {
+     "teiban": "4",
+     "touban": "5199",
+     "name": "垂水悠",
+     "grade": "B1",
+     "natl_rate": "5.17",
+     "motor": "32",
+     "motor2": "29.32",
+     "badges": [
+      "まくり型△"
+     ]
+    },
+    {
+     "teiban": "5",
+     "touban": "5055",
+     "name": "眞鳥章太",
+     "grade": "A2",
+     "natl_rate": "5.71",
+     "motor": "64",
+     "motor2": "38.40",
+     "teiban_rate": 50,
+     "badges": []
+    },
+    {
+     "teiban": "6",
+     "touban": "5453",
+     "name": "久保翔耶",
+     "grade": "B2",
+     "natl_rate": "1.87",
+     "motor": "67",
+     "motor2": "38.71",
+     "teiban_rate": 7,
+     "badges": [
+      "6ヒモ外し●"
+     ]
+    }
+   ],
+   "label": "中間",
+   "policy": "基礎率は平均圏。フラグ次第で判断。 6号艇は3着からも外して点数圧縮。",
+   "base_in1": 41.0,
+   "score": 1,
+   "flags": [
+    "まくり型(3/4)"
+   ]
   },
   {
    "rno": 6,
-   "n": 179,
-   "in1": 38.5,
-   "man": 18.4
+   "rname": "予選",
+   "deadline": "10:49",
+   "boats": [
+    {
+     "teiban": "1",
+     "touban": "3882",
+     "name": "新田智彰",
+     "grade": "B1",
+     "natl_rate": "4.35",
+     "motor": "79",
+     "motor2": "42.15",
+     "st_avg": "0.17(全国)",
+     "jiriki": 49,
+     "badges": []
+    },
+    {
+     "teiban": "2",
+     "touban": "4709",
+     "name": "岡村将也",
+     "grade": "A2",
+     "natl_rate": "5.32",
+     "motor": "59",
+     "motor2": "37.98",
+     "badges": []
+    },
+    {
+     "teiban": "3",
+     "touban": "4562",
+     "name": "阪本勇介",
+     "grade": "B1",
+     "natl_rate": "5.01",
+     "motor": "78",
+     "motor2": "32.54",
+     "badges": []
+    },
+    {
+     "teiban": "4",
+     "touban": "5334",
+     "name": "樫葉新心",
+     "grade": "B1",
+     "natl_rate": "3.12",
+     "motor": "56",
+     "motor2": "26.15",
+     "badges": []
+    },
+    {
+     "teiban": "5",
+     "touban": "5346",
+     "name": "中村紋夕",
+     "grade": "B1",
+     "natl_rate": "3.09",
+     "motor": "65",
+     "motor2": "41.27",
+     "teiban_rate": 13,
+     "badges": [
+      "5低率"
+     ]
+    },
+    {
+     "teiban": "6",
+     "touban": "4547",
+     "name": "中田竜太",
+     "grade": "A1",
+     "natl_rate": "6.79",
+     "motor": "74",
+     "motor2": "28.79",
+     "teiban_rate": 40,
+     "badges": []
+    }
+   ],
+   "label": "イン受難ゾーン",
+   "policy": "基礎イン率38%。アンチイン（頭2〜4）を検討する枠。",
+   "base_in1": 38.2,
+   "score": 0,
+   "flags": []
   },
   {
    "rno": 7,
-   "n": 178,
-   "in1": 37.6,
-   "man": 13.5
+   "rname": "予選",
+   "deadline": "11:16",
+   "boats": [
+    {
+     "teiban": "1",
+     "touban": "4740",
+     "name": "齋藤達希",
+     "grade": "B1",
+     "natl_rate": "3.89",
+     "motor": "60",
+     "motor2": "33.33",
+     "st_avg": "0.16(全国)",
+     "jiriki": 41,
+     "badges": []
+    },
+    {
+     "teiban": "2",
+     "touban": "3551",
+     "name": "藤田美代",
+     "grade": "B1",
+     "natl_rate": "4.34",
+     "motor": "73",
+     "motor2": "23.02",
+     "badges": []
+    },
+    {
+     "teiban": "3",
+     "touban": "4086",
+     "name": "寺本重宣",
+     "grade": "A2",
+     "natl_rate": "6.28",
+     "motor": "12",
+     "motor2": "36.15",
+     "badges": []
+    },
+    {
+     "teiban": "4",
+     "touban": "4352",
+     "name": "下條雄太",
+     "grade": "A1",
+     "natl_rate": "7.18",
+     "motor": "11",
+     "motor2": "38.71",
+     "badges": []
+    },
+    {
+     "teiban": "5",
+     "touban": "4821",
+     "name": "妻鳥晋也",
+     "grade": "B1",
+     "natl_rate": "5.50",
+     "motor": "80",
+     "motor2": "30.99",
+     "teiban_rate": 45,
+     "badges": []
+    },
+    {
+     "teiban": "6",
+     "touban": "5340",
+     "name": "樋江井舞",
+     "grade": "B1",
+     "natl_rate": "4.41",
+     "motor": "25",
+     "motor2": "32.19",
+     "teiban_rate": 15,
+     "badges": [
+      "F1持ち",
+      "6ヒモ外し●"
+     ]
+    }
+   ],
+   "label": "イン受難ゾーン",
+   "policy": "基礎イン率38%。アンチイン（頭2〜4）を検討する枠。 6号艇は3着からも外して点数圧縮。",
+   "base_in1": 37.9,
+   "score": 0,
+   "flags": []
   },
   {
    "rno": 8,
-   "n": 178,
-   "in1": 38.8,
-   "man": 22.6
+   "rname": "予選",
+   "deadline": "11:55",
+   "boats": [
+    {
+     "teiban": "1",
+     "touban": "4691",
+     "name": "水原慎",
+     "grade": "B1",
+     "natl_rate": "4.20",
+     "motor": "36",
+     "motor2": "20.45",
+     "st_avg": "0.14(当地)",
+     "jiriki": 51,
+     "badges": []
+    },
+    {
+     "teiban": "2",
+     "touban": "4789",
+     "name": "古賀智之",
+     "grade": "A2",
+     "natl_rate": "5.36",
+     "motor": "75",
+     "motor2": "27.13",
+     "badges": []
+    },
+    {
+     "teiban": "3",
+     "touban": "4731",
+     "name": "間野兼礼",
+     "grade": "B1",
+     "natl_rate": "4.88",
+     "motor": "38",
+     "motor2": "35.66",
+     "badges": []
+    },
+    {
+     "teiban": "4",
+     "touban": "3832",
+     "name": "下田哲也",
+     "grade": "B2",
+     "natl_rate": "3.74",
+     "motor": "63",
+     "motor2": "31.88",
+     "badges": []
+    },
+    {
+     "teiban": "5",
+     "touban": "4075",
+     "name": "中野次郎",
+     "grade": "A1",
+     "natl_rate": "6.64",
+     "motor": "84",
+     "motor2": "20.00",
+     "teiban_rate": 49,
+     "badges": []
+    },
+    {
+     "teiban": "6",
+     "touban": "4896",
+     "name": "花本剛",
+     "grade": "B1",
+     "natl_rate": "4.13",
+     "motor": "70",
+     "motor2": "33.33",
+     "teiban_rate": 14,
+     "badges": [
+      "6ヒモ外し●"
+     ]
+    }
+   ],
+   "label": "イン受難ゾーン",
+   "policy": "基礎イン率39%。アンチイン（頭2〜4）を検討する枠。 6号艇は3着からも外して点数圧縮。",
+   "base_in1": 39.0,
+   "score": 0,
+   "flags": []
   },
   {
    "rno": 9,
-   "n": 178,
-   "in1": 34.8,
-   "man": 23.6
+   "rname": "特賞",
+   "deadline": "12:29",
+   "boats": [
+    {
+     "teiban": "1",
+     "touban": "3596",
+     "name": "河上年昭",
+     "grade": "B1",
+     "natl_rate": "4.19",
+     "motor": "31",
+     "motor2": "29.10",
+     "st_avg": "0.17(全国)",
+     "jiriki": 45,
+     "badges": []
+    },
+    {
+     "teiban": "2",
+     "touban": "4394",
+     "name": "永嶋裕一",
+     "grade": "A2",
+     "natl_rate": "6.14",
+     "motor": "52",
+     "motor2": "34.15",
+     "badges": []
+    },
+    {
+     "teiban": "3",
+     "touban": "3470",
+     "name": "新田芳美",
+     "grade": "B1",
+     "natl_rate": "4.80",
+     "motor": "51",
+     "motor2": "33.58",
+     "badges": []
+    },
+    {
+     "teiban": "4",
+     "touban": "4540",
+     "name": "相原利章",
+     "grade": "A2",
+     "natl_rate": "4.90",
+     "motor": "53",
+     "motor2": "33.60",
+     "badges": []
+    },
+    {
+     "teiban": "5",
+     "touban": "4380",
+     "name": "鈴木峻佑",
+     "grade": "B1",
+     "natl_rate": "4.74",
+     "motor": "83",
+     "motor2": "29.85",
+     "teiban_rate": 21,
+     "badges": [
+      "5低率"
+     ]
+    },
+    {
+     "teiban": "6",
+     "touban": "4593",
+     "name": "小坂宗司",
+     "grade": "A2",
+     "natl_rate": "6.02",
+     "motor": "76",
+     "motor2": "32.56",
+     "teiban_rate": 43,
+     "badges": []
+    }
+   ],
+   "label": "イン受難ゾーン",
+   "policy": "基礎イン率35%。アンチイン（頭2〜4）を検討する枠。",
+   "base_in1": 35.0,
+   "score": 0,
+   "flags": []
   },
   {
    "rno": 10,
-   "n": 178,
-   "in1": 44.9,
-   "man": 18.5
+   "rname": "特賞",
+   "deadline": "13:04",
+   "boats": [
+    {
+     "teiban": "1",
+     "touban": "3726",
+     "name": "桂林寛",
+     "grade": "B1",
+     "natl_rate": "3.82",
+     "motor": "66",
+     "motor2": "35.34",
+     "st_avg": "0.16(全国)",
+     "jiriki": 31,
+     "badges": []
+    },
+    {
+     "teiban": "2",
+     "touban": "5288",
+     "name": "尾道佳諭",
+     "grade": "B1",
+     "natl_rate": "4.26",
+     "motor": "21",
+     "motor2": "30.83",
+     "badges": []
+    },
+    {
+     "teiban": "3",
+     "touban": "4949",
+     "name": "横田貴満",
+     "grade": "A2",
+     "natl_rate": "6.66",
+     "motor": "34",
+     "motor2": "34.59",
+     "badges": []
+    },
+    {
+     "teiban": "4",
+     "touban": "3562",
+     "name": "山下和彦",
+     "grade": "A2",
+     "natl_rate": "6.33",
+     "motor": "58",
+     "motor2": "31.34",
+     "badges": []
+    },
+    {
+     "teiban": "5",
+     "touban": "5199",
+     "name": "垂水悠",
+     "grade": "B1",
+     "natl_rate": "5.17",
+     "motor": "32",
+     "motor2": "29.32",
+     "teiban_rate": 35,
+     "badges": []
+    },
+    {
+     "teiban": "6",
+     "touban": "4720",
+     "name": "西澤日花",
+     "grade": "B1",
+     "natl_rate": "3.59",
+     "motor": "69",
+     "motor2": "22.14",
+     "teiban_rate": 17,
+     "badges": [
+      "6ヒモ外し●"
+     ]
+    }
+   ],
+   "label": "中間",
+   "policy": "基礎率は平均圏。フラグ次第で判断。 6号艇は3着からも外して点数圧縮。",
+   "base_in1": 45.2,
+   "score": 0,
+   "flags": []
   },
   {
    "rno": 11,
-   "n": 177,
-   "in1": 59.9,
-   "man": 19.8
+   "rname": "特選",
+   "deadline": "13:39",
+   "boats": [
+    {
+     "teiban": "1",
+     "touban": "4398",
+     "name": "船岡洋一",
+     "grade": "A1",
+     "natl_rate": "6.21",
+     "motor": "61",
+     "motor2": "32.37",
+     "st_avg": "0.14(全国)",
+     "jiriki": 75,
+     "badges": [
+      "F1持ち"
+     ]
+    },
+    {
+     "teiban": "2",
+     "touban": "5055",
+     "name": "眞鳥章太",
+     "grade": "A2",
+     "natl_rate": "5.71",
+     "motor": "64",
+     "motor2": "38.40",
+     "badges": []
+    },
+    {
+     "teiban": "3",
+     "touban": "4435",
+     "name": "服部達哉",
+     "grade": "A2",
+     "natl_rate": "5.48",
+     "motor": "26",
+     "motor2": "34.81",
+     "badges": []
+    },
+    {
+     "teiban": "4",
+     "touban": "4086",
+     "name": "寺本重宣",
+     "grade": "A2",
+     "natl_rate": "6.28",
+     "motor": "12",
+     "motor2": "36.15",
+     "badges": []
+    },
+    {
+     "teiban": "5",
+     "touban": "3746",
+     "name": "岡瀬正人",
+     "grade": "A2",
+     "natl_rate": "5.71",
+     "motor": "10",
+     "motor2": "22.83",
+     "teiban_rate": 43,
+     "badges": []
+    },
+    {
+     "teiban": "6",
+     "touban": "4709",
+     "name": "岡村将也",
+     "grade": "A2",
+     "natl_rate": "5.32",
+     "motor": "59",
+     "motor2": "37.98",
+     "teiban_rate": 22,
+     "badges": [
+      "6ヒモ外し●"
+     ]
+    }
+   ],
+   "label": "イン堅め",
+   "policy": "基礎イン率60%。穴は控えめに。 6号艇は3着からも外して点数圧縮。",
+   "base_in1": 60.2,
+   "score": 1,
+   "flags": [
+    "1号艇F1持ち"
+   ]
   },
   {
    "rno": 12,
+   "rname": "ドリーム戦",
+   "deadline": "14:13",
+   "boats": [
+    {
+     "teiban": "1",
+     "touban": "4494",
+     "name": "河合佑樹",
+     "grade": "A1",
+     "natl_rate": "6.41",
+     "motor": "71",
+     "motor2": "31.20",
+     "st_avg": "0.14(全国)",
+     "jiriki": 64,
+     "badges": []
+    },
+    {
+     "teiban": "2",
+     "touban": "4075",
+     "name": "中野次郎",
+     "grade": "A1",
+     "natl_rate": "6.64",
+     "motor": "84",
+     "motor2": "20.00",
+     "badges": []
+    },
+    {
+     "teiban": "3",
+     "touban": "4547",
+     "name": "中田竜太",
+     "grade": "A1",
+     "natl_rate": "6.79",
+     "motor": "74",
+     "motor2": "28.79",
+     "badges": []
+    },
+    {
+     "teiban": "4",
+     "touban": "4960",
+     "name": "黒野元基",
+     "grade": "A1",
+     "natl_rate": "7.46",
+     "motor": "23",
+     "motor2": "25.19",
+     "badges": []
+    },
+    {
+     "teiban": "5",
+     "touban": "3304",
+     "name": "烏野賢太",
+     "grade": "A1",
+     "natl_rate": "5.88",
+     "motor": "33",
+     "motor2": "43.65",
+     "teiban_rate": 45,
+     "badges": []
+    },
+    {
+     "teiban": "6",
+     "touban": "4352",
+     "name": "下條雄太",
+     "grade": "A1",
+     "natl_rate": "7.18",
+     "motor": "11",
+     "motor2": "38.71",
+     "teiban_rate": 44,
+     "badges": []
+    }
+   ],
+   "label": "イン堅め",
+   "policy": "基礎イン率66%。穴は控えめに。",
+   "base_in1": 65.9,
+   "score": 0,
+   "flags": []
+  }
+ ],
+ "rno_table": [
+  {
+   "rno": 1,
+   "n": 179,
+   "in1": 75.4,
+   "man": 13.4
+  },
+  {
+   "rno": 2,
+   "n": 179,
+   "in1": 33.0,
+   "man": 22.9
+  },
+  {
+   "rno": 3,
+   "n": 179,
+   "in1": 60.9,
+   "man": 14.5
+  },
+  {
+   "rno": 4,
+   "n": 178,
+   "in1": 57.3,
+   "man": 20.8
+  },
+  {
+   "rno": 5,
+   "n": 178,
+   "in1": 41.0,
+   "man": 15.8
+  },
+  {
+   "rno": 6,
+   "n": 178,
+   "in1": 38.2,
+   "man": 18.5
+  },
+  {
+   "rno": 7,
    "n": 177,
-   "in1": 65.5,
-   "man": 19.2
+   "in1": 37.9,
+   "man": 13.6
+  },
+  {
+   "rno": 8,
+   "n": 177,
+   "in1": 39.0,
+   "man": 22.7
+  },
+  {
+   "rno": 9,
+   "n": 177,
+   "in1": 35.0,
+   "man": 23.2
+  },
+  {
+   "rno": 10,
+   "n": 177,
+   "in1": 45.2,
+   "man": 18.6
+  },
+  {
+   "rno": 11,
+   "n": 176,
+   "in1": 60.2,
+   "man": 19.9
+  },
+  {
+   "rno": 12,
+   "n": 176,
+   "in1": 65.9,
+   "man": 19.3
   }
  ],
  "kikaku_table": {
   "とるならなる": {
-   "n": 111,
-   "in1": 77.5,
-   "man": 11.7
+   "n": 110,
+   "in1": 77.3,
+   "man": 11.8
   },
   "どーなるなる": {
-   "n": 111,
-   "in1": 28.8,
-   "man": 26.1
+   "n": 110,
+   "in1": 28.2,
+   "man": 25.5
   },
   "どきどきなる": {
-   "n": 111,
-   "in1": 63.1,
-   "man": 12.6
+   "n": 110,
+   "in1": 63.6,
+   "man": 12.7
   },
   "とにかくなる": {
-   "n": 111,
-   "in1": 58.6,
-   "man": 18.9
+   "n": 110,
+   "in1": 58.2,
+   "man": 19.1
   }
- }
+ },
+ "nichime": 1,
+ "title": "ＲＶパークで快適あらたえの湯なるみ丸杯競走"
 }
